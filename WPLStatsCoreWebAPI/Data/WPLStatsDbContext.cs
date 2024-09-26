@@ -35,7 +35,7 @@ public partial class WPLStatsDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PK_Teams");
 
             entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Captain).HasMaxLength(50);
+            entity.Property(e => e.Captain_Player_Id).HasMaxLength(50);
             entity.Property(e => e.TeamName).HasMaxLength(50);
         });
 

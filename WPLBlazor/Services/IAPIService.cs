@@ -24,5 +24,6 @@ namespace WPLBlazor.Services
 
         //TeamDetails
         Task<List<TeamDetails>> GetTeamDetails();
+        Task<TeamDetails> GetSingleTeam(int Id);
     }
 }

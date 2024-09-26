@@ -3,7 +3,7 @@
     public class TeamDetails
     {
         public int Id { get; set; }
-        public string TeamName { get; set; } = string.Empty;
-        public string Captain { get; set; } = string.Empty;
+        public string? TeamName { get; set; }
+        public int Captain_Player_Id { get; set; }
     }
 }

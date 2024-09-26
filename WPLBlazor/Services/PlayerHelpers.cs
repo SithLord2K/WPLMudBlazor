@@ -1,5 +1,4 @@
-﻿using WPLBlazor.Components.Pages;
-using WPLBlazor.Models;
+﻿using WPLBlazor.Models;
 
 namespace WPLBlazor.Services
 {
@@ -24,7 +23,7 @@ namespace WPLBlazor.Services
                     List<PlayerData> getPlayerData = [];
                     getPlayerData = await aPIService.GetPlayerData(item.Id);
                     //await Shell.Current.DisplayAlert("Testing: ", $"Name: {item.FirstName}, Id: {item.Id}, Playerdata Id: {getPlayerData.FirstOrDefault().PlayerId}", "OK");
-                    if (getPlayerData != null)
+                    if (getPlayerData.Count != 0)
                     {
                         playerTotals.Id = getPlayerData.FirstOrDefault().PlayerId;
                         playerTotals.Name = item.FirstName;

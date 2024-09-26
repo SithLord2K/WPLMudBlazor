@@ -6,5 +6,5 @@ public partial class TeamDetails
 
     public string TeamName { get; set; } = string.Empty;
 
-    public string Captain { get; set; } = string.Empty;
+    public int Captain_Player_Id { get; set; }
 }

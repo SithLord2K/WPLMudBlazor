@@ -5,10 +5,7 @@ VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPLBlazor", "WPLBlazor\WPLBlazor.csproj", "{E3E46366-5488-42E0-BB40-1AD3DFA42987}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPLBlazor.API", "WPLStatsCoreWebAPI\WPLBlazor.API.csproj", "{F3016B6C-603C-4F6A-B44A-B962D6521BE5}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E3E46366-5488-42E0-BB40-1AD3DFA42987} = {E3E46366-5488-42E0-BB40-1AD3DFA42987}
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WPLBlazor.API", "WPLStatsCoreWebAPI\WPLBlazor.API.csproj", "{F3016B6C-603C-4F6A-B44A-B962D6521BE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

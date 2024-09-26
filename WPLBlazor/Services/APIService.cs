@@ -8,13 +8,11 @@ namespace WPLBlazor.Services
 {
     public class APIService : IAPIService
     {
-        private static HttpClient client;
+        private static HttpClient? client;
 
-#if DEBUG
+
         static readonly string BaseURL = "https://wileysoft.codersden.com";
-#else
-        static readonly string BaseURL = "";
-#endif
+
 
         public APIService()
         {
@@ -50,7 +48,8 @@ namespace WPLBlazor.Services
 
         //Player Tasks
         public Task<List<Player>> GetAllPlayers() =>
-            GetAsync<List<Player>>("/api_v2/Players", "getplayers_v2", 30);
+            GetAsync<List<Player>>($"/api_v2/Players", "getallplayers_v2", 30, true);
+
         public Task<Player> GetSinglePlayer(int id) =>
             GetAsync<Player>($"/api_v2/Players/{id}", "getsingleplayer_v2", 30, true);
         public Task SavePlayer(PlayerData playerData)
@@ -103,5 +102,8 @@ namespace WPLBlazor.Services
         //TeamDetail Tasks
         public Task<List<TeamDetails>> GetTeamDetails() =>
             GetAsync<List<TeamDetails>>("/api_v2/TeamDetails", "getteamdetails_v2", 30);
+        public Task<TeamDetails> GetSingleTeam(int id) =>
+          GetAsync<TeamDetails>($"/api_v2/TeamDetails/{id}", "getsingleteam_v2", 30, true);
     }
+
 }
