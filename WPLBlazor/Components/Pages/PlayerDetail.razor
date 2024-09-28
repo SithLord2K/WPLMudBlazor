@@ -1,0 +1,50 @@
+﻿@page "/player_detail"
+@attribute [StreamRendering]
+@using Microsoft.AspNetCore.Mvc
+
+
+<PageTitle>Player Detail</PageTitle>
+
+<h1>Player Detail</h1>
+
+<Card>
+    <CardBody>
+        <CardTitle Size="3">
+            @playerDetail.FirstName @playerDetail.LastName
+        </CardTitle>
+        <CardText>
+            <Table>
+                <tr>
+                    <th>Games Won</th>
+                    <th>Games Lost</th>
+                    <th>Games Played</th>
+                    <th>Average</th>
+                </tr>
+                <tr>
+                    <td>@playerDetail.GamesWon</td>
+                    <td>@playerDetail.GamesLost</td>
+                    <td>@playerDetail.GamesPlayed</td>
+                    <td></td>
+                </tr>
+            </Table>
+        </CardText>
+    </CardBody>
+</Card>
+
+@code {
+    [Parameter]
+    public int player_Id { get; set; }
+
+    
+
+    private APIService aPIService = new();
+    private PlayerHelpers playerHelper = new();
+    private RosterHelper rosterHelper = new();
+    private List<Player> players = [];
+    private Players playerDetail;
+
+    public async void OnSend(int player_Id)
+    {
+         playerDetail = await playerHelper.GetPlayerDetails(player_Id);
+    }
+}

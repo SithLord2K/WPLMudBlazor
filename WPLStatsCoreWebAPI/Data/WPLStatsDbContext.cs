@@ -18,6 +18,7 @@ public partial class WPLStatsDbContext : DbContext
     public virtual DbSet<TeamDetails> TeamDetails { get; set; }
     public virtual DbSet<Week> Weeks { get; set; }
     public virtual DbSet<PlayerData> PlayerData { get; set; }
+    public virtual DbSet<Schedule> Schedule { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -52,6 +53,13 @@ public partial class WPLStatsDbContext : DbContext
         {
             entity.HasKey(e => e.PlayerId);
             entity.HasKey(e => e.WeekNumber);
+        });
+
+        modelBuilder.Entity<Schedule>(entity =>
+        {
+            entity.Property(e => e.Week_Id).HasColumnType("integer");
+            entity.Property(e => e.Date).HasColumnType("date");
+            entity.HasNoKey();
         });
 
         OnModelCreatingPartial(modelBuilder);

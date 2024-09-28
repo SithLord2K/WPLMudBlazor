@@ -104,6 +104,11 @@ namespace WPLBlazor.Services
             GetAsync<List<TeamDetails>>("/api_v2/TeamDetails", "getteamdetails_v2", 30);
         public Task<TeamDetails> GetSingleTeam(int id) =>
           GetAsync<TeamDetails>($"/api_v2/TeamDetails/{id}", "getsingleteam_v2", 30, true);
+
+        //Schedule Tasks
+        public Task<List<Schedules>> GetSchedule() =>
+            GetAsync<List<Schedules>>($"/api_v2/Schedule", "getschedule_v2", 30, true);
+        
     }
 
 }

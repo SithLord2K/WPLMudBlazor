@@ -26,7 +26,8 @@ namespace WPLBlazor.Services
                     if (getPlayerData.Count != 0)
                     {
                         playerTotals.Id = getPlayerData.FirstOrDefault().PlayerId;
-                        playerTotals.Name = item.FirstName;
+                        playerTotals.FirstName = item.FirstName;
+                        playerTotals.LastName = item.LastName;
                         playerTotals.GamesWon = getPlayerData.Sum(x => x.GamesWon);
                         playerTotals.GamesLost = getPlayerData.Sum(y => y.GamesLost);
                         playerTotals.GamesPlayed = playerTotals.GamesWon + playerTotals.GamesLost;
@@ -48,7 +49,8 @@ namespace WPLBlazor.Services
             if (getPlayerData != null)
             {
                 playerTotals.Id = getPlayerData.FirstOrDefault().PlayerId;
-                playerTotals.Name = playerInfo.FirstName;
+                playerTotals.FirstName = playerInfo.FirstName;
+                playerTotals.LastName = playerInfo.LastName;
                 //foreach(var weeks in getPlayerData) 
                 //{
                 //    playerTotals.GamesWon += weeks.GamesWon;

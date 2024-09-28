@@ -8,8 +8,10 @@ namespace WPLBlazor.Services
     public class RosterHelper : BaseViewModel
     {
         private readonly IAPIService aPIService = new APIService();
-        private List<Player> players = [];
-        private List<Roster> rosters = [];
+        public List<Player> players = [];
+        public List<Roster> rosters = [];
+        public List<Schedules> schedules = [];
+        
 
         public async Task<List<Roster>> GetRoster()
         {
@@ -34,6 +36,24 @@ namespace WPLBlazor.Services
                 }
             }
             return rosters;
+        }
+
+        public async Task<List<Schedules>> GetSchedules()
+        {
+            var schedule = await aPIService.GetSchedule();
+            foreach (var sched in schedule)
+            {
+                Schedules scheDule = new()
+                {
+                    Date = sched.Date,
+                    Home_Team = sched.Home_Team,
+                    Away_Team = sched.Away_Team,
+                    Week_Id = sched.Week_Id,
+                    Table_Number = sched.Table_Number
+                };
+                schedules.Add(scheDule);
+            }
+            return schedules;
         }
     }
 }

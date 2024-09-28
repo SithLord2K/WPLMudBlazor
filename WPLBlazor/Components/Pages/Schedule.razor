@@ -1,51 +1,66 @@
 ﻿@page "/schedule"
 @attribute [StreamRendering]
+@using Microsoft.AspNetCore.Mvc
+@using Microsoft.AspNetCore.WebUtilities
+@using Schedules = WPLBlazor.Models.Schedules
 
+<PageTitle>Schedule</PageTitle>
 
-<PageTitle>Weekly Breakdown</PageTitle>
+<h1>Schedule</h1>
+<br />
 
-<h1>Weekly Breakdown</h1>
-
-@if (weekFullInfo == null)
+@if (schedules == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Week Number</th>
-                <th>Date Played</th>
-                <th>Team Played</th>
-                <th>Games Won</th>
-                <th>Games Lost</th>
-                <th>Average</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var week in weekFullInfo)
-            {
-                <tr>
-                    <td>@week.WeekNumber</td>
-                    <td>@week.DatePlayed</td>
-                    <td>@week.TeamName</td>
-                    <td>@week.GamesWon</td>
-                    <td>@week.GamesLost</td>
-                    <td>@week.Average</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    @foreach (var day in schedules.DistinctBy(x => x.Date))
+    {
+        <Card>
+            <CardBody>
+                <CardTitle Size="4"></CardTitle>
+                <CardText>
+                    <table width="100%" class="table-responsive">
+                        <thead>
+                            <tr>
+                               <th colspan="3"><center>Week: @day.Week_Id</center></th>
+                            </tr>
+                            <tr>
+                                <th colspan="3"><center>Date: @day.Date.ToLongDateString()</center></th>
+                            </tr>
+                            <tr>
+                                <th width="33%"><center>Home Team</center></th>
+                                <th width="33%"><center>Away Team</center></th>
+                                <th width="33%"><center>Table #</center></th>
+                            </tr>
+                        </thead>
+                        @foreach (var d in schedules.Where(x => x.Date == day.Date))
+                        {
+                            <tbody>
+                                <tr>
+                                    <td><center>@d.Home_Team</center></td>
+                                    <td><center>@d.Away_Team</center></td>
+                                    <td><center>@d.Table_Number</center></td>
+                                </tr>
+                            </tbody>
+                        }
+                    </table>
+                </CardText>
+            </CardBody>
+        </Card>
+        <br />
+    }
 }
 
 @code {
-    private WeekHelper weekHelper = new();
-    private List<WeekFullInfo> weekFullInfo = [];
+
+    private APIService aPIService = new();
+    private RosterHelper RosterHelper = new();
+    private List<Schedules> schedules = [];
+
     protected override async Task OnInitializedAsync()
     {
-        weekFullInfo = await weekHelper.GetFullWeek();
+        schedules = await RosterHelper.GetSchedules();
     }
-
-
 }
