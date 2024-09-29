@@ -29,15 +29,15 @@ else
                         <tbody>
                             <tr>
                                 <th widht="25%">Player Name</th>
-                                <th width="25%">Average</th>
+                                 <!--<th width="25%">Average</th>-->
                                 <th width="25%"></th>
                                 <th width="25%">Captain?</th>
                             </tr>
                             @foreach (var roster in rosters.Where(x => x.TeamId == team.Id))
                             {
                                 <tr>
-                                    <td><NavLink class="nav-link" href="@PlayerDetailURI">@roster.Player_Name</NavLink></td>
-                                    <td>average_placeholder</td>
+                                    <td>@roster.Player_Name</td>
+                                    <!--<td>average_placeholder</td>-->
                                     <td></td>
                                 @if (roster.Player_Id == roster.Captain_Player_Id)
                                             {

@@ -21,7 +21,7 @@ else
             <CardBody>
                 <CardTitle Size="4"></CardTitle>
                 <CardText>
-                    <table width="100%" class="table-responsive">
+                    <table width="100%" class="table">
                         <thead>
                             <tr>
                                <th colspan="3"><center>Week: @day.Week_Id</center></th>
@@ -39,8 +39,8 @@ else
                         {
                             <tbody>
                                 <tr>
-                                    <td><center>@d.Home_Team</center></td>
-                                    <td><center>@d.Away_Team</center></td>
+                                    <td><center>@teams.Where(x => x.Id == d.Home_Team).FirstOrDefault().TeamName</center></td>
+                                    <td><center>@teams.Where(x => x.Id == d.Away_Team).FirstOrDefault().TeamName</center></td>
                                     <td><center>@d.Table_Number</center></td>
                                 </tr>
                             </tbody>
@@ -58,9 +58,11 @@ else
     private APIService aPIService = new();
     private RosterHelper RosterHelper = new();
     private List<Schedules> schedules = [];
+    private List<TeamDetails> teams = [];
 
     protected override async Task OnInitializedAsync()
     {
+        teams = await aPIService.GetTeamDetails();
         schedules = await RosterHelper.GetSchedules();
     }
 }

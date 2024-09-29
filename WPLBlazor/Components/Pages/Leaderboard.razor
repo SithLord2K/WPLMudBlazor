@@ -1,9 +1,9 @@
 ﻿@page "/leaderboard"
 @attribute [StreamRendering]
 
-<PageTitle>Team Statistics</PageTitle>
+<PageTitle>Leaderboard</PageTitle>
 
-<h1>Team Statistics</h1>
+<h1>Leaderboard</h1>
 
 
 @if (teamStats == null)
@@ -12,19 +12,22 @@
 }
 else
 {
-    <table class="table">
+      <table class="table">
         <thead>
             <tr>
-                <th>Weeks Played</th>
-                <th>Total Games Played</th>
-                <th>Total Games Won</th>
-                <th>Total Games Lost</th>
-                <th>Total Average</th>
+                <th>Team Name</th>
+                <th>Games Played</th>
+                <th>Games Won</th>
+                <th>Games Lost</th>
+                <th>Average</th>
             </tr>
         </thead>
+    @foreach(var tDetails in teamDetails)
+    {
+
         <tbody>
                 <tr>
-                <td>@teamStats.WeeksPlayed</td>
+                <td>@tDetails.TeamName</td>
                 <td>@teamStats.TotalGamesPlayed</td>
                 <td>@teamStats.TotalGamesWon</td>
                 <td>@teamStats.TotalGamesLost</td>
@@ -32,16 +35,20 @@ else
                 </tr>
             
         </tbody>
+    }
     </table>
 }
 
 @code {
+    private APIService aPIService = new();
     private TeamStats teamStats = new();
     private PlayerHelpers playerHelper = new();
+    private List<TeamDetails> teamDetails = [];
 
 
     protected override async Task OnInitializedAsync()
     {
-        teamStats = await playerHelper.GetTeamStats();
+        teamDetails = await playerHelper.GetTeamDetails();
+        //teamStats = await playerHelper.GetTeamStats();
     }
 }

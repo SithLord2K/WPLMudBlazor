@@ -80,5 +80,29 @@ namespace WPLBlazor.Services
             teamStats.WeeksPlayed = weekTotals.Count;
             return teamStats;
         }
+
+        public async Task<TeamStats> GetTeamStats(int id)
+        {
+            List<PlayerData> teamTotals = [];
+            List<TeamDetails> teams = [];
+            List<Weeks> weekTotals = [];
+            TeamStats teamStats = new();
+
+            teams = await aPIService.GetTeamDetails();
+            foreach(var team in teams)
+            {
+                
+            }
+            
+            return teamStats;
+        }
+
+        public async Task<List<TeamDetails>> GetTeamDetails()
+        {
+            List<TeamDetails> teamDetails = [];
+            teamDetails = await aPIService.GetTeamDetails();
+
+            return teamDetails;
+        }
     }
 }
