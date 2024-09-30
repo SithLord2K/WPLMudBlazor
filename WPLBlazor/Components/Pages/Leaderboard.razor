@@ -12,43 +12,89 @@
 }
 else
 {
-      <table class="table">
-        <thead>
-            <tr>
-                <th>Team Name</th>
-                <th>Games Played</th>
-                <th>Games Won</th>
-                <th>Games Lost</th>
-                <th>Average</th>
-            </tr>
-        </thead>
-    @foreach(var tDetails in teamDetails)
-    {
+    <Card>
+        <CardBody>
+            <CardTitle Size="3">
+                Team Leaderboard
+            </CardTitle>
+            <hr />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Team Name</th>
+                        <th>Games Played</th>
+                        <th>Games Won</th>
+                        <th>Games Lost</th>
+                        <th>Average</th>
+                    </tr>
+                </thead>
+                @foreach (var teamStat in teamStats)
+                {
+                    <tbody>
+                        <tr>
+                            <td>@teamStat.TeamName</td>
+                            <td>@teamStat.TotalGamesPlayed</td>
+                            <td>@teamStat.TotalGamesWon</td>
+                            <td>@teamStat.TotalGamesLost</td>
+                            <td>@teamStat.TotalAverage%</td>
+                        </tr>
 
-        <tbody>
-                <tr>
-                <td>@tDetails.TeamName</td>
-                <td>@teamStats.TotalGamesPlayed</td>
-                <td>@teamStats.TotalGamesWon</td>
-                <td>@teamStats.TotalGamesLost</td>
-                <td>@teamStats.TotalAverage</td>
-                </tr>
-            
-        </tbody>
-    }
-    </table>
+                    </tbody>
+
+                }
+            </table>
+        </CardBody>
+    </Card>
+    <Card>
+        <CardBody>
+            <CardTitle Size="3">
+                Player Leaderboard
+            </CardTitle>
+            <br />
+            <br />
+            <CardText>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Player Name</th>
+                            <th>Games Played</th>
+                            <th>Games Won</th>
+                            <th>Games Lost</th>
+                            <th>Average</th>
+                        </tr>
+                    </thead>
+                    @foreach (var player in playerData.OrderByDescending(x => x.Average).Where(y => y.GamesPlayed > 0))
+                    {
+                        <tbody>
+                            <tr>
+                                <td>@player.FirstName @player.LastName</td>
+                                <td>@player.GamesPlayed</td>
+                                <td>@player.GamesWon</td>
+                                <td>@player.GamesLost</td>
+                                <td>@player.Average%</td>
+                            </tr>
+
+                        </tbody>
+                    }
+                </table>
+            </CardText>
+        </CardBody>
+    </Card>
 }
 
 @code {
     private APIService aPIService = new();
-    private TeamStats teamStats = new();
+    private TeamHelper teamHelper = new();
     private PlayerHelpers playerHelper = new();
+    private List<TeamStats> teamStats = new();
     private List<TeamDetails> teamDetails = [];
+    private List<Players> playerData = [];
 
 
     protected override async Task OnInitializedAsync()
     {
         teamDetails = await playerHelper.GetTeamDetails();
-        //teamStats = await playerHelper.GetTeamStats();
+        playerData = await playerHelper.ConsolidatePlayer();
+        //teamStats = await teamHelper.GetAllTeamStats();
     }
 }

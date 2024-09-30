@@ -22,10 +22,11 @@ namespace WPLBlazor.Services
                     Players playerTotals = new();
                     List<PlayerData> getPlayerData = [];
                     getPlayerData = await aPIService.GetPlayerData(item.Id);
-                    //await Shell.Current.DisplayAlert("Testing: ", $"Name: {item.FirstName}, Id: {item.Id}, Playerdata Id: {getPlayerData.FirstOrDefault().PlayerId}", "OK");
+
                     if (getPlayerData.Count != 0)
                     {
                         playerTotals.Id = getPlayerData.FirstOrDefault().PlayerId;
+                        playerTotals.TeamId = item.TeamId;
                         playerTotals.FirstName = item.FirstName;
                         playerTotals.LastName = item.LastName;
                         playerTotals.GamesWon = getPlayerData.Sum(x => x.GamesWon);
@@ -51,11 +52,6 @@ namespace WPLBlazor.Services
                 playerTotals.Id = getPlayerData.FirstOrDefault().PlayerId;
                 playerTotals.FirstName = playerInfo.FirstName;
                 playerTotals.LastName = playerInfo.LastName;
-                //foreach(var weeks in getPlayerData) 
-                //{
-                //    playerTotals.GamesWon += weeks.GamesWon;
-                //    playerTotals.GamesLost += weeks.GamesLost;
-                //}
                 playerTotals.GamesWon = getPlayerData.Sum(gw => gw.GamesWon);
                 playerTotals.GamesLost = getPlayerData.Sum(y => y.GamesLost);
                 playerTotals.GamesPlayed = playerTotals.GamesWon + playerTotals.GamesLost;
@@ -78,24 +74,10 @@ namespace WPLBlazor.Services
             teamStats.TotalGamesPlayed = teamStats.TotalGamesWon + teamStats.TotalGamesLost;
             teamStats.TotalAverage = Decimal.Round(((decimal)teamStats.TotalGamesWon / (decimal)teamStats.TotalGamesPlayed) * 100, 2);
             teamStats.WeeksPlayed = weekTotals.Count;
+
             return teamStats;
         }
 
-        public async Task<TeamStats> GetTeamStats(int id)
-        {
-            List<PlayerData> teamTotals = [];
-            List<TeamDetails> teams = [];
-            List<Weeks> weekTotals = [];
-            TeamStats teamStats = new();
-
-            teams = await aPIService.GetTeamDetails();
-            foreach(var team in teams)
-            {
-                
-            }
-            
-            return teamStats;
-        }
 
         public async Task<List<TeamDetails>> GetTeamDetails()
         {

@@ -14,6 +14,7 @@ namespace WPLBlazor.Services
         //PlayerData
         Task<List<PlayerData>> GetAllPlayerData();
         Task<List<PlayerData>> GetPlayerData(int playerId);
+        Task<PlayerData> GetSinglePlayerData(int playerId);
         Task SavePlayerData(PlayerData playerData);
 
         //Weeks

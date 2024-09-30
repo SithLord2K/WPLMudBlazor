@@ -10,5 +10,6 @@
         public int GamesPlayed { get; set; }
         public decimal Average { get; set; }
         public int WeekNumber { get; set; }
+        public int TeamId { get; set; }
     }
 }

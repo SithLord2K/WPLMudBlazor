@@ -35,8 +35,8 @@ else
                             </tr>
                             @foreach (var roster in rosters.Where(x => x.TeamId == team.Id))
                             {
-                                <tr>
-                                    <td>@roster.Player_Name</td>
+                            <tr>
+                                <td><a href="/player_detail/@roster.Player_Id">@roster.Player_Name</a></td>
                                     <!--<td>average_placeholder</td>-->
                                     <td></td>
                                 @if (roster.Player_Id == roster.Captain_Player_Id)
@@ -63,10 +63,7 @@ else
 }
 
 @code {
-    [Parameter]
-    public string PlayerDetailURI { get; set; } = $"player_detail";
-
-
+    
     private APIService aPIService = new();
     private RosterHelper RosterHelper = new();
     private List<Player> players = [];
@@ -77,6 +74,7 @@ else
     {
         teams = await aPIService.GetTeamDetails();
         rosters = await RosterHelper.GetRoster();
+
 
     }
     

@@ -10,10 +10,7 @@ namespace WPLBlazor.Services
     {
         private static HttpClient? client;
 
-
         static readonly string BaseURL = "https://wileysoft.codersden.com";
-
-
         public APIService()
         {
             client = new HttpClient
@@ -66,6 +63,8 @@ namespace WPLBlazor.Services
             GetAsync<List<PlayerData>>($"/api_v2/PlayerData", "getallplayerdata_v2", 0, true);
         public Task<List<PlayerData>> GetPlayerData(int playerId) =>
             GetAsync<List<PlayerData>>($"/api_v2/PlayerData/{playerId}", "getplayerdata_v2", 0, true);
+        public Task<PlayerData> GetSinglePlayerData(int playerId) =>
+            GetAsync<PlayerData>($".api_v2/PlayerData/{playerId}", "getsingleplayerdata_v2", 0, true);
         public async Task SavePlayerData(PlayerData playerData)
         {
             Uri uri = new("https://wileysoft.codersden.com/api_v2/PlayerData");

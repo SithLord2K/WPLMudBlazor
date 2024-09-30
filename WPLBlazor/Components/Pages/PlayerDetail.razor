@@ -1,50 +1,54 @@
-﻿@page "/player_detail"
+﻿@page "/player_detail/{ID:int}"
 @attribute [StreamRendering]
 @using Microsoft.AspNetCore.Mvc
 
+<PageTitle>@playerInfo.FirstName @playerInfo.LastName's Details</PageTitle>
 
-<PageTitle>Player Detail</PageTitle>
-
-<h1>Player Detail</h1>
-
-<Card>
-    <CardBody>
-        <CardTitle Size="3">
-            @playerDetail.FirstName @playerDetail.LastName
-        </CardTitle>
-        <CardText>
-            <Table>
-                <tr>
-                    <th>Games Won</th>
-                    <th>Games Lost</th>
-                    <th>Games Played</th>
-                    <th>Average</th>
-                </tr>
-                <tr>
-                    <td>@playerDetail.GamesWon</td>
-                    <td>@playerDetail.GamesLost</td>
-                    <td>@playerDetail.GamesPlayed</td>
-                    <td></td>
-                </tr>
-            </Table>
-        </CardText>
-    </CardBody>
-</Card>
-
+@if (playerDetail.Id == 0)
+{
+    <p><em>@playerInfo.FirstName @playerInfo.LastName has not played any games.</em></p>
+}
+else
+{
+    <Card>
+        <CardBody>
+            <CardTitle Size="3">
+                @playerDetail.FirstName @playerDetail.LastName
+            </CardTitle>
+            <CardText>
+                <Table>
+                    <tr>
+                        <th>Games Won</th>
+                        <th>Games Lost</th>
+                        <th>Games Played</th>
+                        <th>Average</th>
+                    </tr>
+                    <tr>
+                        <td>@playerDetail.GamesWon</td>
+                        <td>@playerDetail.GamesLost</td>
+                        <td>@playerDetail.GamesPlayed</td>
+                        <td>@playerDetail.Average</td>
+                    </tr>
+                </Table>
+            </CardText>
+        </CardBody>
+    </Card>
+}
 @code {
     [Parameter]
-    public int player_Id { get; set; }
-
-    
+    public int ID { get; set; }
 
     private APIService aPIService = new();
     private PlayerHelpers playerHelper = new();
     private RosterHelper rosterHelper = new();
-    private List<Player> players = [];
-    private Players playerDetail;
+    private PlayerData player = new();
+    private Player playerInfo = new();
+    private Players playerDetail = new();
 
-    public async void OnSend(int player_Id)
+    protected override async Task OnInitializedAsync()
     {
-         playerDetail = await playerHelper.GetPlayerDetails(player_Id);
+        playerInfo = await aPIService.GetSinglePlayer(ID);
+        playerDetail = await playerHelper.GetPlayerDetails(ID);
     }
+
 }
