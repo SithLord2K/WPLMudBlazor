@@ -107,7 +107,17 @@ namespace WPLBlazor.Services
         //Schedule Tasks
         public Task<List<Schedules>> GetSchedule() =>
             GetAsync<List<Schedules>>($"/api_v2/Schedule", "getschedule_v2", 30, true);
-        
+
+        public async Task AddSchedule(Schedules schedule) 
+        {
+            Uri uri = new("https://wileysoft.codersden.com/api_v2/Schedule");
+            HttpRequestMessage message = new(HttpMethod.Post, uri)
+            {
+                Content = JsonContent.Create<Schedules>(schedule)
+            };
+            Barrel.Current.EmptyAll();
+            _ = await client.SendAsync(message);
+        }
     }
 
 }

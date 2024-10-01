@@ -29,5 +29,6 @@ namespace WPLBlazor.Services
 
         //Schedule
         Task<List<Schedules>> GetSchedule();
+        Task AddSchedule(Schedules schedule);
     }
 }

@@ -1,9 +1,9 @@
 ﻿@page "/leaderboard"
 @attribute [StreamRendering]
 
-<PageTitle>Leaderboard</PageTitle>
+<PageTitle>Leaderboards</PageTitle>
 
-<h1>Leaderboard</h1>
+<h1>Leaderboards</h1>
 
 
 @if (teamStats == null)
@@ -28,7 +28,7 @@ else
                         <th>Average</th>
                     </tr>
                 </thead>
-                @foreach (var teamStat in teamStats.OrderByDescending(x => x.TotalAverage))
+                @foreach (var teamStat in teamStats.OrderByDescending(x => x.TotalAverage).Where(y => y.TotalGamesPlayed > 0))
                 {
                     <tbody>
                         <tr>
