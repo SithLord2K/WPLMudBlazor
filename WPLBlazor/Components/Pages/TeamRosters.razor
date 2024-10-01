@@ -28,10 +28,10 @@ else
                     <table width="100%">
                         <tbody>
                             <tr>
-                                <th widht="25%">Player Name</th>
+                                <th widht="33%">Player Name</th>
                                  <!--<th width="25%">Average</th>-->
-                                <th width="25%"></th>
-                                <th width="25%">Captain?</th>
+                                <th width="33%"></th>
+                                <th width="33%">Captain?</th>
                             </tr>
                             @foreach (var roster in rosters.Where(x => x.TeamId == team.Id))
                             {
@@ -74,8 +74,6 @@ else
     {
         teams = await aPIService.GetTeamDetails();
         rosters = await RosterHelper.GetRoster();
-
-
     }
     
 
