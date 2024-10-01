@@ -40,7 +40,6 @@ namespace WPLBlazor.API.Controllers
             {
                 return NotFound();
             }
-            //playerData = _context.PlayerData.Where(x => x.PlayerId == id).ToList();
             playerData = await _context.PlayerData.Where(x => x.PlayerId == id).ToListAsync();
             if (playerData == null)
             {

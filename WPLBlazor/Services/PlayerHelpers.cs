@@ -47,7 +47,7 @@ namespace WPLBlazor.Services
             Players playerTotals = new();
             List<PlayerData> getPlayerData = await aPIService.GetPlayerData(id);
             var playerInfo = await aPIService.GetSinglePlayer(id);
-            if (getPlayerData != null)
+            if (getPlayerData.Count > 0)
             {
                 playerTotals.Id = getPlayerData.FirstOrDefault().PlayerId;
                 playerTotals.FirstName = playerInfo.FirstName;
