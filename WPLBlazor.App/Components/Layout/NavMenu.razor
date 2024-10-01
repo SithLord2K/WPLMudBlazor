@@ -1,0 +1,33 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <img src="favicon.png" width="25" height="25" /><a class="navbar-brand" href="">Welland Pool League</a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <Icon Name="IconName.Home" />&nbsp; Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="team_rosters">
+                <Icon Name="IconName.User" />&nbsp; Team Rosters
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="leaderboard">
+                <Icon Name="IconName.Users" />&nbsp; Leaderboards
+                </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="schedule">
+                <Icon Name="IconName.Calendar" />&nbsp;  Schedule
+            </NavLink>
+        </div>
+    </nav>
+</div>
+

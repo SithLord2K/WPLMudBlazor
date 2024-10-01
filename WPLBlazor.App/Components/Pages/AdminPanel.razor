@@ -1,0 +1,40 @@
+﻿@page "/admin"
+@attribute [StreamRendering]
+
+<PageTitle>Admin Panel</PageTitle>
+<h1>AdminPanel</h1>
+<br />
+<Card>
+    <CardBody>
+        <CardTitle Size="3">
+            Add Schedule Information
+        </CardTitle>
+        <CardText>
+            <EditForm Model="schedule" OnSubmit="SaveSchedule" FormName="AddSchedule">
+                <br />
+                Week Number: <InputNumber @bind-Value="schedule.Week_Id" /> @schedule.Week_Id
+                <br />
+                Date: <InputDate @bind-Value="schedule.Date" /> @schedule.Date
+                <br />
+                Home Team: <InputNumber @bind-Value="schedule.Home_Team" /> @schedule.Home_Team
+                <br />
+                Away Team: <InputNumber @bind-Value="schedule.Away_Team" /> @schedule.Away_Team
+                <br />
+                Table Number: <InputNumber @bind-Value="schedule.Table_Number" /> @schedule.Table_Number
+                <br />
+                <button type="submit">Save</button>
+            </EditForm>
+        </CardText>
+    </CardBody>
+</Card>
+
+
+@code {
+
+    [SupplyParameterFromForm]
+    Schedules schedule { get; set; } = new();
+
+    private APIService aPIService = new();
+
+    private void SaveSchedule() => aPIService.AddSchedule(schedule);
+}

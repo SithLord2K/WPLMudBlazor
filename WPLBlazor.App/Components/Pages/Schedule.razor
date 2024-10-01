@@ -1,0 +1,70 @@
+﻿@page "/schedule"
+@attribute [StreamRendering]
+@using Microsoft.AspNetCore.Mvc
+@using Microsoft.AspNetCore.WebUtilities
+@using Schedules = WPLBlazor.App.Models.Schedules
+
+<PageTitle>Schedule</PageTitle>
+
+<h1>Schedule</h1>
+<br />
+
+@if (schedules == null || teams.Count() == 0)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @foreach (var day in schedules.DistinctBy(x => x.Date))
+    {
+        <Card>
+            <CardBody>
+                <CardTitle Size="4"></CardTitle>
+                <CardText>
+                    <table width="100%" class="table">
+                        <thead>
+                            <tr>
+                                <th colspan="4"><center>Date: @day.Date.ToLongDateString()</center></th>
+                            </tr>
+                            <tr>
+                               <th colspan="4"><center>Week: @day.Week_Id</center></th>
+                            </tr>
+                            <tr>
+                                <th width="25%"><center>Home Team</center></th>
+                                <th width="25%" />
+                                <th width="25%"><center>Away Team</center></th>
+                                <th width="25%"><center>Table #</center></th>
+                            </tr>
+                        </thead>
+                        @foreach (var d in schedules.Where(x => x.Date == day.Date))
+                        {
+                            <tbody>
+                                <tr>
+                                    <td><center>@teams.Where(x => x.Id == d.Home_Team).FirstOrDefault().TeamName</center></td>
+                                    <td><center>vs</center></td>
+                                    <td><center>@teams.Where(x => x.Id == d.Away_Team).FirstOrDefault().TeamName</center></td>
+                                    <td><center>@d.Table_Number</center></td>
+                                </tr>
+                            </tbody>
+                        }
+                    </table>
+                </CardText>
+            </CardBody>
+        </Card>
+        <br />
+    }
+}
+
+@code {
+
+    private APIService aPIService = new();
+    private RosterHelper RosterHelper = new();
+    private List<Schedules> schedules = [];
+    private List<TeamDetails> teams = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        teams = await aPIService.GetTeamDetails();
+        schedules = await RosterHelper.GetSchedules();
+    }
+}
