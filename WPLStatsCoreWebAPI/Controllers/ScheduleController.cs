@@ -52,7 +52,23 @@ namespace WPLBlazor.API.Controllers
             return scheduleWeek;
         }
 
-        
+        // POST: api_v2/Schedule
+        [HttpPost]
+        [ResponseCache(Duration = 20, Location = ResponseCacheLocation.Any, NoStore = false)]
+
+        public async Task<ActionResult<Schedule>> SaveSchedule(Schedule schedule)
+        {
+            if (_context.Players == null)
+            {
+                return Problem("Schedule is null.");
+            }
+            _context.Schedule.Add(schedule);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetShedule", new { id = schedule.Week_Id }, schedule);
+        }
+
+
     }
 
 }

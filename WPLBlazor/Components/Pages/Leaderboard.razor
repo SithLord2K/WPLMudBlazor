@@ -28,7 +28,7 @@ else
                         <th>Average</th>
                     </tr>
                 </thead>
-                @foreach (var teamStat in teamStats.OrderByDescending(x => x.TotalAverage).Where(y => y.TotalGamesPlayed > 0))
+                @foreach (var teamStat in teamStats)
                 {
                     <tbody>
                         <tr>
@@ -45,6 +45,7 @@ else
             </table>
         </CardBody>
     </Card>
+    <br />
     <Card>
         <CardBody>
             <CardTitle Size="3">
@@ -95,6 +96,6 @@ else
     {
         teamDetails = await playerHelper.GetTeamDetails();
         playerData = await playerHelper.ConsolidatePlayer();
-        //teamStats = await teamHelper.GetAllTeamStats();
+        teamStats = await teamHelper.GetAllTeamStats();
     }
 }

@@ -1,0 +1,31 @@
+﻿@page "/admin"
+@attribute [StreamRendering]
+
+<PageTitle>Admin Panel</PageTitle>
+<h1>AdminPanel</h1>
+<br />
+<Card>
+    <CardBody>
+        <CardTitle Size="3">
+            Add Schedule Information
+        </CardTitle>
+        <Divider />
+        <CardText>
+            <br />
+            Week Number: <input type="number" name="Week_Id" />
+           <br />
+              Home Team: <input type="number" name="Home_Team" />
+           <br />
+              Away Team: <input type="number" name="Away_Team" />
+           <br />
+           Table Number: <input type="number" name="Table_Number" />
+           <br />
+           <input type="button" name="Save" value="Save" />
+        </CardText>
+    </CardBody>
+</Card>
+
+
+@code {
+
+}
