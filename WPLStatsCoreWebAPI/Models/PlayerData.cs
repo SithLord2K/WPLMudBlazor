@@ -2,7 +2,7 @@
 
 namespace WPLBlazor.API.Models
 {
-    [PrimaryKey(nameof(PlayerId))]
+    [PrimaryKey(nameof(PlayerId), nameof(WeekNumber))]
     public class PlayerData
     {
         public int PlayerId { get; set; }
