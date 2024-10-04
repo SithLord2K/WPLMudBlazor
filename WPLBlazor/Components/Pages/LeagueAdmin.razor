@@ -14,6 +14,8 @@
             <Button Color="Color.Success" Clicked="@ShowTeamModal">Add/Edit Teams</Button>
             &nbsp;
             <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
+            &nbsp;
+            <Button Color="Color.Success" Clicked="@ShowPlayerDataModal">Add/Edit Player Games</Button>
         </CardText>
     </CardBody>
 </Card>
@@ -30,7 +32,6 @@
                 <Field>
                     <Fields>
                         <Field ColumnSize="ColumnSize.IsFull">
-                            <FieldLabel>Select Player</FieldLabel>
                             <Select TValue="int" SelectedValueChanged="@LoadPlayer">
                                 <SelectItem>Select a Player to Edit</SelectItem>
                                 @foreach (var p1 in players)
@@ -91,7 +92,6 @@
                 <Field>
                     <Fields>
                         <Field ColumnSize="ColumnSize.IsFull">
-                            <FieldLabel>Select Team</FieldLabel>
                             <Select TValue="int" SelectedValueChanged="@LoadTeam">
                                 <SelectItem>Select a Team to Edit</SelectItem>
                                 @foreach (var t1 in teams)
@@ -146,7 +146,6 @@
                 <Field>
                     <Fields>
                         <Field ColumnSize="ColumnSize.IsFull">
-                            <FieldLabel>Select Date to Edit</FieldLabel>
                             <FieldBody>
                                 <Select TValue="int" SelectedValueChanged="@LoadSchedule">
                                     <SelectItem>Select Schedule to Edit</SelectItem>
@@ -158,7 +157,7 @@
                             </FieldBody>
                         </Field>
                     </Fields>
-                    <Field>
+                    <Field ColumnSize="ColumnSize.IsFull">
                         <Fields>
                             <FieldLabel>Date</FieldLabel>
                             <FieldBody>
@@ -209,6 +208,72 @@
         </ModalBody>
     </ModalContent>
 </Modal>
+<!--PlayerData Modal-->
+<Modal @ref="modalAddPlayerData">
+    <ModalContent Centered Scrollable>
+        <ModalHeader>
+            <ModalTitle>Add/Edit Player Games</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Form>
+                <Field>
+                    <Field>
+                        <Fields>
+                            <Field ColumnSize="ColumnSize.IsFull">
+                                <Select TValue="int" SelectedValue="@player.Id" SelectedValueChanged="@LoadPlayer">
+                                    <SelectItem>Choose Player To Add Games To</SelectItem>
+                                    @foreach (var p5 in players)
+                                    {
+                                        <SelectItem Value="@p5.Id">@p5.FirstName @p5.LastName</SelectItem>
+                                    }
+                                </Select>
+                            </Field>
+                        </Fields>
+                    </Field>
+                    <Field>
+                        <Fields>
+                            <Field ColumnSize="ColumnSize.IsFull">
+                                <FieldLabel>Player Name:</FieldLabel>
+                                <FieldBody>
+                                    <TextEdit @bind-Text="@player.FirstName" Disabled />
+                                    <NumericPicker @bind-Value="@player.Id" onchanged="@LoadPlayerData(player.Id)" hidden />
+                                </FieldBody>
+                            </Field>
+                        </Fields>
+                    </Field>
+                    <Fields>
+                        <FieldLabel>Week Number:</FieldLabel>
+                        <FieldBody>
+                            <NumericPicker @bind-Value="@playerData.WeekNumber" onchange="@DoesWeekExist()" />
+                        </FieldBody>
+                        <FieldLabel>Games Won:</FieldLabel>
+                        <FieldBody>
+                            <NumericPicker @bind-Value="@playerData.GamesWon" onchange="@GamesPlayedCalc()" />
+                        </FieldBody>
+                        <FieldLabel>Games Lost:</FieldLabel>
+                        <FieldBody>
+                            <NumericPicker @bind-Value="@playerData.GamesLost" onchange="@GamesPlayedCalc()" />
+                        </FieldBody>
+                        <FieldLabel>Games Played:</FieldLabel>
+                        <FieldBody>
+                            <NumericPicker Value="@total" Disabled />
+                        </FieldBody>
+                    </Fields>
+                    <Field></Field>
+                    <Fields>
+                        <Field>
+                            <FieldBody>
+                                <Button Color="Color.Success" Clicked="@AddPlayerDataClicked">Modify Player Games</Button>&nbsp;
+                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                            </FieldBody>
+                        </Field>
+                    </Fields>
+                </Field>
+            </Form>
+        </ModalBody>
+    </ModalContent>
+</Modal>
 <br />
 
 
@@ -218,21 +283,30 @@
     private Modal modalAddPlayer = new();
     private Modal modalAddTeam = new();
     private Modal modalAddSchedule = new();
+    private Modal modalAddPlayerData = new();
 
     private Player player { get; set; } = new();
+    private PlayerData playerData { get; set; } = new();
     private TeamDetails addTeam { get; set; } = new();
     private Schedules schedule { get; set; } = new();
+
     private APIService apiService = new();
+    private PlayerHelpers playerHelper = new();
+
     private List<TeamDetails> teams = [];
     private List<Player> players = [];
     private List<Schedules> schedules = [];
+    private List<PlayerData> pData = [];
+
     private int teamId;
+    private int total;
 
     protected override async Task OnInitializedAsync()
     {
         teams = await apiService.GetTeamDetails();
         players = await apiService.GetAllPlayers();
         schedules = await apiService.GetSchedule();
+        pData = await apiService.GetAllPlayerData();
     }
 
     //Form Tasks
@@ -252,6 +326,18 @@
     {
         await apiService.AddSchedule(schedule);
         await ToastService.Info($"Schedule {addTeam.TeamName} has been added or edited.", "Add/Edit Schedule", BuildToastInstanceOptions);
+    }
+
+    async Task AddPlayerDataClicked()
+    {
+        playerData.GamesPlayed = playerData.GamesWon + playerData.GamesLost;
+        playerData.PlayerId = player.Id;
+        if (playerData.GamesWon != 0)
+        {
+            playerData.Average = Decimal.Round((decimal)playerData.GamesWon / ((decimal)playerData.GamesLost + (decimal)playerData.GamesWon) * 100, 2);
+        }
+        await apiService.SavePlayerData(playerData);
+        await ToastService.Info($"{player.FirstName} {player.LastName}'s Games Updated.", "Add/Edit Schedule", BuildToastInstanceOptions);
     }
 
     //Select Field Tasks
@@ -290,6 +376,11 @@
         schedule = await apiService.GetSingleSchedule(value);
     }
 
+    async Task LoadPlayerData(int value)
+    {
+        playerData = await apiService.GetSinglePlayerData(value);
+    }
+
     //Modal Tasks
     Task ShowPlayerModal()
     {
@@ -306,6 +397,29 @@
         return modalAddSchedule.Show();
     }
 
+    Task ShowPlayerDataModal()
+    {
+        return modalAddPlayerData.Show();
+    }
+
+    //Misc Functions
+
+    Task GamesPlayedCalc()
+    {
+        total = playerData.GamesWon + playerData.GamesLost;
+        return Task.CompletedTask;
+    }
+
+    Task DoesWeekExist()
+    {
+        if (playerData.WeekNumber > 0)
+        {
+            var pid = player.Id;
+            var wid = playerData.WeekNumber;
+            playerData = pData.Where(x => x.WeekNumber == wid && x.PlayerId == pid).FirstOrDefault();
+        }
+        return Task.CompletedTask;
+    }
 
     //Toast Service
     private void BuildToastInstanceOptions(ToastInstanceOptions toastInstanceOptions)
