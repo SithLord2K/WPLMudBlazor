@@ -45,7 +45,6 @@ public partial class WPLStatsDbContext : DbContext
             entity.HasKey(e => e.WeekNumber);
 
             entity.Property(e => e.WeekNumber).ValueGeneratedNever();
-            entity.Property(e => e.DatePlayed).HasColumnType("date");
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
         });
 

@@ -33,15 +33,15 @@ namespace WPLBlazor.API.Controllers
         }
 
         // GET: api/Weeks/5
-        [HttpGet("{id}")]
+        [HttpGet("{Week_Id}")]
         [ResponseCache(Duration = 20, Location = ResponseCacheLocation.Any, NoStore = false)]
-        public async Task<ActionResult<Week>> GetWeek(int id)
+        public async Task<ActionResult<Week>> GetWeek(int Week_Id)
         {
             if (_context.Weeks == null)
             {
                 return NotFound();
             }
-            var week = await _context.Weeks.FindAsync(id);
+            var week = await _context.Weeks.FindAsync(Week_Id);
 
             if (week == null)
             {
@@ -53,10 +53,10 @@ namespace WPLBlazor.API.Controllers
 
         // PUT: api/Weeks/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutWeek(int id, Week week)
+        [HttpPut("{Week_Id}")]
+        public async Task<IActionResult> PutWeek(int Week_Id, Week week)
         {
-            if (id != week.WeekNumber)
+            if (Week_Id != week.WeekNumber)
             {
                 return BadRequest();
             }
@@ -69,7 +69,7 @@ namespace WPLBlazor.API.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!WeekExists(id))
+                if (!WeekExists(Week_Id))
                 {
                     return NotFound();
                 }

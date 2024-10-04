@@ -7,11 +7,10 @@
         public int WeekWin { get; set; }
         public int WeekLoss { get; set; }
         public bool Forfeit { get; set; }
-        public bool WeekWon { get; set; }
-        public int WeeksPlayed { get; set; }
+        public bool Playoff { get; set; }
         public decimal WeeksAverage { get; set; }
-        public int TeamPlayed { get; set; }
-        public bool Home { get; set; }
-        public DateTime DatePlayed { get; set; }
+        public int Home_Team { get; set; }
+        public int Away_Team { get; set; }
+        public bool Home_Won { get; set; }
     }
 }

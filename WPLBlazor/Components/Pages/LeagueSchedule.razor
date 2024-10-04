@@ -30,20 +30,25 @@ else
                                <th colspan="4"><center>Week: @day.Week_Id</center></th>
                             </tr>
                             <tr>
-                                <th width="25%"><center>Home Team</center></th>
-                                <th width="25%" />
-                                <th width="25%"><center>Away Team</center></th>
-                                <th width="25%"><center>Table #</center></th>
+                                <th width="16%">Win</th>
+                                <th width="16%"><center>Home Team</center></th>
+                                <th width="16%" />
+                                <th width="16%"><center>Away Team</center></th>
+                                <th width="16%">Win</th>
+                                <th width="16%"><center>Table #</center></th>
                             </tr>
                         </thead>
                         @foreach (var d in schedules.Where(x => x.Date == day.Date))
                         {
                             <tbody>
                                 <tr>
+                                    <td><Check Checked="@HomeWinChecked(d.Week_Id, d.Home_Team).Result" Disabled /></td>
                                     <td><center>@teams.Where(x => x.Id == d.Home_Team).FirstOrDefault().TeamName</center></td>
                                     <td><center>vs</center></td>
                                     <td><center>@teams.Where(x => x.Id == d.Away_Team).FirstOrDefault().TeamName</center></td>
+                                    <td><Check Checked="@AwayWinChecked(d.Week_Id, d.Away_Team).Result" Disabled /></td>
                                     <td><center>@d.Table_Number</center></td>
+                                    
                                 </tr>
                             </tbody>
                         }
@@ -59,12 +64,53 @@ else
 
     private APIService aPIService = new();
     private RosterHelper RosterHelper = new();
+    private TeamHelper teamHelper = new();
+    private WeekHelper weekHelper = new();
     private List<Schedules> schedules = [];
     private List<TeamDetails> teams = [];
+    private List<TeamStats> teamStats = [];
+    private List<WeekFullInfo> weeks = [];
+    private WeekFullInfo homeWeek = new();
 
     protected override async Task OnInitializedAsync()
     {
         teams = await aPIService.GetTeamDetails();
         schedules = await RosterHelper.GetSchedules();
+        teamStats = await teamHelper.GetAllTeamStats();
+        weeks = await weekHelper.GetFullWeek();
+    }
+
+    async Task<bool> HomeWinChecked(int WeekId, int HomeId)
+    {
+        homeWeek = weeks.Where(x => x.WeekNumber == WeekId && x.Home_Team == HomeId).FirstOrDefault();
+        if(homeWeek == null)
+        {
+            return false;
+        }
+        if (homeWeek.Home_Won)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    async Task<bool> AwayWinChecked(int WeekId, int HomeId)
+    {
+        homeWeek = weeks.Where(x => x.WeekNumber == WeekId && x.Away_Team == HomeId).FirstOrDefault();
+        if (homeWeek == null)
+        {
+            return false;
+        }
+        if (!homeWeek.Home_Won)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

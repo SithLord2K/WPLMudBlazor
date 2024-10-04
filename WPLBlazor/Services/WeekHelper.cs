@@ -34,10 +34,11 @@ namespace WPLBlazor.Services
                     GamesWon = playerInfo.Where(w => w.WeekNumber == week.WeekNumber).Sum(g => g.GamesWon),
                     GamesLost = playerInfo.Where(w => w.WeekNumber == week.WeekNumber).Sum(g => g.GamesLost),
                     WeekNumber = week.WeekNumber,
-                    WeekWon = week.WeekWon,
-                    TeamName = whatTeam.FirstOrDefault(td => td.Id == week.TeamPlayed).TeamName,
-                    DatePlayed = week.DatePlayed.ToString("MMM. dd yyyy"),
-                    Home = week.Home
+                    Home_Team = week.Home_Team,
+                    Away_Team = week.Away_Team,
+                    Home_TeamName = whatTeam.FirstOrDefault(td => td.Id == week.Home_Team).TeamName,
+                    Away_TeamName = whatTeam.FirstOrDefault(td => td.Id == week.Away_Team).TeamName,
+                    Home_Won = week.Home_Won
 
                 };
                 if (week.WeekNumber > 18)
