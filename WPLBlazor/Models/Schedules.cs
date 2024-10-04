@@ -1,7 +1,10 @@
-﻿namespace WPLBlazor.Models
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace WPLBlazor.Models
 {
     public class Schedules
     {
+        public int Id { get; set; }
         public int Week_Id { get; set; }
         public DateOnly Date { get; set; }
         public int Home_Team { get; set; }

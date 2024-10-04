@@ -6,35 +6,315 @@
 <br />
 <Card>
     <CardBody>
-        <CardTitle Size="3">
-            Add Schedule Information
-        </CardTitle>
+        <CardTitle Size="3">Admin Functions</CardTitle>
         <CardText>
-            <EditForm Model="schedule" OnSubmit="SaveSchedule" FormName="AddSchedule">
-                <br />
-                Week Number: <InputNumber @bind-Value="schedule.Week_Id" /> @schedule.Week_Id
-                <br />
-                Date: <InputDate @bind-Value="schedule.Date" /> @schedule.Date
-                <br />
-                Home Team: <InputNumber @bind-Value="schedule.Home_Team" /> @schedule.Home_Team
-                <br />
-                Away Team: <InputNumber @bind-Value="schedule.Away_Team" /> @schedule.Away_Team
-                <br />
-                Table Number: <InputNumber @bind-Value="schedule.Table_Number" /> @schedule.Table_Number
-                <br />
-                <button type="submit">Save</button>
-            </EditForm>
+            <Divider />
+            <Button Color="Color.Success" Clicked="@ShowPlayerModal">Add/Edit Players</Button>
+            &nbsp;
+            <Button Color="Color.Success" Clicked="@ShowTeamModal">Add/Edit Teams</Button>
+            &nbsp;
+            <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
         </CardText>
     </CardBody>
 </Card>
+<br />
+<!--Player Edit Modal-->
+<Modal @ref="modalAddPlayer">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Add/Edit Player</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Form>
+                <Field>
+                    <Fields>
+                        <Field ColumnSize="ColumnSize.IsFull">
+                            <FieldLabel>Select Player</FieldLabel>
+                            <Select TValue="int" SelectedValueChanged="@LoadPlayer">
+                                <SelectItem>Select a Player to Edit</SelectItem>
+                                @foreach (var p1 in players)
+                                {
+                                    <SelectItem Value="@p1.Id">@p1.FirstName @p1.LastName</SelectItem>
+                                }
+                            </Select>
+                        </Field>
+                    </Fields>
+                </Field>
+                <Field>
+                    <Fields>
+                        <Field ColumnSize="ColumnSize.IsHalf">
+                            <FieldLabel>First Name:</FieldLabel>
+                            <FieldBody><TextEdit @bind-Text="@player.FirstName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                        </Field>
+                        <Field>
+                            <FieldLabel ColumnSize="ColumnSize.IsHalf">Last Name:</FieldLabel>
+                            <FieldBody><TextEdit @bind-Text="@player.LastName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                        </Field>
+                    </Fields>
+                    <Fields>
+                        <Field>
+                            <FieldLabel>Team:</FieldLabel>
+                            <FieldBody>
+                                <Select TValue="int" SelectedValue="@player.TeamId" SelectedValueChanged="@PlayerTeamSelected">
+                                    <SelectItem>Select A Team</SelectItem>
+                                    @foreach (var t in teams)
+                                    {
+                                        <SelectItem Value="@t.Id">@t.TeamName</SelectItem>
+                                    }
+                                </Select>
+                            </FieldBody>
+                        </Field>
+                    </Fields>
+                    <Fields>
+                        <Field>
+                            <FieldBody>
+                                <Button Color="Color.Success" Clicked="@AddPlayerClicked">Add Player</Button>&nbsp;
+                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                            </FieldBody>
+                        </Field>
+                    </Fields>
+                </Field>
+            </Form>
+        </ModalBody>
+    </ModalContent>
+</Modal>
+<!--Team Edit Modal-->
+<Modal @ref="modalAddTeam">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Add/Edit Teams</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Form>
+                <Field>
+                    <Fields>
+                        <Field ColumnSize="ColumnSize.IsFull">
+                            <FieldLabel>Select Team</FieldLabel>
+                            <Select TValue="int" SelectedValueChanged="@LoadTeam">
+                                <SelectItem>Select a Team to Edit</SelectItem>
+                                @foreach (var t1 in teams)
+                                {
+                                    <SelectItem Value="@t1.Id">@t1.TeamName</SelectItem>
+                                }
+                            </Select>
+                        </Field>
+                    </Fields>
+                </Field>
+                <Field>
+                    <Fields>
+                        <Field ColumnSize="ColumnSize.IsHalf">
+                            <FieldLabel>Team Name:</FieldLabel>
+                            <FieldBody><TextEdit @bind-Text="@addTeam.TeamName" /></FieldBody>
+                        </Field>
+                        <Field ColumnSize="ColumnSize.IsHalf">
+                            <FieldLabel>Team:</FieldLabel>
+                            <FieldBody>
+                                <Select TValue="int" SelectedValue="@addTeam.Captain_Player_Id" SelectedValueChanged="@TeamCaptainSelected">
+                                    <SelectItem>Select A Captain</SelectItem>
+                                    @foreach (var p in players)
+                                    {
+                                        <SelectItem Value="@p.Id">@p.FirstName @p.LastName</SelectItem>
+                                    }
+                                </Select>
+                            </FieldBody>
+                        </Field>
+                    </Fields>
+                    <Fields>
+                        <Field>
+                            <FieldBody>
+                                <Button Color="Color.Success" Clicked="@AddTeamClicked">Add Team</Button>&nbsp;
+                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                            </FieldBody>
+                        </Field>
+                    </Fields>
+                </Field>
+            </Form>
+        </ModalBody>
+    </ModalContent>
+</Modal>
+<!--Schedule Modal-->
+<Modal @ref="modalAddSchedule">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Add/Edit Schedule</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <Form>
+                <Field>
+                    <Fields>
+                        <Field ColumnSize="ColumnSize.IsFull">
+                            <FieldLabel>Select Date to Edit</FieldLabel>
+                            <FieldBody>
+                                <Select TValue="int" SelectedValueChanged="@LoadSchedule">
+                                    <SelectItem>Select Schedule to Edit</SelectItem>
+                                    @foreach (var s in schedules)
+                                    {
+                                        <SelectItem Value="@s.Id">Week @s.Week_Id, Date: @s.Date, Home Team: @teams.Where(x => x.Id == s.Home_Team).FirstOrDefault().TeamName, Away Team: @teams.Where(x => x.Id == s.Away_Team).FirstOrDefault().TeamName </SelectItem>
+                                    }
+                                </Select>
+                            </FieldBody>
+                        </Field>
+                    </Fields>
+                    <Field>
+                        <Fields>
+                            <FieldLabel>Date</FieldLabel>
+                            <FieldBody>
+                                <DateEdit @bind-Date="@schedule.Date" />
+                            </FieldBody>
+                        </Fields>
+                    </Field>
+                    <Field>
+                        <Fields>
+                            <FieldLabel>Home Team</FieldLabel>
+                            <FieldBody>
+                                <Select TValue="int" SelectedValue="@schedule.Home_Team">
+                                    <SelectItem> Select Home Team</SelectItem>
+                                    @foreach (var t3 in teams)
+                                    {
+                                        <SelectItem Value="@t3.Id">@t3.TeamName</SelectItem>
+                                    }
+                                </Select>
+                            </FieldBody>
+                        </Fields>
+                    </Field>
+                    <Field>
+                        <Fields>
+                            <FieldLabel>Away Team</FieldLabel>
+                            <FieldBody>
+                                <Select TValue="int" SelectedValue="@schedule.Away_Team">
+                                    <SelectItem> Select Away Team</SelectItem>
+                                    @foreach (var t4 in teams)
+                                    {
+                                        <SelectItem Value="@t4.Id">@t4.TeamName</SelectItem>
+                                    }
+                                </Select>
+                            </FieldBody>
+                        </Fields>
+                    </Field>
+                    <Field>
+                        <Fields>
+                            <Field>
+                                <FieldBody>
+                                    <Button Color="Color.Success" Clicked="@AddScheduleClicked">Add Team</Button>&nbsp;
+                                    <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                                </FieldBody>
+                            </Field>
+                        </Fields>
+                    </Field>
+                </Field>
+            </Form>
+        </ModalBody>
+    </ModalContent>
+</Modal>
+<br />
 
 
 @code {
+    [Inject] private IToastService ToastService { get; set; }
 
-    [SupplyParameterFromForm]
-    Schedules schedule { get; set; } = new();
+    private Modal modalAddPlayer = new();
+    private Modal modalAddTeam = new();
+    private Modal modalAddSchedule = new();
 
-    private APIService aPIService = new();
+    private Player player { get; set; } = new();
+    private TeamDetails addTeam { get; set; } = new();
+    private Schedules schedule { get; set; } = new();
+    private APIService apiService = new();
+    private List<TeamDetails> teams = [];
+    private List<Player> players = [];
+    private List<Schedules> schedules = [];
+    private int teamId;
 
-    private void SaveSchedule() => aPIService.AddSchedule(schedule);
+    protected override async Task OnInitializedAsync()
+    {
+        teams = await apiService.GetTeamDetails();
+        players = await apiService.GetAllPlayers();
+        schedules = await apiService.GetSchedule();
+    }
+
+    //Form Tasks
+    private async Task AddPlayerClicked()
+    {
+        await apiService.AddPlayer(player);
+        await ToastService.Info($"Player {player.FirstName} {player.LastName} has been added or edited.", "Add/Edit Player", BuildToastInstanceOptions);
+    }
+
+    async Task AddTeamClicked()
+    {
+        await apiService.AddTeam(addTeam);
+        await ToastService.Info($"Team {addTeam.TeamName} has been added or edited.", "Add/Edit Team", BuildToastInstanceOptions);
+    }
+
+    async Task AddScheduleClicked()
+    {
+        await apiService.AddSchedule(schedule);
+        await ToastService.Info($"Schedule {addTeam.TeamName} has been added or edited.", "Add/Edit Schedule", BuildToastInstanceOptions);
+    }
+
+    //Select Field Tasks
+    Task PlayerTeamSelected(int value)
+    {
+        player.TeamId = value;
+        return Task.CompletedTask;
+    }
+
+    Task ScheduleSelected(DateOnly value)
+    {
+        schedule.Date = value;
+        return Task.CompletedTask;
+    }
+
+    Task TeamCaptainSelected(int value)
+    {
+        addTeam.Captain_Player_Id = value;
+        return Task.CompletedTask;
+    }
+
+    //Load Items
+    async Task LoadPlayer(int value)
+    {
+        player = await apiService.GetSinglePlayer(value);
+
+    }
+
+    async Task LoadTeam(int value)
+    {
+        addTeam = await apiService.GetSingleTeam(value);
+    }
+
+    async Task LoadSchedule(int value)
+    {
+        schedule = await apiService.GetSingleSchedule(value);
+    }
+
+    //Modal Tasks
+    Task ShowPlayerModal()
+    {
+        return modalAddPlayer.Show();
+    }
+
+    Task ShowTeamModal()
+    {
+        return modalAddTeam.Show();
+    }
+
+    Task ShowScheduleModal()
+    {
+        return modalAddSchedule.Show();
+    }
+
+
+    //Toast Service
+    private void BuildToastInstanceOptions(ToastInstanceOptions toastInstanceOptions)
+    {
+        toastInstanceOptions.Animated = true;
+        toastInstanceOptions.AnimationDuration = 300;
+        toastInstanceOptions.Autohide = true;
+        toastInstanceOptions.AutohideDelay = 3000;
+    }
+
+
 }

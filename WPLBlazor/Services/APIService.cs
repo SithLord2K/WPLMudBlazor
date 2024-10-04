@@ -44,6 +44,17 @@ namespace WPLBlazor.Services
         }
 
         //Player Tasks
+        public async Task AddPlayer(Player player)
+        {
+            Uri uri = new("https://wileysoft.codersden.com/api_v2/Players");
+            HttpRequestMessage message = new(HttpMethod.Post, uri)
+            {
+                Content = JsonContent.Create<Player>(player)
+            };
+            string testing = message.Content.ToString();
+            _ = await client.SendAsync(message);
+        }
+
         public Task<List<Player>> GetAllPlayers() =>
             GetAsync<List<Player>>($"/api_v2/Players", "getallplayers_v2", 30, true);
 
@@ -72,7 +83,6 @@ namespace WPLBlazor.Services
             {
                 Content = JsonContent.Create<PlayerData>(playerData)
             };
-            Barrel.Current.EmptyAll();
             _ = await client.SendAsync(message);
         }
 
@@ -86,7 +96,6 @@ namespace WPLBlazor.Services
             {
                 Content = JsonContent.Create<Weeks>(weeks)
             };
-            Barrel.Current.EmptyAll();
             _ = await client.SendAsync(message);
         }
         public Task RemoveWeeks(int id)
@@ -104,9 +113,23 @@ namespace WPLBlazor.Services
         public Task<TeamDetails> GetSingleTeam(int id) =>
           GetAsync<TeamDetails>($"/api_v2/TeamDetails/{id}", "getsingleteam_v2", 30, true);
 
+        public async Task AddTeam(TeamDetails team)
+        {
+            Uri uri = new("https://wileysoft.codersden.com/api_v2/TeamDetails");
+            HttpRequestMessage message = new(HttpMethod.Post, uri)
+            {
+                Content = JsonContent.Create<TeamDetails>(team)
+            };
+            _ = await client.SendAsync(message);
+
+        }
+
         //Schedule Tasks
         public Task<List<Schedules>> GetSchedule() =>
             GetAsync<List<Schedules>>($"/api_v2/Schedule", "getschedule_v2", 30, true);
+
+        public Task<Schedules> GetSingleSchedule(int Id) =>
+            GetAsync<Schedules>($"/api_v2/Schedule/{Id}", "getsingleschedule_v2", 30, true);
 
         public async Task AddSchedule(Schedules schedule) 
         {
@@ -115,7 +138,6 @@ namespace WPLBlazor.Services
             {
                 Content = JsonContent.Create<Schedules>(schedule)
             };
-            Barrel.Current.EmptyAll();
             _ = await client.SendAsync(message);
         }
     }

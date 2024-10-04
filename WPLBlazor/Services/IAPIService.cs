@@ -8,6 +8,7 @@ namespace WPLBlazor.Services
         //Players
         Task<List<Player>> GetAllPlayers();
         Task<Player> GetSinglePlayer(int id);
+        Task AddPlayer(Player player);
         Task SavePlayer(PlayerData player);
         Task DeletePlayer(int id);
 
@@ -26,9 +27,11 @@ namespace WPLBlazor.Services
         //TeamDetails
         Task<List<TeamDetails>> GetTeamDetails();
         Task<TeamDetails> GetSingleTeam(int Id);
+        Task AddTeam(TeamDetails team);
 
         //Schedule
         Task<List<Schedules>> GetSchedule();
+        Task<Schedules> GetSingleSchedule(int Id);
         Task AddSchedule(Schedules schedule);
     }
 }

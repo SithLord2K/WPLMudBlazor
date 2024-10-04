@@ -4,7 +4,6 @@
 @using Microsoft.AspNetCore.WebUtilities
 @using Microsoft.AspNetCore.Components.Routing
 @using Roster = WPLBlazor.Models.Roster
-@inject NavigationManager NavManager
 
 
 <PageTitle>Team Rosters</PageTitle>
@@ -29,18 +28,17 @@ else
                         <tbody>
                             <tr>
                                 <th widht="33%">Player Name</th>
-                                 <!--<th width="25%">Average</th>-->
-                                <th width="33%"></th>
+                                <th width="33%">Games Played</th>
                                 <th width="33%">Captain?</th>
                             </tr>
                             @foreach (var roster in rosters.Where(x => x.TeamId == team.Id))
                             {
-                            <tr>
-                                <td><a href="/player_detail/@roster.Player_Id">@roster.Player_Name</a></td>
-                                    <!--<td>average_placeholder</td>-->
-                                    <td></td>
-                                @if (roster.Player_Id == roster.Captain_Player_Id)
-                                            {
+                                
+                                <tr>
+                                    <td><a href="/player_detail/@roster.Player_Id">@roster.Player_Name</a></td>
+                                    <td>@players.Where(x => x.Id == roster.Player_Id).FirstOrDefault().GamesPlayed</td>
+                                    @if (roster.Player_Id == roster.Captain_Player_Id)
+                                    {
                                         <td><Icon Name="IconName.Check" /></td>
                                     }
                                     else
@@ -50,7 +48,6 @@ else
 
                                 </tr>
                             }
-
                         </tbody>
                     </table>
                 </CardText>
@@ -63,18 +60,19 @@ else
 }
 
 @code {
-    
+
     private APIService aPIService = new();
-    private RosterHelper RosterHelper = new();
-    private List<Player> players = [];
+    private RosterHelper rosterHelper = new();
+    private PlayerHelpers playerHelpers = new();
+
+    private List<Players> players = [];
     private List<TeamDetails> teams = [];
     private List<Roster> rosters = [];
 
     protected override async Task OnInitializedAsync()
     {
+        players = await playerHelpers.ConsolidatePlayer();
         teams = await aPIService.GetTeamDetails();
-        rosters = await RosterHelper.GetRoster();
+        rosters = await rosterHelper.GetRoster();
     }
-    
-
 }

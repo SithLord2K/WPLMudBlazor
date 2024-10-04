@@ -23,17 +23,20 @@ namespace WPLBlazor.Services
                     List<PlayerData> getPlayerData = [];
                     getPlayerData = await aPIService.GetPlayerData(item.Id);
 
-                    if (getPlayerData.Count != 0)
+                    if (item.FirstName != string.Empty)
                     {
-                        playerTotals.Id = getPlayerData.FirstOrDefault().PlayerId;
+                        playerTotals.Id = item.Id;
                         playerTotals.TeamId = item.TeamId;
                         playerTotals.FirstName = item.FirstName;
                         playerTotals.LastName = item.LastName;
-                        playerTotals.GamesWon = getPlayerData.Sum(x => x.GamesWon);
-                        playerTotals.GamesLost = getPlayerData.Sum(y => y.GamesLost);
-                        playerTotals.GamesPlayed = playerTotals.GamesWon + playerTotals.GamesLost;
-                        playerTotals.Average = Decimal.Round(((decimal)playerTotals.GamesWon / (decimal)playerTotals.GamesPlayed) * 100, 2);
-                        playerTotals.WeekNumber = getPlayerData.Count;
+                        if (getPlayerData.Count != 0)
+                        {
+                            playerTotals.GamesWon = getPlayerData.Sum(x => x.GamesWon);
+                            playerTotals.GamesLost = getPlayerData.Sum(y => y.GamesLost);
+                            playerTotals.GamesPlayed = playerTotals.GamesWon + playerTotals.GamesLost;
+                            playerTotals.Average = Decimal.Round(((decimal)playerTotals.GamesWon / (decimal)playerTotals.GamesPlayed) * 100, 2);
+                            playerTotals.WeekNumber = getPlayerData.Count;
+                        }
                     }
                     pList.Add(playerTotals);
                 }

@@ -28,7 +28,7 @@ else
                         <th>Average</th>
                     </tr>
                 </thead>
-                @foreach (var teamStat in teamStats)
+                @foreach (var teamStat in teamStats.OrderByDescending(x => x.TotalAverage).Where(y => y.TotalGamesPlayed > 0))
                 {
                     <tbody>
                         <tr>

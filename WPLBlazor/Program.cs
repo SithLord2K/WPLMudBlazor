@@ -3,7 +3,7 @@ using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
 using Microsoft.EntityFrameworkCore;
-using Auth0.AspNetCore.Authentication;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,11 +13,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 //Add Authentication Services
-builder.Services.AddAuth0WebAppAuthentication(options =>
-{
-    options.Domain = builder.Configuration["Auth0:Domain"];
-    options.ClientId = builder.Configuration["Auth0:ClientId"];
-});
+
+
 builder.Services.AddControllersWithViews();
 // Add services to the container.
 builder.Services
@@ -45,8 +42,7 @@ if (!app.Environment.IsDevelopment())
 app.UseRouting();
 
 //Authentication
-app.UseAuthentication();
-app.UseAuthorization();
+
 
 app.UseHttpsRedirection();
 

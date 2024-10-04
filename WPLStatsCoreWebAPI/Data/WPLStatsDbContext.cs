@@ -60,9 +60,9 @@ public partial class WPLStatsDbContext : DbContext
 
         modelBuilder.Entity<Schedule>(entity =>
         {
+            entity.HasKey(e => e.Id);
             entity.Property(e => e.Week_Id).HasColumnType("integer");
             entity.Property(e => e.Date).HasColumnType("date");
-            entity.HasNoKey();
         });
 
         OnModelCreatingPartial(modelBuilder);
