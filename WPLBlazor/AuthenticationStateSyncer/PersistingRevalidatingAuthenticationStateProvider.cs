@@ -74,6 +74,7 @@ namespace WPLBlazor.AuthenticationStateSyncer.PersistingRevalidatingAuthenticati
                 var userId = principal.FindFirst(_options.ClaimsIdentity.UserIdClaimType)?.Value;
                 var name = principal.FindFirst("name")?.Value;
                 var email = principal.FindFirst("email")?.Value;
+                var role = principal.FindFirst(_options.ClaimsIdentity.RoleClaimType)?.Value;
 
                 if (userId != null && name != null)
                 {
@@ -81,7 +82,8 @@ namespace WPLBlazor.AuthenticationStateSyncer.PersistingRevalidatingAuthenticati
                     {
                         UserId = userId,
                         Name = name,
-                        Email = email
+                        Email = email,
+                        Role = role
                     });
                 }
             }

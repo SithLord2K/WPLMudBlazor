@@ -50,9 +50,11 @@ public partial class WPLStatsDbContext : DbContext
 
         modelBuilder.Entity<PlayerData>(entity =>
         {
-            entity.HasKey(e => e.PlayerId);
+            entity.HasKey(e => e.ID);
+            entity.Property(e => e.PlayerId);
             entity.Property(e => e.GamesWon);
             entity.Property(e => e.GamesLost);
+            entity.Property(e => e.GamesPlayed);
             entity.Property(e => e.WeekNumber);
             
         });

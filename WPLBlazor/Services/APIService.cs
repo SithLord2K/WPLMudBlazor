@@ -1,18 +1,27 @@
-﻿using MonkeyCache.FileStore;
+﻿using Blazorise;
+using Microsoft.AspNetCore.Components;
+using MonkeyCache.FileStore;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using WPLBlazor.Models;
+using Blazorise.Components;
 
 namespace WPLBlazor.Services
 {
     public class APIService : IAPIService
     {
+        
         private static HttpClient? client;
 
         static readonly string BaseURL = "https://wileysoft.codersden.com";
         public APIService()
         {
+#if DEBUG
+            //Barrel.Current.EmptyAll();
+            
+#endif
+
             client = new HttpClient
             {
                 BaseAddress = new Uri(BaseURL),
@@ -30,7 +39,6 @@ namespace WPLBlazor.Services
                 {
                     //await Shell.Current.DisplayAlert("URL Used:", url, "OK");
                     json = await client.GetStringAsync(url);
-
                     //Barrel.Current.Add(key, json, TimeSpan.FromMinutes(mins));
                 }
                 var data = JsonConvert.DeserializeObject<T>(json);
@@ -96,7 +104,7 @@ namespace WPLBlazor.Services
             {
                 Content = JsonContent.Create<Weeks>(weeks)
             };
-            _ = await client.SendAsync(message);
+            await client.SendAsync(message);
         }
         public Task RemoveWeeks(int id)
         {

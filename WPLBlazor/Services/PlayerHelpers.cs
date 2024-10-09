@@ -33,8 +33,11 @@ namespace WPLBlazor.Services
                         {
                             playerTotals.GamesWon = getPlayerData.Sum(x => x.GamesWon);
                             playerTotals.GamesLost = getPlayerData.Sum(y => y.GamesLost);
-                            playerTotals.GamesPlayed = playerTotals.GamesWon + playerTotals.GamesLost;
-                            playerTotals.Average = Decimal.Round(((decimal)playerTotals.GamesWon / (decimal)playerTotals.GamesPlayed) * 100, 2);
+                            playerTotals.GamesPlayed = getPlayerData.Sum(z => z.GamesPlayed);
+                            if (playerTotals.GamesWon != 0 && playerTotals.GamesPlayed != 0)
+                            {
+                                playerTotals.Average = Decimal.Round(((decimal)playerTotals.GamesWon / (decimal)playerTotals.GamesPlayed) * 100, 2);
+                            }
                             playerTotals.WeekNumber = getPlayerData.Count;
                         }
                     }
@@ -57,8 +60,11 @@ namespace WPLBlazor.Services
                 playerTotals.LastName = playerInfo.LastName;
                 playerTotals.GamesWon = getPlayerData.Sum(gw => gw.GamesWon);
                 playerTotals.GamesLost = getPlayerData.Sum(y => y.GamesLost);
-                playerTotals.GamesPlayed = playerTotals.GamesWon + playerTotals.GamesLost;
-                playerTotals.Average = Decimal.Round(((decimal)playerTotals.GamesWon / (decimal)playerTotals.GamesPlayed) * 100, 2);
+                playerTotals.GamesPlayed = getPlayerData.Sum(y => y.GamesPlayed);
+                if (playerTotals.GamesWon != 0 && playerTotals.GamesPlayed != 0)
+                {
+                    playerTotals.Average = Decimal.Round(((decimal)playerTotals.GamesWon / (decimal)playerTotals.GamesPlayed) * 100, 2);
+                }
                 playerTotals.WeekNumber = getPlayerData.Count;
             }
 

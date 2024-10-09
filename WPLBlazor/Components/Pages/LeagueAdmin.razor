@@ -5,7 +5,8 @@
 <h1>AdminPanel</h1>
 <br />
 <p>Hello @Username!</p>
-<br />
+<p>Email: @Email</p>
+<p>Roles: @Roles</p>
 <AuthorizeView Roles="League_Admin, Super_User">
     <Card>
         <CardBody>
@@ -41,12 +42,29 @@
         </CardBody>
     </Card>
 </AuthorizeView>
+<AuthorizeView Roles="Captain, Super_User">
+    <Card>
+        <CardBody>
+            <CardTitle Size="3">Captain Functions</CardTitle>
+            <CardText>
+                <Divider />
+                <Button Color="Color.Success" Clicked="@ShowPlayerModal">Add/Edit Players</Button>
+                &nbsp;
+                <Button Color="Color.Success" Clicked="@ShowTeamModal">Add/Edit Teams</Button>
+                &nbsp;
+                <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
+                &nbsp;
+                <Button Color="Color.Success" Clicked="@ShowPlayerDataModal">Add/Edit Player Games</Button>
+            </CardText>
+        </CardBody>
+    </Card>
+</AuthorizeView>
 <!--Player Edit Modal-->
 <Modal @ref="modalAddPlayer">
     <ModalContent Centered>
         <ModalHeader>
             <ModalTitle>Add/Edit Player</ModalTitle>
-            <CloseButton />
+            <CloseButton AutoClose="true" />
         </ModalHeader>
         <ModalBody>
             <Form>
@@ -106,20 +124,27 @@
     <ModalContent Centered>
         <ModalHeader>
             <ModalTitle>Add/Edit Teams</ModalTitle>
-            <CloseButton />
+            <CloseButton AutoClose="true" />
         </ModalHeader>
         <ModalBody>
             <Form>
                 <Field>
                     <Fields>
                         <Field ColumnSize="ColumnSize.IsFull">
-                            <Select TValue="int" SelectedValueChanged="@LoadTeam">
-                                <SelectItem>Select a Team to Edit</SelectItem>
+                            @*<Select TValue="int" SelectedValueChanged="@LoadTeam">
+                                <SelectItem Value="0">Select a Team to Edit</SelectItem>
                                 @foreach (var t1 in teams)
                                 {
                                     <SelectItem Value="@t1.Id">@t1.TeamName</SelectItem>
                                 }
-                            </Select>
+                            </Select> *@
+                            <DropdownList TItem="TeamDetails" TValue="int" 
+                                          Data="@teams" 
+                                          TextField="@((item)=>item.TeamName)"
+                                          ValueField="@((item)=>item.Id)"
+                                          SelectedValueChanged="@LoadTeam">
+                                Select Team to Edit
+                            </DropdownList>
                         </Field>
                     </Fields>
                 </Field>
@@ -130,7 +155,7 @@
                             <FieldBody><TextEdit @bind-Text="@addTeam.TeamName" /></FieldBody>
                         </Field>
                         <Field ColumnSize="ColumnSize.IsHalf">
-                            <FieldLabel>Team:</FieldLabel>
+                            <FieldLabel>Team Captain:</FieldLabel>
                             <FieldBody>
                                 <Select TValue="int" SelectedValue="@addTeam.Captain_Player_Id" SelectedValueChanged="@TeamCaptainSelected">
                                     <SelectItem>Select A Captain</SelectItem>
@@ -160,7 +185,7 @@
     <ModalContent Centered>
         <ModalHeader>
             <ModalTitle>Add/Edit Schedule</ModalTitle>
-            <CloseButton />
+            <CloseButton AutoClose="true" />
         </ModalHeader>
         <ModalBody>
             <Form>
@@ -234,7 +259,7 @@
     <ModalContent Centered Scrollable>
         <ModalHeader>
             <ModalTitle>Add/Edit Player Games</ModalTitle>
-            <CloseButton />
+            <CloseButton AutoClose="true" />
         </ModalHeader>
         <ModalBody>
             <Form>
@@ -266,7 +291,7 @@
                     <Fields>
                         <FieldLabel>Week Number:</FieldLabel>
                         <FieldBody>
-                            <NumericPicker @bind-Value="@playerData.WeekNumber" onchange="@DoesWeekExist()" />
+                            <NumericPicker @bind-Value="@playerData.WeekNumber" onclick="@DoesWeekExist()" />
                         </FieldBody>
                         <FieldLabel>Games Won:</FieldLabel>
                         <FieldBody>
@@ -295,45 +320,146 @@
         </ModalBody>
     </ModalContent>
 </Modal>
+<!--Assign Roles-->
+<Modal @ref="modalAssignRoles">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>Assign Roles</ModalTitle>
+            <CloseButton AutoClose="true" />
+        </ModalHeader>
+        <ModalBody>
+            <Form>
+                <Field>
+                    <Fields>
+                        <Field ColumnSize="ColumnSize.IsFull">
+                            <Select TValue="int">
+                                <SelectItem>Select a Player to Edit</SelectItem>
+                                @foreach (var p1 in players)
+                                {
+                                    <SelectItem Value="@p1.Id">@p1.FirstName @p1.LastName</SelectItem>
+                                }
+                            </Select>
+                        </Field>
+                    </Fields>
+                </Field>
+                <Field>
+                    <Fields>
+                        <Field ColumnSize="ColumnSize.IsHalf">
+                            <FieldLabel>First Name:</FieldLabel>
+                            <FieldBody><TextEdit @bind-Text="@player.FirstName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                        </Field>
+                        <Field>
+                            <FieldLabel ColumnSize="ColumnSize.IsHalf">Last Name:</FieldLabel>
+                            <FieldBody><TextEdit @bind-Text="@player.LastName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                        </Field>
+                    </Fields>
+                    <Fields>
+                        <Field>
+                            <FieldLabel>Team:</FieldLabel>
+                            <FieldBody>
+                                <Select TValue="int" SelectedValue="@player.TeamId" SelectedValueChanged="@PlayerTeamSelected">
+                                    <SelectItem>Select A Team</SelectItem>
+                                    @foreach (var t in teams)
+                                    {
+                                        <SelectItem Value="@t.Id">@t.TeamName</SelectItem>
+                                    }
+                                </Select>
+                            </FieldBody>
+                        </Field>
+                    </Fields>
+                    <Fields>
+                        <Field>
+                            <FieldBody>
+                                <Button Color="Color.Success" Clicked="@AddPlayerClicked">Add Player</Button>&nbsp;
+                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                            </FieldBody>
+                        </Field>
+                    </Fields>
+                </Field>
+            </Form>
+        </ModalBody>
+    </ModalContent>
+</Modal>
 <br />
+<!--Toaster-->
+<Toaster>
+    <Toast @bind-Visible="@toastVisible">
+        <ToastHeader>
+            <Strong Margin="Margin.IsAuto.FromEnd">@toastTitle</Strong>
+            <CloseButton />
+        </ToastHeader>
+        <ToastBody>
+            @toastMessage
+        </ToastBody>
+    </Toast>
+</Toaster>
 
 
 @code {
     [Inject] private IToastService ToastService { get; set; }
+    private IEnumerable<TeamDetails> TeamData;
 
+    //Modals
     private Modal modalAddPlayer = new();
     private Modal modalAddTeam = new();
     private Modal modalAddSchedule = new();
     private Modal modalAddPlayerData = new();
+    private Modal modalAssignRoles = new();
 
+    //Properties
     private Player player { get; set; } = new();
     private PlayerData playerData { get; set; } = new();
     private TeamDetails addTeam { get; set; } = new();
     private Schedules schedule { get; set; } = new();
+    private int selectedTeam { get; set; } = new();
 
+    //Services
     private APIService apiService = new();
     private PlayerHelpers playerHelper = new();
+    private Auth0API auth0API = new();
 
+    //Lists
     private List<TeamDetails> teams = [];
     private List<Player> players = [];
     private List<Schedules> schedules = [];
     private List<PlayerData> pData = [];
 
+    //Variables
     private int total;
+    private bool toastVisible = false;
+    private string toastMessage = "";
+    private string @toastTitle = "";
 
     protected override async Task OnInitializedAsync()
     {
-        teams = await apiService.GetTeamDetails();
-        players = await apiService.GetAllPlayers();
-        schedules = await apiService.GetSchedule();
-        pData = await apiService.GetAllPlayerData();
+
+        var Users = auth0API.GetUsers();
+        ClearLists();
 
         //Authentication
         if (authenticationState is not null)
         {
             var state = await authenticationState;
 
-            Username = state?.User?.Identity?.Name ?? string.Empty;
+            Username = state.User.Identity.Name ?? string.Empty;
+            UserId = state.User.Claims
+                .Where(c => c.Type.Equals(@"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))
+                .Select(c => c.Value)
+                .FirstOrDefault() ?? string.Empty;
+
+            // Remove Auth0 prefix
+            UserId = UserId.Split('|')[1];
+
+            Email = state.User.Claims
+                .Where(c => c.Type.Equals(@"https://wpl.somee.com/email"))
+                .Select(c => c.Value)
+                .FirstOrDefault() ?? string.Empty;
+
+            Roles = state.User.Claims
+                .Where(c => c.Type.Equals(@"https://wpl.somee.com/roles"))
+                .Select(c => c.Value)
+                .FirstOrDefault() ?? string.Empty;
+
         }
     }
 
@@ -342,6 +468,7 @@
     {
         await apiService.AddPlayer(player);
         await ToastService.Info($"Player {player.FirstName} {player.LastName} has been added or edited.", "Add/Edit Player", BuildToastInstanceOptions);
+        ClearLists();
     }
 
     async Task AddTeamClicked()
@@ -358,14 +485,15 @@
 
     async Task AddPlayerDataClicked()
     {
-        playerData.GamesPlayed = playerData.GamesWon + playerData.GamesLost;
+        playerData.GamesPlayed = total;
         playerData.PlayerId = player.Id;
         if (playerData.GamesWon != 0)
         {
-            playerData.Average = Decimal.Round((decimal)playerData.GamesWon / ((decimal)playerData.GamesLost + (decimal)playerData.GamesWon) * 100, 2);
+            playerData.Average = Decimal.Round((decimal)playerData.GamesWon / (decimal)playerData.GamesPlayed * 100, 2);
         }
         await apiService.SavePlayerData(playerData);
         await ToastService.Info($"{player.FirstName} {player.LastName}'s Games Updated.", "Add/Edit Schedule", BuildToastInstanceOptions);
+        ClearLists();
     }
 
     //Select Field Tasks
@@ -412,21 +540,25 @@
     //Modal Tasks
     Task ShowPlayerModal()
     {
+        ClearLists();
         return modalAddPlayer.Show();
     }
 
     Task ShowTeamModal()
     {
+        ClearLists();
         return modalAddTeam.Show();
     }
 
     Task ShowScheduleModal()
     {
+        ClearLists();
         return modalAddSchedule.Show();
     }
 
     Task ShowPlayerDataModal()
     {
+        ClearLists();
         return modalAddPlayerData.Show();
     }
 
@@ -438,15 +570,23 @@
         return Task.CompletedTask;
     }
 
-    Task DoesWeekExist()
+    async Task DoesWeekExist()
     {
-        if (playerData.WeekNumber > 0)
+
+        if (pData.Where(x => x.WeekNumber == playerData.WeekNumber && x.PlayerId == player.Id).Count() != 0)
         {
-            var pid = player.Id;
-            var wid = playerData.WeekNumber;
-            playerData = pData.Where(x => x.WeekNumber == wid && x.PlayerId == pid).FirstOrDefault();
+            toastMessage = $"{player.FirstName} {player.LastName} Week Exists."; 
+            toastTitle = "Week Exists";
+            toastVisible = true;
+            playerData = pData.Where(x => x.WeekNumber == playerData.WeekNumber && x.PlayerId == player.Id).FirstOrDefault();
         }
-        return Task.CompletedTask;
+        else if (playerData.WeekNumber > 0 && pData.Where(x => x.WeekNumber == playerData.WeekNumber && x.PlayerId == player.Id).Count() != 0)
+        {
+            toastMessage = $"{player.FirstName} {player.LastName} Week Doesn't Exist, Adding.";
+            toastTitle = "Week Doesn't Exist";
+            toastVisible = true;
+        }
+
     }
 
     //Toast Service
@@ -458,10 +598,31 @@
         toastInstanceOptions.AutohideDelay = 3000;
     }
 
+    private async void ClearLists()
+    {
+        addTeam = new();
+        player = new();
+        playerData = new();
+        schedule = new();
+
+        pData.Clear();
+        players.Clear();
+        schedules.Clear();
+        teams.Clear();
+
+        teams = await apiService.GetTeamDetails();
+        players = await apiService.GetAllPlayers();
+        schedules = await apiService.GetSchedule();
+        pData = await apiService.GetAllPlayerData();
+
+    }
+
     //Authentication
     [CascadingParameter]
     private Task<AuthenticationState>? authenticationState { get; set; }
 
-    private string Username = "";
-
+    private string Username = "Anonymous User";
+    private string UserId = "";
+    private string Email = "";
+    private string Roles = "";
 }
