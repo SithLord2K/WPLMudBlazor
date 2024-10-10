@@ -17,10 +17,6 @@ namespace WPLBlazor.Services
         static readonly string BaseURL = "https://wileysoft.codersden.com";
         public APIService()
         {
-#if DEBUG
-            //Barrel.Current.EmptyAll();
-            
-#endif
 
             client = new HttpClient
             {
@@ -52,7 +48,7 @@ namespace WPLBlazor.Services
         }
 
         //Player Tasks
-        public async Task AddPlayer(Player player)
+        public async Task<bool> AddPlayer(Player player)
         {
             Uri uri = new("https://wileysoft.codersden.com/api_v2/Players");
             HttpRequestMessage message = new(HttpMethod.Post, uri)
@@ -60,7 +56,12 @@ namespace WPLBlazor.Services
                 Content = JsonContent.Create<Player>(player)
             };
             string testing = message.Content.ToString();
-            _ = await client.SendAsync(message);
+            HttpResponseMessage response = await client.SendAsync(message);
+           if(response.IsSuccessStatusCode)
+           {
+                return true;
+           }
+            return false;
         }
 
         public Task<List<Player>> GetAllPlayers() =>
@@ -68,10 +69,7 @@ namespace WPLBlazor.Services
 
         public Task<Player> GetSinglePlayer(int id) =>
             GetAsync<Player>($"/api_v2/Players/{id}", "getsingleplayer_v2", 30, true);
-        public Task SavePlayer(PlayerData playerData)
-        {
-            throw new NotImplementedException();
-        }
+
         public Task DeletePlayer(int id)
         {
             throw new NotImplementedException();
@@ -84,27 +82,37 @@ namespace WPLBlazor.Services
             GetAsync<List<PlayerData>>($"/api_v2/PlayerData/{playerId}", "getplayerdata_v2", 0, true);
         public Task<PlayerData> GetSinglePlayerData(int playerId) =>
             GetAsync<PlayerData>($".api_v2/PlayerData/{playerId}", "getsingleplayerdata_v2", 0, true);
-        public async Task SavePlayerData(PlayerData playerData)
+        public async Task<bool> SavePlayerData(PlayerData playerData)
         {
             Uri uri = new("https://wileysoft.codersden.com/api_v2/PlayerData");
             HttpRequestMessage message = new(HttpMethod.Post, uri)
             {
                 Content = JsonContent.Create<PlayerData>(playerData)
             };
-            _ = await client.SendAsync(message);
+            HttpResponseMessage response = await client.SendAsync(message);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
         }
 
         //Week Tasks
-        public Task<IEnumerable<Weeks>> GetAllWeeks([Optional] bool forceRefresh) =>
-            GetAsync<IEnumerable<Weeks>>("/api_v2/Weeks", "getweeks_v2", 30, forceRefresh);
-        public async Task AddWeeks(Weeks weeks)
+        public Task<List<Weeks>> GetAllWeeks([Optional] bool forceRefresh) =>
+            GetAsync<List<Weeks>>("/api_v2/Weeks", "getweeks_v2", 30, forceRefresh);
+        public async Task<bool> AddWeeks(Weeks weeks)
         {
             Uri uri = new("https://wileysoft.codersden.com/api_v2/Weeks");
             HttpRequestMessage message = new(HttpMethod.Post, uri)
             {
                 Content = JsonContent.Create<Weeks>(weeks)
             };
-            await client.SendAsync(message);
+            HttpResponseMessage response = await client.SendAsync(message);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
         }
         public Task RemoveWeeks(int id)
         {
@@ -121,14 +129,19 @@ namespace WPLBlazor.Services
         public Task<TeamDetails> GetSingleTeam(int id) =>
           GetAsync<TeamDetails>($"/api_v2/TeamDetails/{id}", "getsingleteam_v2", 30, true);
 
-        public async Task AddTeam(TeamDetails team)
+        public async Task<bool> AddTeam(TeamDetails team)
         {
             Uri uri = new("https://wileysoft.codersden.com/api_v2/TeamDetails");
             HttpRequestMessage message = new(HttpMethod.Post, uri)
             {
                 Content = JsonContent.Create<TeamDetails>(team)
             };
-            _ = await client.SendAsync(message);
+            HttpResponseMessage response = await client.SendAsync(message);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
 
         }
 
@@ -139,14 +152,19 @@ namespace WPLBlazor.Services
         public Task<Schedules> GetSingleSchedule(int Id) =>
             GetAsync<Schedules>($"/api_v2/Schedule/{Id}", "getsingleschedule_v2", 30, true);
 
-        public async Task AddSchedule(Schedules schedule) 
+        public async Task<bool> AddSchedule(Schedules schedule) 
         {
             Uri uri = new("https://wileysoft.codersden.com/api_v2/Schedule");
             HttpRequestMessage message = new(HttpMethod.Post, uri)
             {
                 Content = JsonContent.Create<Schedules>(schedule)
             };
-            _ = await client.SendAsync(message);
+            HttpResponseMessage response = await client.SendAsync(message);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
         }
     }
 

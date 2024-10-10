@@ -7,6 +7,7 @@
 <p>Hello @Username!</p>
 <p>Email: @Email</p>
 <p>Roles: @Roles</p>
+<!--League Admin Buttons-->
 <AuthorizeView Roles="League_Admin, Super_User">
     <Card>
         <CardBody>
@@ -24,7 +25,7 @@
         </CardBody>
     </Card>
 </AuthorizeView>
-<br />
+<!--Super User Buttons-->
 <AuthorizeView Roles="Super_User">
     <Card>
         <CardBody>
@@ -42,6 +43,7 @@
         </CardBody>
     </Card>
 </AuthorizeView>
+<!--Captain Buttons-->
 <AuthorizeView Roles="Captain, Super_User">
     <Card>
         <CardBody>
@@ -59,7 +61,7 @@
         </CardBody>
     </Card>
 </AuthorizeView>
-<!--Player Edit Modal-->
+<!--Player Add/Edit Modal-->
 <Modal @ref="modalAddPlayer">
     <ModalContent Centered>
         <ModalHeader>
@@ -320,6 +322,77 @@
         </ModalBody>
     </ModalContent>
 </Modal>
+<!--Weeks Modal-->
+<Modal @ref="modalAddWeeks">
+    <ModalContent Centered Scrollable>
+        <ModalHeader>
+            <ModalTitle>Add/Edit Week Stats</ModalTitle>
+            <CloseButton AutoClose="true" />
+        </ModalHeader>
+        <ModalBody>
+            <Form>
+                <Field>
+                    <Field>
+                        <Fields>
+                            <Field ColumnSize="ColumnSize.IsFull">
+                                <Select TValue="int" SelectedValue="@player.Id" SelectedValueChanged="@LoadPlayer">
+                                    <SelectItem>Choose Week To Edit</SelectItem>
+                                    @foreach (var w in weeks)
+                                    {
+                                        <SelectItem Value="@w.WeekNumber">Week #: @w.WeekNumber</SelectItem>
+                                    }
+                                </Select>
+                            </Field>
+                        </Fields>
+                    </Field>
+                    <Field>
+                        <Fields>
+                            <Field ColumnSize="ColumnSize.IsFull">
+                                <FieldLabel>Week #:</FieldLabel>
+                                <FieldBody>
+                                    <NumericEdit @bind-Value="@week.WeekNumber" onchanged="@LoadWeek(week.WeekNumber)" />
+                                </FieldBody>
+                            </Field>
+                        </Fields>
+                    </Field>
+                    <Fields>
+                        <FieldLabel>Home</FieldLabel>
+                        <FieldBody>
+                            <Select TValue="int" SelectedValueChanged="@UpdateHomeTeam">
+                                <SelectItem Value="0">Select a Team to Edit</SelectItem>
+                                @foreach (var t1 in teams)
+                                {
+                                    <SelectItem Value="@t1.Id">@t1.TeamName</SelectItem>
+                                }
+                            </Select>
+                        </FieldBody>
+                        <FieldLabel>Games Won:</FieldLabel>
+                        <FieldBody>
+                            <NumericPicker @bind-Value="@playerData.GamesWon" onchange="@GamesPlayedCalc()" />
+                        </FieldBody>
+                        <FieldLabel>Games Lost:</FieldLabel>
+                        <FieldBody>
+                            <NumericPicker @bind-Value="@playerData.GamesLost" onchange="@GamesPlayedCalc()" />
+                        </FieldBody>
+                        <FieldLabel>Games Played:</FieldLabel>
+                        <FieldBody>
+                            <NumericPicker Value="@total" Disabled />
+                        </FieldBody>
+                    </Fields>
+                    <Field></Field>
+                    <Fields>
+                        <Field>
+                            <FieldBody>
+                                <Button Color="Color.Success" Clicked="@AddPlayerDataClicked">Modify Player Games</Button>&nbsp;
+                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                            </FieldBody>
+                        </Field>
+                    </Fields>
+                </Field>
+            </Form>
+        </ModalBody>
+    </ModalContent>
+</Modal>
 <!--Assign Roles-->
 <Modal @ref="modalAssignRoles">
     <ModalContent Centered>
@@ -404,18 +477,21 @@
     private Modal modalAddTeam = new();
     private Modal modalAddSchedule = new();
     private Modal modalAddPlayerData = new();
+    private Modal modalAddWeeks = new();
     private Modal modalAssignRoles = new();
 
     //Properties
     private Player player { get; set; } = new();
     private PlayerData playerData { get; set; } = new();
     private TeamDetails addTeam { get; set; } = new();
+    private Weeks week { get; set; } = new();
     private Schedules schedule { get; set; } = new();
     private int selectedTeam { get; set; } = new();
 
     //Services
     private APIService apiService = new();
     private PlayerHelpers playerHelper = new();
+    private WeekHelper weekHelper = new();
     private Auth0API auth0API = new();
 
     //Lists
@@ -423,6 +499,7 @@
     private List<Player> players = [];
     private List<Schedules> schedules = [];
     private List<PlayerData> pData = [];
+    private List<Weeks> weeks = [];
 
     //Variables
     private int total;
@@ -466,20 +543,47 @@
     //Form Tasks
     private async Task AddPlayerClicked()
     {
-        await apiService.AddPlayer(player);
-        await ToastService.Info($"Player {player.FirstName} {player.LastName} has been added or edited.", "Add/Edit Player", BuildToastInstanceOptions);
-        ClearLists();
+        var response = await apiService.AddPlayer(player);
+        if(response)
+        {
+            toastMessage = $"Player {player.FirstName} {player.LastName} has been added or edited.";
+            toastTitle = "Add/Edit Player";
+            toastVisible = true;
+            ClearLists();
+        }
+        toastMessage = $"Failed to Add Player {player.FirstName} {player.LastName}.";
+        toastTitle = "Add/Edit Player";
+        toastVisible = true;
     }
 
     async Task AddTeamClicked()
     {
-        await apiService.AddTeam(addTeam);
-        await ToastService.Info($"Team {addTeam.TeamName} has been added or edited.", "Add/Edit Team", BuildToastInstanceOptions);
+        var response = await apiService.AddTeam(addTeam);
+        if (response)
+        {
+            toastMessage = $"Team {addTeam.TeamName} has been added or edited.";
+            toastTitle = "Add/Edit Team";
+            toastVisible = true;
+            ClearLists();
+        }
+        toastMessage = $"Failed to Add Team {addTeam.TeamName}.";
+        toastTitle = "Add/Edit Team";
+        toastVisible = true;
     }
 
     async Task AddScheduleClicked()
     {
-        await apiService.AddSchedule(schedule);
+        var response = await apiService.AddSchedule(schedule);
+        if(response)
+        {
+            toastMessage = $"Schedule {schedule.Week_Id} {schedule.Home_Team} {schedule.Away_Team} has been added or edited.";
+            toastTitle = "Add/Edit Schedule";
+            toastVisible = true;
+            ClearLists();
+        }
+        toastMessage = $"Failed to Add Schedule {schedule.Week_Id} {schedule.Home_Team} {schedule.Away_Team}.";
+        toastTitle = "Add/Edit Schedule";
+        toastVisible = true;
         await ToastService.Info($"Schedule {addTeam.TeamName} has been added or edited.", "Add/Edit Schedule", BuildToastInstanceOptions);
     }
 
@@ -491,9 +595,20 @@
         {
             playerData.Average = Decimal.Round((decimal)playerData.GamesWon / (decimal)playerData.GamesPlayed * 100, 2);
         }
-        await apiService.SavePlayerData(playerData);
-        await ToastService.Info($"{player.FirstName} {player.LastName}'s Games Updated.", "Add/Edit Schedule", BuildToastInstanceOptions);
-        ClearLists();
+        var response = await apiService.SavePlayerData(playerData);
+        if (response == true)
+        {
+            toastMessage = $"{player.FirstName} {player.LastName}'s Games Added/Edited.";
+            toastTitle = "Add/Edit Player Games";
+            toastVisible = true;
+            ClearLists();
+        }
+        else
+        {
+            toastMessage = $"Failed to Add/Edit Player {player.FirstName} {player.LastName}'s Games.";
+            toastTitle = "Add/Edit Player Games";
+            toastVisible = true;
+        }
     }
 
     //Select Field Tasks
@@ -537,6 +652,21 @@
         playerData = await apiService.GetSinglePlayerData(value);
     }
 
+    async Task LoadWeek(int value)
+    {
+        
+    }
+
+    async Task UpdateHomeTeam(int value)
+    {
+        week.Home_Team = value;
+    }
+
+    async Task UpdateAwayTeam(int value)
+    {
+        week.Away_Team = value;
+    }
+
     //Modal Tasks
     Task ShowPlayerModal()
     {
@@ -560,6 +690,12 @@
     {
         ClearLists();
         return modalAddPlayerData.Show();
+    }
+
+    Task ShowWeeksModal()
+    {
+        ClearLists();
+        return modalAddWeeks.Show();
     }
 
     //Misc Functions
@@ -604,6 +740,7 @@
         player = new();
         playerData = new();
         schedule = new();
+        week = new();
 
         pData.Clear();
         players.Clear();
@@ -614,6 +751,7 @@
         players = await apiService.GetAllPlayers();
         schedules = await apiService.GetSchedule();
         pData = await apiService.GetAllPlayerData();
+        weeks = await apiService.GetAllWeeks();
 
     }
 
