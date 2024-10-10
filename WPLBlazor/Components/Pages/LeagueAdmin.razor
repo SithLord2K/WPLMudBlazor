@@ -2,6 +2,7 @@
 @attribute [StreamRendering]
 
 <PageTitle>Admin Panel</PageTitle>
+
 <h1>AdminPanel</h1>
 <br />
 <p>Hello @Username!</p>
@@ -487,12 +488,13 @@
     private Weeks week { get; set; } = new();
     private Schedules schedule { get; set; } = new();
     private int selectedTeam { get; set; } = new();
-
+    
     //Services
     private APIService apiService = new();
     private PlayerHelpers playerHelper = new();
     private WeekHelper weekHelper = new();
     private Auth0API auth0API = new();
+
 
     //Lists
     private List<TeamDetails> teams = [];
@@ -504,8 +506,9 @@
     //Variables
     private int total;
     private bool toastVisible = false;
-    private string toastMessage = "";
-    private string @toastTitle = "";
+    private string? toastMessage;
+    private string? toastTitle;
+    private string? message;
 
     protected override async Task OnInitializedAsync()
     {
@@ -539,6 +542,9 @@
 
         }
     }
+
+    //AntiForgery Tasks
+
 
     //Form Tasks
     private async Task AddPlayerClicked()

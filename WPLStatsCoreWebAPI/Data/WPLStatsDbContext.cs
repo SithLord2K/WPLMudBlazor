@@ -27,25 +27,28 @@ public partial class WPLStatsDbContext : DbContext
         modelBuilder.Entity<Player>(entity =>
         {
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.FirstName).HasMaxLength(50);
-            entity.Property(e => e.LastName).HasMaxLength(50);
+            entity.Property(e => e.FirstName);
+            entity.Property(e => e.LastName);
+            entity.Property(e => e.TeamId);
         });
 
         modelBuilder.Entity<TeamDetails>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK_Teams");
-
-            entity.Property(e => e.Id).HasColumnName("ID");
-            entity.Property(e => e.Captain_Player_Id).HasMaxLength(50);
-            entity.Property(e => e.TeamName).HasMaxLength(50);
+            entity.Property(e => e.Id);
+            entity.Property(e => e.Captain_Player_Id);
+            entity.Property(e => e.TeamName);
         });
 
         modelBuilder.Entity<Week>(entity =>
         {
-            entity.HasKey(e => e.WeekNumber);
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.WeekNumber);
+            entity.Property(e => e.Away_Team);
+            entity.Property(e => e.Home_Team);
+            entity.Property(e => e.Home_Won);
+            entity.Property(e => e.Forfeit);
+            entity.Property(e => e.Playoff);
 
-            entity.Property(e => e.WeekNumber).ValueGeneratedNever();
-            entity.Property(e => e.Id).ValueGeneratedOnAdd();
         });
 
         modelBuilder.Entity<PlayerData>(entity =>
@@ -62,8 +65,11 @@ public partial class WPLStatsDbContext : DbContext
         modelBuilder.Entity<Schedule>(entity =>
         {
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Week_Id).HasColumnType("integer");
-            entity.Property(e => e.Date).HasColumnType("date");
+            entity.Property(e => e.Week_Id);
+            entity.Property(e => e.Date);
+            entity.Property(e => e.Home_Team);
+            entity.Property(e => e.Away_Team);
+            entity.Property(e => e.Table_Number);
         });
 
         OnModelCreatingPartial(modelBuilder);

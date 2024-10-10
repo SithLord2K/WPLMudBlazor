@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using WPLBlazor.AuthenticationStateSyncer.PersistingRevalidatingAuthenticationStateProvider;
 using WPLBlazor.AuthenticationStateSyncer;
+using WPLBlazor.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,9 @@ builder.Services
 
     });
 
+//AntiForgery
+builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddScoped<AntiForgery>();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
