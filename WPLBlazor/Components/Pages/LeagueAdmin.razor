@@ -22,6 +22,8 @@
                 <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
                 &nbsp;
                 <Button Color="Color.Success" Clicked="@ShowPlayerDataModal">Add/Edit Player Games</Button>
+                &nbsp;
+                <Button Color="Color.Success" Clicked="@ShowWeeksModal">Add/Edit Weeks</Button>
             </CardText>
         </CardBody>
     </Card>
@@ -336,11 +338,14 @@
                     <Field>
                         <Fields>
                             <Field ColumnSize="ColumnSize.IsFull">
-                                <Select TValue="int" SelectedValue="@player.Id" SelectedValueChanged="@LoadPlayer">
+                                <Select TValue="int" SelectedValue="@week.WeekNumber" SelectedValueChanged="@LoadWeek">
                                     <SelectItem>Choose Week To Edit</SelectItem>
-                                    @foreach (var w in weeks)
+                                    @foreach (var s in schedules)
                                     {
-                                        <SelectItem Value="@w.WeekNumber">Week #: @w.WeekNumber</SelectItem>
+                                        <SelectItem Value="@week.WeekNumber">Week #: @s.Week_Id,
+                                            Home: @teams.Where(x => x.Id == s.Home_Team).FirstOrDefault().TeamName,
+                                            Away: @teams.Where(x => x.Id == s.Away_Team).FirstOrDefault().TeamName
+                                        </SelectItem>
                                     }
                                 </Select>
                             </Field>
@@ -360,10 +365,10 @@
                         <FieldLabel>Home</FieldLabel>
                         <FieldBody>
                             <Select TValue="int" SelectedValueChanged="@UpdateHomeTeam">
-                                <SelectItem Value="0">Select a Team to Edit</SelectItem>
+                                <SelectItem Value="0">Select a Home Team</SelectItem>
                                 @foreach (var t1 in teams)
                                 {
-                                    <SelectItem Value="@t1.Id">@t1.TeamName</SelectItem>
+                                    <SelectItem Value="t1.Id">@t1.TeamName</SelectItem>
                                 }
                             </Select>
                         </FieldBody>
@@ -482,11 +487,11 @@
     private Modal modalAssignRoles = new();
 
     //Properties
-    private Player player { get; set; } = new();
-    private PlayerData playerData { get; set; } = new();
-    private TeamDetails addTeam { get; set; } = new();
-    private Weeks week { get; set; } = new();
-    private Schedules schedule { get; set; } = new();
+    private Player? player { get; set; } = new();
+    private PlayerData? playerData { get; set; } = new();
+    private TeamDetails? addTeam { get; set; } = new();
+    private Weeks? week { get; set; } = new();
+    private Schedules? schedule { get; set; } = new();
     private int selectedTeam { get; set; } = new();
     
     //Services
@@ -497,11 +502,11 @@
 
 
     //Lists
-    private List<TeamDetails> teams = [];
-    private List<Player> players = [];
-    private List<Schedules> schedules = [];
-    private List<PlayerData> pData = [];
-    private List<Weeks> weeks = [];
+    private List<TeamDetails>? teams = [];
+    private List<Player>? players = [];
+    private List<Schedules>? schedules = [];
+    private List<PlayerData>? pData = [];
+    private List<Weeks>? weeks = [];
 
     //Variables
     private int total;
