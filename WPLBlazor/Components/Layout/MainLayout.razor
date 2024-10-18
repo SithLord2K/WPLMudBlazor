@@ -18,35 +18,13 @@
                 @Body
             </LoadingIndicator>
         </LayoutContent>
+        <LayoutFooter>
+            <center>Site created and maintained by Chris Wiley on Golden Brothers 1</center>
+            <center>This site was made using Blazorise: @($"v{VersionProvider.MilestoneVersion}")</center>
+        </LayoutFooter>
     </Layout>
 </Layout>
-@* <div class="page">
-    <div class="sidebar">
-        <VerticalMenuBar />
-    </div>
 
-    <main>
-        <div class="top-row px-4">
-            <Login />
-        </div>
-
-        <article class="content px-4">
-            <LoadingIndicator FullScreen>
-            @Body
-            </LoadingIndicator>
-        </article>
-        <Divider />
-        <LayoutFooter>
-        <p class="card-footer">
-            <center>Site created and maintained by Chris Wiley on Golden Brothers 1</center>
-            <br />
-                <center>This site was made using Blazorise: @($"v{VersionProvider.MilestoneVersion}")</center>
-        </p>
-        </LayoutFooter>
-    </main>
-
-</div>
- *@
 <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
