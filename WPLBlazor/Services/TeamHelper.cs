@@ -29,7 +29,7 @@ namespace WPLBlazor.Services
                     TotalGamesWon = teamTotals.Where(y => y.TeamId == team.Id).Sum(x => x.GamesWon),
                     TotalGamesLost = teamTotals.Where(y => y.TeamId == team.Id).Sum(y => y.GamesLost)
                 };
-                teamStats.Week_Id = teamTotals.Where(y => y.TeamId == team.Id).FirstOrDefault().WeekNumber;
+                //teamStats.Week_Id = teamTotals.Where(y => y.TeamId == team.Id).FirstOrDefault().WeekNumber;
                 teamStats.TotalGamesPlayed = teamStats.TotalGamesWon + teamStats.TotalGamesLost;
                 if (teamStats.TotalGamesWon > 0)
                 {

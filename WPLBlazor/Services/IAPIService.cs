@@ -7,9 +7,11 @@ namespace WPLBlazor.Services
     {
         //Players
         Task<List<Player>> GetAllPlayers();
+        Task<List<PlayersView>> GetPlayersView();
         Task<Player> GetSinglePlayer(int id);
         Task<bool> AddPlayer(Player player);
         Task DeletePlayer(int id);
+
 
         //PlayerData
         Task<List<PlayerData>> GetAllPlayerData();
@@ -29,8 +31,9 @@ namespace WPLBlazor.Services
 
         //Weeks
         Task<List<Weeks>> GetAllWeeks([Optional] bool forceRefresh);
+        Task<List<WeeksView>> GetWeeksView();
         Task<bool> AddWeeks(Weeks weeks);
-        Task UpdateWeeks(Weeks weeks);
+        Task<bool> UpdateWeeks(Weeks weeks);
         Task RemoveWeeks(int id);
     }
 }

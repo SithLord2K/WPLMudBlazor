@@ -91,9 +91,16 @@ namespace WPLBlazor.API.Controllers
             {
                 return Problem("Entity set 'WPLStatsDbContext.TeamDetails'  is null.");
             }
-            _context.TeamDetails.Add(teamDetail);
-            await _context.SaveChangesAsync();
-
+            if (!TeamDetailExists(teamDetail.Id))
+            {
+                _context.TeamDetails.Add(teamDetail);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                _context.Update(teamDetail);
+                await _context.SaveChangesAsync();
+            }
             return CreatedAtAction("GetTeamDetail", new { id = teamDetail.Id }, teamDetail);
         }
 

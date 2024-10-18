@@ -15,10 +15,12 @@ public partial class WPLStatsDbContext : DbContext
     }
 
     public virtual DbSet<Player> Players { get; set; }
+    public virtual DbSet<PlayersView> PlayersView { get; set; }
     public virtual DbSet<TeamDetails> TeamDetails { get; set; }
     public virtual DbSet<Week> Weeks { get; set; }
     public virtual DbSet<PlayerData> PlayerData { get; set; }
     public virtual DbSet<Schedule> Schedule { get; set; }
+    public virtual DbSet<WeeksView> WeeksView { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -30,6 +32,17 @@ public partial class WPLStatsDbContext : DbContext
             entity.Property(e => e.FirstName);
             entity.Property(e => e.LastName);
             entity.Property(e => e.TeamId);
+        });
+        modelBuilder.Entity<PlayersView>(entity =>
+        {
+            entity.HasNoKey();
+            entity.Property(e => e.PlayerId);
+            entity.Property(e => e.FirstName);
+            entity.Property(e => e.LastName);
+            entity.Property(e => e.GamesWon);
+            entity.Property(e => e.GamesLost);
+            entity.Property(e => e.GamesPlayed);
+            entity.Property(e => e.WeekNumber); ;
         });
 
         modelBuilder.Entity<TeamDetails>(entity =>
@@ -70,6 +83,15 @@ public partial class WPLStatsDbContext : DbContext
             entity.Property(e => e.Home_Team);
             entity.Property(e => e.Away_Team);
             entity.Property(e => e.Table_Number);
+        });
+        modelBuilder.Entity<WeeksView>(entity =>
+        {
+            entity.HasNoKey();
+            entity.Property(e => e.Week_Id);
+            entity.Property(e => e.Home_Team);
+            entity.Property(e => e.Away_Team);
+            entity.Property(e => e.Forfeit);
+            entity.Property(e => e.Playoff);
         });
 
         OnModelCreatingPartial(modelBuilder);

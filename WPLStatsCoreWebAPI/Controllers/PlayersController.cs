@@ -94,8 +94,16 @@ namespace WPLBlazor.API.Controllers
             {
                 return Problem("Entity set 'WPLStatsDbContext.Players'  is null.");
             }
-            _context.Players.Add(player);
-            await _context.SaveChangesAsync();
+            if (!PlayerExists(player.Id))
+            {
+                _context.Players.Add(player);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                _context.Update(player);
+                await _context.SaveChangesAsync();
+            }
 
             return CreatedAtAction("GetPlayer", new { id = player.Id }, player);
         }

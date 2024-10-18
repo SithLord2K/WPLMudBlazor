@@ -17,6 +17,7 @@ public partial class WPLBlazorContext : DbContext
     }
 
    public virtual DbSet<Player> Players { get; set; }
+    public virtual DbSet<PlayersView> PlayersView { get; set; }
 
     public virtual DbSet<PlayerData> PlayerData { get; set; }
 
@@ -24,7 +25,8 @@ public partial class WPLBlazorContext : DbContext
 
     public virtual DbSet<TeamDetails> TeamDetails { get; set; }
 
-     public virtual DbSet<Weeks> Weeks { get; set; }
+    public virtual DbSet<Weeks> Weeks { get; set; }
+    public  virtual DbSet<WeeksView> WeeksView { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -45,6 +47,19 @@ public partial class WPLBlazorContext : DbContext
             entity.Property(e => e.PlayerId).ValueGeneratedNever();
         });
 
+
+        modelBuilder.Entity<PlayersView>(entity =>
+        {
+            entity.HasNoKey();
+            entity.Property(e => e.PlayerId);
+            entity.Property(e => e.FirstName);
+            entity.Property(e => e.LastName);
+            entity.Property(e => e.GamesWon);
+            entity.Property(e => e.GamesLost);
+            entity.Property(e => e.GamesPlayed);
+            entity.Property(e => e.Average); ;
+        });
+
         modelBuilder.Entity<Schedules>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_Tmp_Schedule");
@@ -63,9 +78,7 @@ public partial class WPLBlazorContext : DbContext
 
             entity.Property(e => e.Captain_Player_Id).HasColumnName("Captain_Player_Id");
             entity.Property(e => e.Id).ValueGeneratedOnAdd();
-            entity.Property(e => e.TeamName)
-                .HasMaxLength(255)
-                .IsUnicode(false);
+            entity.Property(e => e.TeamName).HasMaxLength(255).IsUnicode(false);
         });
 
         modelBuilder.Entity<Weeks>(entity =>
@@ -75,6 +88,15 @@ public partial class WPLBlazorContext : DbContext
             entity.Property(e => e.Away_Team).HasColumnName("Away_Team");
             entity.Property(e => e.Home_Team).HasColumnName("Home_Team");
             entity.Property(e => e.Home_Won).HasColumnName("Home_Won");
+        });
+        modelBuilder.Entity<WeeksView>(entity =>
+        {
+            entity.HasNoKey();
+            entity.Property(e => e.Week_Id);
+            entity.Property(e => e.Home_Team);
+            entity.Property(e => e.Away_Team);
+            entity.Property(e => e.Forfeit);
+            entity.Property(e => e.Playoff);
         });
 
         OnModelCreatingPartial(modelBuilder);

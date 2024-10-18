@@ -69,6 +69,8 @@ namespace WPLBlazor.Services
 
         public Task<Player> GetSinglePlayer(int id) =>
             GetAsync<Player>($"/api_v2/Players/{id}", "getsingleplayer_v2", 30, true);
+        public Task<List<PlayersView>> GetPlayersView() =>
+            GetAsync<List<PlayersView>>($"/api_v2/PlayersView", "getaplayersview_v2", 30, true);
 
         public Task DeletePlayer(int id)
         {
@@ -100,6 +102,9 @@ namespace WPLBlazor.Services
         //Week Tasks
         public Task<List<Weeks>> GetAllWeeks([Optional] bool forceRefresh) =>
             GetAsync<List<Weeks>>("/api_v2/Weeks", "getweeks_v2", 30, forceRefresh);
+        //Get WeeksView
+        public Task<List<WeeksView>> GetWeeksView() =>
+           GetAsync<List<WeeksView>>($"/api_v2/WeeksView", "getweeksview_v2", 0, true);
         public async Task<bool> AddWeeks(Weeks weeks)
         {
             Uri uri = new("https://wileysoft.codersden.com/api_v2/Weeks");
@@ -118,9 +123,19 @@ namespace WPLBlazor.Services
         {
             throw new NotImplementedException();
         }
-        public Task UpdateWeeks(Weeks weeks)
+        public async Task<bool> UpdateWeeks(Weeks weeks)
         {
-            throw new NotImplementedException();
+            Uri uri = new("https://wileysoft.codersden.com/api_v2/Weeks");
+            HttpRequestMessage message = new(HttpMethod.Post, uri)
+            {
+                Content = JsonContent.Create<Weeks>(weeks)
+            };
+            HttpResponseMessage response = await client.SendAsync(message);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
         }
 
         //TeamDetail Tasks

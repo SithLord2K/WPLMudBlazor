@@ -7,63 +7,45 @@
 <br />
 <p>Hello @Username!</p>
 <p>Email: @Email</p>
-<p>Roles: @Roles</p>
-<!--League Admin Buttons-->
-<AuthorizeView Roles="League_Admin, Super_User">
-    <Card>
-        <CardBody>
-            <CardTitle Size="3">Admin Functions</CardTitle>
-            <CardText>
-                <Divider />
-                <Button Color="Color.Success" Clicked="@ShowPlayerModal">Add/Edit Players</Button>
-                &nbsp;
-                <Button Color="Color.Success" Clicked="@ShowTeamModal">Add/Edit Teams</Button>
-                &nbsp;
-                <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
-                &nbsp;
-                <Button Color="Color.Success" Clicked="@ShowPlayerDataModal">Add/Edit Player Games</Button>
-                &nbsp;
-                <Button Color="Color.Success" Clicked="@ShowWeeksModal">Add/Edit Weeks</Button>
-            </CardText>
-        </CardBody>
-    </Card>
-</AuthorizeView>
-<!--Super User Buttons-->
-<AuthorizeView Roles="Super_User">
-    <Card>
-        <CardBody>
-            <CardTitle Size="3">Super User Functions</CardTitle>
-            <CardText>
-                <Divider />
-                <Button Color="Color.Success" Clicked="@ShowPlayerModal">Add/Edit Players</Button>
-                &nbsp;
-                <Button Color="Color.Success" Clicked="@ShowTeamModal">Add/Edit Teams</Button>
-                &nbsp;
-                <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
-                &nbsp;
-                <Button Color="Color.Success" Clicked="@ShowPlayerDataModal">Add/Edit Player Games</Button>
-            </CardText>
-        </CardBody>
-    </Card>
-</AuthorizeView>
-<!--Captain Buttons-->
-<AuthorizeView Roles="Captain, Super_User">
-    <Card>
-        <CardBody>
-            <CardTitle Size="3">Captain Functions</CardTitle>
-            <CardText>
-                <Divider />
-                <Button Color="Color.Success" Clicked="@ShowPlayerModal">Add/Edit Players</Button>
-                &nbsp;
-                <Button Color="Color.Success" Clicked="@ShowTeamModal">Add/Edit Teams</Button>
-                &nbsp;
-                <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
-                &nbsp;
-                <Button Color="Color.Success" Clicked="@ShowPlayerDataModal">Add/Edit Player Games</Button>
-            </CardText>
-        </CardBody>
-    </Card>
-</AuthorizeView>
+<p>Role: @Roles</p>
+<!--Buttons With Authorizations-->
+<Card>
+    <CardBody>
+        <CardTitle Size="3">Admin Functions</CardTitle>
+        <CardText>
+            <Divider />
+            <AuthorizeView Roles="League_Admin, Super_User">
+                <Tooltip Text="Use to add/edit players in the database.">
+                    <Button Color="Color.Success" Clicked="@ShowPlayerModal">Add/Edit Players</Button>
+                </Tooltip>
+            </AuthorizeView>
+            &nbsp;
+            <AuthorizeView Roles="League_Admin, Super_User, Captain">
+                <Tooltip Text="Use to add games won and lost for players.">
+                    <Button Color="Color.Success" Clicked="@ShowPlayerDataModal">Add/Edit Player Games</Button>
+                </Tooltip>
+            </AuthorizeView>
+            &nbsp;
+            <AuthorizeView Roles="League_Admin, Super_User">
+                <Tooltip Text="Use to add/edit teams in the database.">
+                    <Button Color="Color.Success" Clicked="@ShowTeamModal">Add/Edit Teams</Button>
+                </Tooltip>
+            </AuthorizeView>
+            &nbsp;
+            <AuthorizeView Roles="League_Admin, Super_User">
+                <Tooltip Text="Use to Add/edit the schedule.">
+                    <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
+                </Tooltip>
+            </AuthorizeView>
+            &nbsp;
+            <AuthorizeView Roles="League_Admin, Super_User, Captain">
+                <Tooltip Text="Use to add week stats, ie: which team won, if there was a forfeit or if it is a playoff game.">
+                    <Button Color="Color.Success" Clicked="@ShowWeeksModal">Add/Edit Weeks</Button>
+                </Tooltip>
+            </AuthorizeView>
+        </CardText>
+    </CardBody>
+</Card>
 <!--Player Add/Edit Modal-->
 <Modal @ref="modalAddPlayer">
     <ModalContent Centered>
@@ -84,39 +66,40 @@
                                 }
                             </Select>
                         </Field>
-                    </Fields>
-                </Field>
-                <Field>
-                    <Fields>
-                        <Field ColumnSize="ColumnSize.IsHalf">
-                            <FieldLabel>First Name:</FieldLabel>
-                            <FieldBody><TextEdit @bind-Text="@player.FirstName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
-                        </Field>
+
                         <Field>
-                            <FieldLabel ColumnSize="ColumnSize.IsHalf">Last Name:</FieldLabel>
-                            <FieldBody><TextEdit @bind-Text="@player.LastName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
-                        </Field>
-                    </Fields>
-                    <Fields>
-                        <Field>
-                            <FieldLabel>Team:</FieldLabel>
-                            <FieldBody>
-                                <Select TValue="int" SelectedValue="@player.TeamId" SelectedValueChanged="@PlayerTeamSelected">
-                                    <SelectItem>Select A Team</SelectItem>
-                                    @foreach (var t in teams)
-                                    {
-                                        <SelectItem Value="@t.Id">@t.TeamName</SelectItem>
-                                    }
-                                </Select>
-                            </FieldBody>
-                        </Field>
-                    </Fields>
-                    <Fields>
-                        <Field>
-                            <FieldBody>
-                                <Button Color="Color.Success" Clicked="@AddPlayerClicked">Add Player</Button>&nbsp;
-                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
-                            </FieldBody>
+                            <Fields>
+                                <Field ColumnSize="ColumnSize.IsHalf">
+                                    <FieldLabel>First Name:</FieldLabel>
+                                    <FieldBody><TextEdit @bind-Text="@player.FirstName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                                </Field>
+                                <Field>
+                                    <FieldLabel ColumnSize="ColumnSize.IsHalf">Last Name:</FieldLabel>
+                                    <FieldBody><TextEdit @bind-Text="@player.LastName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                                </Field>
+                            </Fields>
+                            <Fields>
+                                <Field>
+                                    <FieldLabel>Team:</FieldLabel>
+                                    <FieldBody>
+                                        <Select TValue="int" SelectedValue="@player.TeamId" SelectedValueChanged="@PlayerTeamSelected">
+                                            <SelectItem>Select A Team</SelectItem>
+                                            @foreach (var t in teams)
+                                            {
+                                                <SelectItem Value="@t.Id">@t.TeamName</SelectItem>
+                                            }
+                                        </Select>
+                                    </FieldBody>
+                                </Field>
+                            </Fields>
+                            <Fields>
+                                <Field>
+                                    <FieldBody>
+                                        <Button Color="Color.Success" Clicked="@AddPlayerClicked">Add/Edit Player</Button>&nbsp;
+                                        <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                                    </FieldBody>
+                                </Field>
+                            </Fields>
                         </Field>
                     </Fields>
                 </Field>
@@ -137,14 +120,14 @@
                     <Fields>
                         <Field ColumnSize="ColumnSize.IsFull">
                             @*<Select TValue="int" SelectedValueChanged="@LoadTeam">
-                                <SelectItem Value="0">Select a Team to Edit</SelectItem>
-                                @foreach (var t1 in teams)
-                                {
-                                    <SelectItem Value="@t1.Id">@t1.TeamName</SelectItem>
-                                }
+                            <SelectItem Value="0">Select a Team to Edit</SelectItem>
+                            @foreach (var t1 in teams)
+                            {
+                            <SelectItem Value="@t1.Id">@t1.TeamName</SelectItem>
+                            }
                             </Select> *@
-                            <DropdownList TItem="TeamDetails" TValue="int" 
-                                          Data="@teams" 
+                            <DropdownList TItem="TeamDetails" TValue="int"
+                                          Data="@teams"
                                           TextField="@((item)=>item.TeamName)"
                                           ValueField="@((item)=>item.Id)"
                                           SelectedValueChanged="@LoadTeam">
@@ -269,58 +252,56 @@
         <ModalBody>
             <Form>
                 <Field>
-                    <Field>
-                        <Fields>
-                            <Field ColumnSize="ColumnSize.IsFull">
-                                <Select TValue="int" SelectedValue="@player.Id" SelectedValueChanged="@LoadPlayer">
-                                    <SelectItem>Choose Player To Add Games To</SelectItem>
-                                    @foreach (var p5 in players)
-                                    {
-                                        <SelectItem Value="@p5.Id">@p5.FirstName @p5.LastName</SelectItem>
-                                    }
-                                </Select>
-                            </Field>
-                        </Fields>
-                    </Field>
-                    <Field>
-                        <Fields>
-                            <Field ColumnSize="ColumnSize.IsFull">
-                                <FieldLabel>Player Name:</FieldLabel>
-                                <FieldBody>
-                                    <TextEdit @bind-Text="@player.FirstName" Disabled />
-                                    <NumericPicker @bind-Value="@player.Id" onchanged="@LoadPlayerData(player.Id)" hidden />
-                                </FieldBody>
-                            </Field>
-                        </Fields>
-                    </Field>
                     <Fields>
-                        <FieldLabel>Week Number:</FieldLabel>
-                        <FieldBody>
-                            <NumericPicker @bind-Value="@playerData.WeekNumber" onclick="@DoesWeekExist()" />
-                        </FieldBody>
-                        <FieldLabel>Games Won:</FieldLabel>
-                        <FieldBody>
-                            <NumericPicker @bind-Value="@playerData.GamesWon" onchange="@GamesPlayedCalc()" />
-                        </FieldBody>
-                        <FieldLabel>Games Lost:</FieldLabel>
-                        <FieldBody>
-                            <NumericPicker @bind-Value="@playerData.GamesLost" onchange="@GamesPlayedCalc()" />
-                        </FieldBody>
-                        <FieldLabel>Games Played:</FieldLabel>
-                        <FieldBody>
-                            <NumericPicker Value="@total" Disabled />
-                        </FieldBody>
+                        <Field ColumnSize="ColumnSize.IsFull">
+                            <Select TValue="int" SelectedValue="@player.Id" SelectedValueChanged="@LoadPlayer">
+                                <SelectItem>Choose Player To Add Games To</SelectItem>
+                                @foreach (var p5 in players)
+                                {
+                                    <SelectItem Value="@p5.Id">@p5.FirstName @p5.LastName</SelectItem>
+                                }
+                            </Select>
+                        </Field>
                     </Fields>
-                    <Field></Field>
+                </Field>
+                <Field>
                     <Fields>
-                        <Field>
+                        <Field ColumnSize="ColumnSize.IsFull">
+                            <FieldLabel>Player Name:</FieldLabel>
                             <FieldBody>
-                                <Button Color="Color.Success" Clicked="@AddPlayerDataClicked">Modify Player Games</Button>&nbsp;
-                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                                <TextEdit @bind-Text="@player.FirstName" Disabled />
+                                <NumericPicker @bind-Value="@player.Id" onchanged="@LoadPlayerData(player.Id)" hidden />
                             </FieldBody>
                         </Field>
                     </Fields>
                 </Field>
+                <Fields>
+                    <FieldLabel>Week Number:</FieldLabel>
+                    <FieldBody>
+                        <NumericPicker @bind-Value="@playerData.WeekNumber" onclick="@DoesWeekExist()" />
+                    </FieldBody>
+                    <FieldLabel>Games Won:</FieldLabel>
+                    <FieldBody>
+                        <NumericPicker @bind-Value="@playerData.GamesWon" onchange="@GamesPlayedCalc()" />
+                    </FieldBody>
+                    <FieldLabel>Games Lost:</FieldLabel>
+                    <FieldBody>
+                        <NumericPicker @bind-Value="@playerData.GamesLost" onchange="@GamesPlayedCalc()" />
+                    </FieldBody>
+                    <FieldLabel>Games Played:</FieldLabel>
+                    <FieldBody>
+                        <NumericPicker Value="@total" Disabled />
+                    </FieldBody>
+                </Fields>
+                <Field></Field>
+                <Fields>
+                    <Field>
+                        <FieldBody>
+                            <Button Color="Color.Success" Clicked="@AddPlayerDataClicked">Modify Player Games</Button>&nbsp;
+                            <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                        </FieldBody>
+                    </Field>
+                </Fields>
             </Form>
         </ModalBody>
     </ModalContent>
@@ -333,67 +314,73 @@
             <CloseButton AutoClose="true" />
         </ModalHeader>
         <ModalBody>
+            Weeks can currenty ONLY be added and not modified. If data is not correct please contact the site admin to correct it.
+            <Divider />
             <Form>
                 <Field>
-                    <Field>
-                        <Fields>
-                            <Field ColumnSize="ColumnSize.IsFull">
-                                <Select TValue="int" SelectedValue="@week.WeekNumber" SelectedValueChanged="@LoadWeek">
-                                    <SelectItem>Choose Week To Edit</SelectItem>
-                                    @foreach (var s in schedules)
-                                    {
-                                        <SelectItem Value="@week.WeekNumber">Week #: @s.Week_Id,
-                                            Home: @teams.Where(x => x.Id == s.Home_Team).FirstOrDefault().TeamName,
-                                            Away: @teams.Where(x => x.Id == s.Away_Team).FirstOrDefault().TeamName
-                                        </SelectItem>
-                                    }
-                                </Select>
-                            </Field>
-                        </Fields>
+                    @*                     <Field>
+                    <Fields>
+                    <Field ColumnSize="ColumnSize.IsFull">
+                    <Select TValue="int" SelectedValue="@week.WeekNumber" SelectedValueChanged="@LoadWeek">
+                    <SelectItem Value="0">Choose Week To Edit</SelectItem>
+                    @foreach (var s in schedules)
+                    {
+                    <SelectItem Value="@week.WeekNumber">
+                    Week #: @s.Week_Id,
+                    Home: @teams.Where(x => x.Id == s.Home_Team).FirstOrDefault().TeamName,
+                    Away: @teams.Where(x => x.Id == s.Away_Team).FirstOrDefault().TeamName
+                    </SelectItem>
+                    }
+                    </Select>
                     </Field>
+                    </Fields>
+                    </Field> *@
                     <Field>
                         <Fields>
                             <Field ColumnSize="ColumnSize.IsFull">
                                 <FieldLabel>Week #:</FieldLabel>
                                 <FieldBody>
-                                    <NumericEdit @bind-Value="@week.WeekNumber" onchanged="@LoadWeek(week.WeekNumber)" />
+                                    <NumericEdit @bind-Value="@week.WeekNumber" onchanged="@LoadWeek" />
                                 </FieldBody>
+                                <FieldLabel>Home Team:</FieldLabel>
+                                <FieldBody>
+                                    <Select TValue="int" SelectedValue="@week.Home_Team" SelectedValueChanged="@UpdateHomeTeam">
+                                        <SelectItem Value="0">Select a Home Team</SelectItem>
+                                        @foreach (var t1 in teams)
+                                        {
+                                            <SelectItem Value="t1.Id">@t1.TeamName</SelectItem>
+                                        }
+                                    </Select>
+                                </FieldBody>
+                                <FieldLabel>Away Team:</FieldLabel>
+                                <FieldBody>
+                                    <Select TValue="int" SelectedValue="@week.Away_Team" SelectedValueChanged="@UpdateAwayTeam">
+                                        <SelectItem Value="0">Select an Away Team</SelectItem>
+                                        @foreach (var t2 in teams)
+                                        {
+                                            <SelectItem Value="t2.Id">@t2.TeamName</SelectItem>
+                                        }
+                                    </Select>
+                                </FieldBody>
+                                <FieldBody>&nbsp;</FieldBody>
+                                <FieldBody>
+                                    <Check TValue="bool" @bind-Checked="@week.Home_Won">Home Won</Check>
+                                </FieldBody>
+                                <FieldBody>
+                                    &nbsp;<Check TValue="bool" @bind-Checked="@week.Forfeit">Forfeit</Check>
+                                </FieldBody>
+                                <FieldBody>
+                                    &nbsp;<Check TValue="bool" @bind-Checked="@week.Playoff">Playoff</Check>
+                                </FieldBody>
+                                <FieldBody><br /></FieldBody>
+                                <FieldBody>
+                                    <Button Color="Color.Success" Clicked="@AddWeekClicked">Add Weeks</Button>&nbsp;
+                                    <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                                </FieldBody>
+
                             </Field>
                         </Fields>
                     </Field>
-                    <Fields>
-                        <FieldLabel>Home</FieldLabel>
-                        <FieldBody>
-                            <Select TValue="int" SelectedValueChanged="@UpdateHomeTeam">
-                                <SelectItem Value="0">Select a Home Team</SelectItem>
-                                @foreach (var t1 in teams)
-                                {
-                                    <SelectItem Value="t1.Id">@t1.TeamName</SelectItem>
-                                }
-                            </Select>
-                        </FieldBody>
-                        <FieldLabel>Games Won:</FieldLabel>
-                        <FieldBody>
-                            <NumericPicker @bind-Value="@playerData.GamesWon" onchange="@GamesPlayedCalc()" />
-                        </FieldBody>
-                        <FieldLabel>Games Lost:</FieldLabel>
-                        <FieldBody>
-                            <NumericPicker @bind-Value="@playerData.GamesLost" onchange="@GamesPlayedCalc()" />
-                        </FieldBody>
-                        <FieldLabel>Games Played:</FieldLabel>
-                        <FieldBody>
-                            <NumericPicker Value="@total" Disabled />
-                        </FieldBody>
-                    </Fields>
-                    <Field></Field>
-                    <Fields>
-                        <Field>
-                            <FieldBody>
-                                <Button Color="Color.Success" Clicked="@AddPlayerDataClicked">Modify Player Games</Button>&nbsp;
-                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
-                            </FieldBody>
-                        </Field>
-                    </Fields>
                 </Field>
             </Form>
         </ModalBody>
@@ -493,7 +480,7 @@
     private Weeks? week { get; set; } = new();
     private Schedules? schedule { get; set; } = new();
     private int selectedTeam { get; set; } = new();
-    
+
     //Services
     private APIService apiService = new();
     private PlayerHelpers playerHelper = new();
@@ -507,6 +494,7 @@
     private List<Schedules>? schedules = [];
     private List<PlayerData>? pData = [];
     private List<Weeks>? weeks = [];
+    private List<Auth0Users> users = [];
 
     //Variables
     private int total;
@@ -514,11 +502,11 @@
     private string? toastMessage;
     private string? toastTitle;
     private string? message;
+    
 
     protected override async Task OnInitializedAsync()
     {
 
-        var Users = auth0API.GetUsers();
         ClearLists();
 
         //Authentication
@@ -554,21 +542,30 @@
     //Form Tasks
     private async Task AddPlayerClicked()
     {
+        if (player.LastName == null)
+        {
+            player.LastName = string.Empty;
+        }
         var response = await apiService.AddPlayer(player);
-        if(response)
+
+        if (response)
         {
             toastMessage = $"Player {player.FirstName} {player.LastName} has been added or edited.";
             toastTitle = "Add/Edit Player";
             toastVisible = true;
             ClearLists();
         }
-        toastMessage = $"Failed to Add Player {player.FirstName} {player.LastName}.";
-        toastTitle = "Add/Edit Player";
-        toastVisible = true;
+        else
+        {
+            toastMessage = $"Failed to Add or Edit Player {player.FirstName} {player.LastName}.";
+            toastTitle = "Add/Edit Player";
+            toastVisible = true;
+        }
     }
 
     async Task AddTeamClicked()
     {
+        var t = await apiService.GetTeamDetails();
         var response = await apiService.AddTeam(addTeam);
         if (response)
         {
@@ -577,25 +574,33 @@
             toastVisible = true;
             ClearLists();
         }
-        toastMessage = $"Failed to Add Team {addTeam.TeamName}.";
-        toastTitle = "Add/Edit Team";
-        toastVisible = true;
+        else
+        {
+            toastMessage = $"Failed to Add Team {addTeam.TeamName}.";
+            toastTitle = "Add/Edit Team";
+            toastVisible = true;
+        }
+
+
     }
 
     async Task AddScheduleClicked()
     {
         var response = await apiService.AddSchedule(schedule);
-        if(response)
+        if (response)
         {
             toastMessage = $"Schedule {schedule.Week_Id} {schedule.Home_Team} {schedule.Away_Team} has been added or edited.";
             toastTitle = "Add/Edit Schedule";
             toastVisible = true;
             ClearLists();
         }
-        toastMessage = $"Failed to Add Schedule {schedule.Week_Id} {schedule.Home_Team} {schedule.Away_Team}.";
-        toastTitle = "Add/Edit Schedule";
-        toastVisible = true;
-        await ToastService.Info($"Schedule {addTeam.TeamName} has been added or edited.", "Add/Edit Schedule", BuildToastInstanceOptions);
+        else
+        {
+            toastMessage = $"Failed to Add Schedule {schedule.Week_Id} {schedule.Home_Team} {schedule.Away_Team}.";
+            toastTitle = "Add/Edit Schedule";
+            toastVisible = true;
+        }
+
     }
 
     async Task AddPlayerDataClicked()
@@ -607,7 +612,7 @@
             playerData.Average = Decimal.Round((decimal)playerData.GamesWon / (decimal)playerData.GamesPlayed * 100, 2);
         }
         var response = await apiService.SavePlayerData(playerData);
-        if (response == true)
+        if (response)
         {
             toastMessage = $"{player.FirstName} {player.LastName}'s Games Added/Edited.";
             toastTitle = "Add/Edit Player Games";
@@ -619,6 +624,47 @@
             toastMessage = $"Failed to Add/Edit Player {player.FirstName} {player.LastName}'s Games.";
             toastTitle = "Add/Edit Player Games";
             toastVisible = true;
+        }
+    }
+
+    async Task AddWeekClicked()
+    {
+        weeks = await apiService.GetAllWeeks();
+        if (weeks.Where(x => x.WeekNumber == week.WeekNumber).Where(y => y.Home_Team == week.Home_Team).Where(z => z.Away_Team == week.Away_Team).FirstOrDefault()?.WeekNumber == week.WeekNumber
+        && weeks.Where(x => x.WeekNumber == week.WeekNumber).Where(y => y.Home_Team == week.Home_Team).Where(z => z.Away_Team == week.Away_Team).FirstOrDefault()?.Home_Team == week.Home_Team
+        && weeks.Where(x => x.WeekNumber == week.WeekNumber).Where(y => y.Home_Team == week.Home_Team).Where(z => z.Away_Team == week.Away_Team).FirstOrDefault()?.Away_Team == week.Away_Team)
+        {
+            var response = await apiService.UpdateWeeks(week);
+            if (response)
+            {
+                toastMessage = $"Week: {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName} Added/Edited.";
+                toastTitle = "Add/Edit Player Games";
+                toastVisible = true;
+                ClearLists();
+            }
+            else
+            {
+                toastMessage = $"Failed to Add/Edit Week for {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName}.";
+                toastTitle = "Add/Edit Week";
+                toastVisible = true;
+            }
+        }
+        else
+        {
+            var response = await apiService.AddWeeks(week);
+            if (response)
+            {
+                toastMessage = $"Week: {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName} Added/Edited.";
+                toastTitle = "Add/Edit Player Games";
+                toastVisible = true;
+                ClearLists();
+            }
+            else
+            {
+                toastMessage = $"Failed to Add/Edit Week for {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName}.";
+                toastTitle = "Add/Edit Week";
+                toastVisible = true;
+            }
         }
     }
 
@@ -665,7 +711,8 @@
 
     async Task LoadWeek(int value)
     {
-        
+        week.WeekNumber = value;
+
     }
 
     async Task UpdateHomeTeam(int value)
@@ -722,7 +769,7 @@
 
         if (pData.Where(x => x.WeekNumber == playerData.WeekNumber && x.PlayerId == player.Id).Count() != 0)
         {
-            toastMessage = $"{player.FirstName} {player.LastName} Week Exists."; 
+            toastMessage = $"{player.FirstName} {player.LastName} Week Exists.";
             toastTitle = "Week Exists";
             toastVisible = true;
             playerData = pData.Where(x => x.WeekNumber == playerData.WeekNumber && x.PlayerId == player.Id).FirstOrDefault();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using WPLBlazor.API.Data;
 using WPLBlazor.API.Filters;
 using WPLBlazor.API.Models;
@@ -87,9 +88,18 @@ namespace WPLBlazor.API.Controllers
         {
             if (_context.PlayerData != null)
             {
-                _context.PlayerData.Add(playerData);
-                await _context.SaveChangesAsync();
-                return CreatedAtAction("GetPlayerData", new { id = playerData.PlayerId }, playerData);
+                if (!PlayerDataExists(playerData.PlayerId))
+                {
+                    _context.PlayerData.Add(playerData);
+                    await _context.SaveChangesAsync();
+                    return CreatedAtAction("GetPlayerData", new { id = playerData.PlayerId }, playerData);
+                }
+                else
+                {
+                    _context.PlayerData.Update(playerData);
+                    await _context.SaveChangesAsync();
+                    return CreatedAtAction("GetPlayerData", new { id = playerData.PlayerId }, playerData);
+                }
             }
             return NotFound();
         }

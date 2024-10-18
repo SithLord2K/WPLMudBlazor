@@ -2,8 +2,6 @@
 {
     public class TeamStats
     {
-        public int TeamId { get; set; }
-        public int Week_Id { get; set; }
         public string? TeamName { get; set; }
         public int TotalGamesWon { get; set; }
         public int TotalGamesLost { get; set; }

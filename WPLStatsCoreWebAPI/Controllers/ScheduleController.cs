@@ -62,13 +62,23 @@ namespace WPLBlazor.API.Controllers
             {
                 return Problem("Schedule is null.");
             }
-            _context.Schedule.Add(schedule);
-            await _context.SaveChangesAsync();
-
+            if (!ScheduleExists(schedule.Week_Id, schedule.Home_Team, schedule.Away_Team))
+                {
+                _context.Schedule.Add(schedule);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                _context.Schedule.Update(schedule);
+                await _context.SaveChangesAsync();
+            }
             return CreatedAtAction("GetShedule", new { id = schedule.Week_Id }, schedule);
         }
 
-
+        private bool ScheduleExists(int week_id, int home_team, int away_team)
+        {
+            return (_context.Schedule?.Any(e => e.Week_Id == week_id && e.Home_Team == home_team && e.Away_Team == away_team)).GetValueOrDefault();
+        }
     }
 
 }

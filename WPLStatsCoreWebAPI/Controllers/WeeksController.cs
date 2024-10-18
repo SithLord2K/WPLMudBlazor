@@ -91,24 +91,17 @@ namespace WPLBlazor.API.Controllers
             {
                 return Problem("Entity set 'WPLStatsDbContext.Weeks'  is null.");
             }
-            _context.Weeks.Add(week);
-            try
+            if (!WeekExists(week.WeekNumber))
             {
+                _context.Weeks.Add(week);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateException)
+            else
             {
-                if (WeekExists(week.WeekNumber))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                _context.Update(week);
+                await _context.SaveChangesAsync();
             }
-
-            return CreatedAtAction("GetWeek", new { id = week.WeekNumber }, week);
+            return week;
         }
 
         // DELETE: api/Weeks/5
