@@ -18,41 +18,8 @@
             <CardText>
                 <center><h3>@day.Date.ToLongDateString()</h3></center>
                 <center><h4>Week: @day.Week_Id</h4></center>
-                @*                     <table width="100%" class="table">
-            <thead>
-            <tr>
-            <th colspan="6"><center>Date: @day.Date.ToLongDateString()</center></th>
-            </tr>
-            <tr>
-            <th colspan="6"><center>Week: @day.Week_Id</center></th>
-            </tr>
-            <tr>
-            <th width="16%"><center>Win</center></th>
-            <th width="16%"><center>Home Team</center></th>
-            <th width="16%" />
-            <th width="16%"><center>Away Team</center></th>
-            <th width="16%"><center>Win</center></th>
-            <th width="16%"><center>Table #</center></th>
-            </tr>
-            </thead>
-            @foreach (var d in schedules.Where(x => x.Date == day.Date))
-            {
-            <tbody>
-            <tr>
-            <td><center><Check Checked="@HomeWinChecked(d.Week_Id, d.Home_Team).Result" Disabled /></center></td>
-            <td><center>@teams.Where(x => x.Id == d.Home_Team).FirstOrDefault().TeamName</center></td>
-            <td><center>vs</center></td>
-            <td><center>@teams.Where(x => x.Id == d.Away_Team).FirstOrDefault().TeamName</center></td>
-            <td><center><Check Checked="@AwayWinChecked(d.Week_Id, d.Away_Team).Result" Disabled /></center></td>
-            <td><center>@d.Table_Number</center></td>
-
-            </tr>
-            </tbody>
-            }
-            </table> *@
-
-                <Table Striped Bordered>
-                    <TableHeader>
+                <Table Striped Bordered Responsive>
+                    <TableHeader Width="Width.Auto">
                         <TableHeaderCell><center>Win</center></TableHeaderCell>
                         <TableHeaderCell><center>Home Team</center></TableHeaderCell>
                         <TableHeaderCell></TableHeaderCell>
@@ -62,7 +29,7 @@
                     </TableHeader>
                     @foreach (var d in schedules.Where(x => x.Date == day.Date))
                     {
-                        <TableBody>
+                        <TableBody Width="Width.Auto">
                             <TableRowCell><center><Check Checked="@HomeWinChecked(d.Week_Id, d.Home_Team).Result" Disabled /></center></TableRowCell>
                             <TableRowCell><center>@teams.Where(x => x.Id == d.Home_Team).FirstOrDefault().TeamName</center></TableRowCell>
                             <TableRowCell><center>vs</center></TableRowCell>

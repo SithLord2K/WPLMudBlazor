@@ -5,53 +5,47 @@
 @using Microsoft.AspNetCore.Components.Routing
 @using Roster = WPLBlazor.Models.Roster
 
-
 <PageTitle>Team Rosters</PageTitle>
 
 <h1>Rosters</h1>
 <br />
 
-    @foreach (var team in teams)
+@foreach (var team in teams)
 {
     <Card>
         <CardBody>
             <CardTitle Size="4">@team.TeamName</CardTitle>
             <Divider />
             <CardText>
-                <table width="100%">
-                    <tbody>
-                        <tr>
-                            <th widht="33%">Player Name</th>
-                            <th width="33%">Games Played</th>
-                            <th width="33%">Captain?</th>
-                        </tr>
-                        @foreach (var roster in rosters.Where(x => x.TeamId == team.Id))
-                        {
+                <Table Bordered Striped Responsive>
+                    <TableHeader Width="Width.Auto">
+                        <TableHeaderCell><center>Player Name</center></TableHeaderCell>
+                        <TableHeaderCell><center>Games Played</center></TableHeaderCell>
+                        <TableHeaderCell><center>Captain?</center></TableHeaderCell>
+                    </TableHeader>
+                    @foreach (var roster in rosters.Where(x => x.TeamId == team.Id))
+                    {
 
-                            <tr>
-                                <td><a href="/player_detail/@roster.Player_Id">@roster.Player_Name</a></td>
-                                <td>@players.Where(x => x.Id == roster.Player_Id).FirstOrDefault().GamesPlayed</td>
-                                @if (roster.Player_Id == roster.Captain_Player_Id)
-                                {
-                                    <td><Icon Name="IconName.Check" /></td>
-                                }
-                                else
-                                {
-                                    <td></td>
-                                }
+                        <TableBody Width="Width.Auto">
+                            <TableRowCell><center><a href="/player_detail/@roster.Player_Id">@roster.Player_Name</a></center></TableRowCell>
+                            <TableRowCell><center>@players.Where(x => x.Id == roster.Player_Id).FirstOrDefault().GamesPlayed</center></TableRowCell>
+                            @if (roster.Player_Id == roster.Captain_Player_Id)
+                            {
+                                <TableRowCell><center><Icon Name="IconName.Check" /></center></TableRowCell>
+                            }
+                            else
+                            {
+                                <TableRowCell></TableRowCell>
+                            }
 
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                        </TableBody>
+                    }
+                </Table>
             </CardText>
         </CardBody>
     </Card>
-
     <br />
 }
-
-
 
 @code {
     [CascadingParameter]
@@ -61,7 +55,7 @@
     private RosterHelper rosterHelper = new();
     private PlayerHelpers playerHelpers = new();
 
-    private List<Players> players = [];
+    private List<Players>? players = [];
     private List<TeamDetails> teams = [];
     private List<Roster> rosters = [];
 
