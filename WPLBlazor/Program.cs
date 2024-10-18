@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using WPLBlazor.AuthenticationStateSyncer.PersistingRevalidatingAuthenticationStateProvider;
 using WPLBlazor.AuthenticationStateSyncer;
 using WPLBlazor.Services;
+using Blazorise.LoadingIndicator;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,13 +42,15 @@ builder.Services
     .AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services    
-.AddBlazorise( options =>
+builder.Services
+.AddBlazorise(options =>
      {
          options.Immediate = true;
      })
     .AddBootstrap5Providers()
-    .AddFontAwesomeIcons();
+    .AddFontAwesomeIcons()
+    .AddLoadingIndicator();
+
 
 var app = builder.Build();
 

@@ -158,7 +158,7 @@
                     <Fields>
                         <Field>
                             <FieldBody>
-                                <Button Color="Color.Success" Clicked="@AddTeamClicked">Add Team</Button>&nbsp;
+                                <Button Color="Color.Success" Clicked="@AddTeamClicked">Add/Edit Team</Button>&nbsp;
                                 <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
                             </FieldBody>
                         </Field>
@@ -231,7 +231,7 @@
                         <Fields>
                             <Field>
                                 <FieldBody>
-                                    <Button Color="Color.Success" Clicked="@AddScheduleClicked">Add Team</Button>&nbsp;
+                                    <Button Color="Color.Success" Clicked="@AddScheduleClicked">Add/Edit Schedule</Button>&nbsp;
                                     <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
                                 </FieldBody>
                             </Field>
@@ -436,7 +436,7 @@
                     <Fields>
                         <Field>
                             <FieldBody>
-                                <Button Color="Color.Success" Clicked="@AddPlayerClicked">Add Player</Button>&nbsp;
+                                <Button Color="Color.Success" Clicked="@AddPlayerClicked">Add/Edit Player</Button>&nbsp;
                                 <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
                             </FieldBody>
                         </Field>
@@ -462,6 +462,9 @@
 
 
 @code {
+    [CascadingParameter]
+    LoadingIndicator? loadingIndicator { get; set; }
+
     [Inject] private IToastService ToastService { get; set; }
     private IEnumerable<TeamDetails> TeamData;
 
@@ -502,11 +505,11 @@
     private string? toastMessage;
     private string? toastTitle;
     private string? message;
-    
+
 
     protected override async Task OnInitializedAsync()
     {
-
+        await loadingIndicator.Show();
         ClearLists();
 
         //Authentication
@@ -533,6 +536,7 @@
                 .Select(c => c.Value)
                 .FirstOrDefault() ?? string.Empty;
 
+            await loadingIndicator.Hide();
         }
     }
 

@@ -1,4 +1,4 @@
-﻿@page "/team_rosters"
+﻿@page "/rosters"
 @attribute [StreamRendering]
 @using Microsoft.AspNetCore.Mvc
 @using Microsoft.AspNetCore.WebUtilities
@@ -8,58 +8,54 @@
 
 <PageTitle>Team Rosters</PageTitle>
 
-<h1>Team Rosters</h1>
+<h1>Rosters</h1>
 <br />
 
-@if (teams == null || players == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
     @foreach (var team in teams)
-    {
-        <Card>
-            <CardBody>
-                <CardTitle Size="4">@team.TeamName</CardTitle>
-                <hr />
-                <CardText>
-                    <table width="100%">
-                        <tbody>
+{
+    <Card>
+        <CardBody>
+            <CardTitle Size="4">@team.TeamName</CardTitle>
+            <Divider />
+            <CardText>
+                <table width="100%">
+                    <tbody>
+                        <tr>
+                            <th widht="33%">Player Name</th>
+                            <th width="33%">Games Played</th>
+                            <th width="33%">Captain?</th>
+                        </tr>
+                        @foreach (var roster in rosters.Where(x => x.TeamId == team.Id))
+                        {
+
                             <tr>
-                                <th widht="33%">Player Name</th>
-                                <th width="33%">Games Played</th>
-                                <th width="33%">Captain?</th>
+                                <td><a href="/player_detail/@roster.Player_Id">@roster.Player_Name</a></td>
+                                <td>@players.Where(x => x.Id == roster.Player_Id).FirstOrDefault().GamesPlayed</td>
+                                @if (roster.Player_Id == roster.Captain_Player_Id)
+                                {
+                                    <td><Icon Name="IconName.Check" /></td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+
                             </tr>
-                            @foreach (var roster in rosters.Where(x => x.TeamId == team.Id))
-                            {
-                                
-                                <tr>
-                                    <td><a href="/player_detail/@roster.Player_Id">@roster.Player_Name</a></td>
-                                    <td>@players.Where(x => x.Id == roster.Player_Id).FirstOrDefault().GamesPlayed</td>
-                                    @if (roster.Player_Id == roster.Captain_Player_Id)
-                                    {
-                                        <td><Icon Name="IconName.Check" /></td>
-                                    }
-                                    else
-                                    {
-                                        <td></td>
-                                    }
+                        }
+                    </tbody>
+                </table>
+            </CardText>
+        </CardBody>
+    </Card>
 
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </CardText>
-            </CardBody>
-        </Card>
-
-        <br />
-    }
-
+    <br />
 }
+
+
 
 @code {
+    [CascadingParameter]
+    LoadingIndicator? loadingIndicator { get; set; }
 
     private APIService aPIService = new();
     private RosterHelper rosterHelper = new();
@@ -71,8 +67,10 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        await loadingIndicator.Show();
         players = await playerHelpers.ConsolidatePlayer();
         teams = await aPIService.GetTeamDetails();
         rosters = await rosterHelper.GetRoster();
+        await loadingIndicator.Hide();
     }
 }

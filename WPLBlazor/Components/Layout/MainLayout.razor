@@ -1,9 +1,28 @@
 ﻿@using WPLBlazor.Models
 @inherits LayoutComponentBase
+@inject IVersionProvider VersionProvider
 
-<div class="page">
+<link href="_content/Blazorise.LoadingIndicator/blazorise.loadingindicator.css" rel="stylesheet" />
+<Layout Sider>
+    <LayoutSider>
+        <LayoutSiderContent>
+            <VerticalMenuBar />
+        </LayoutSiderContent>
+    </LayoutSider>
+    <Layout>
+        <LayoutHeader>
+            <Header  />
+        </LayoutHeader>
+        <LayoutContent Padding="Padding.Is3">
+            <LoadingIndicator>
+                @Body
+            </LoadingIndicator>
+        </LayoutContent>
+    </Layout>
+</Layout>
+@* <div class="page">
     <div class="sidebar">
-        <NavMenu />
+        <VerticalMenuBar />
     </div>
 
     <main>
@@ -12,15 +31,22 @@
         </div>
 
         <article class="content px-4">
+            <LoadingIndicator FullScreen>
             @Body
+            </LoadingIndicator>
         </article>
-        <div class="blockquote-footer">
+        <Divider />
+        <LayoutFooter>
+        <p class="card-footer">
             <center>Site created and maintained by Chris Wiley on Golden Brothers 1</center>
-        </div>
+            <br />
+                <center>This site was made using Blazorise: @($"v{VersionProvider.MilestoneVersion}")</center>
+        </p>
+        </LayoutFooter>
     </main>
 
 </div>
-
+ *@
 <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>

@@ -4,7 +4,7 @@
 <PageTitle>Leaderboards</PageTitle>
 
 <h1>Leaderboards</h1>
-
+<br />
 
 @if (teamStats == null)
 {
@@ -18,51 +18,28 @@ else
                 Team Leaderboard
             </CardTitle>
             <Divider />
-            @* <table class="table">
-        <thead>
-        <tr>
-        <th>Team Name</th>
-        <th>Games Played</th>
-        <th>Games Won</th>
-        <th>Games Lost</th>
-        <th>Average</th>
-        </tr>
-        </thead>
-        @foreach (var teamStat in teamStats.OrderByDescending(x => x.TotalAverage).Where(y => y.TotalGamesPlayed > 0))
-        {
-        <tbody>
-        <tr>
-        <td>@teamStat.TeamName</td>
-        <td>@teamStat.TotalGamesPlayed</td>
-        <td>@teamStat.TotalGamesWon</td>
-        <td>@teamStat.TotalGamesLost</td>
-        <td>@teamStat.TotalAverage%</td>
-        </tr>
-
-        </tbody>
-
-        }
-        </table> *@
-            <DataGrid TItem="TeamStats"
-                      @ref="teamGrid"
-                      Data="@teamStats"
-                      PageSize="5"
-                      SortMode="DataGridSortMode.Single"
-                      Sortable
-                      Bordered
-                      ShowPager
-                      Responsive
-                      ResponsiveMode="@TableResponsiveMode.Mobile">
-                <DataGridColumns>
-                    <DataGridCommandColumn>
-                        <DataGridColumn Field="@nameof(TeamStats.TeamName)" Caption="Team" Sortable="true" />
-                        <DataGridColumn Field="@nameof(TeamStats.TotalGamesPlayed)" Caption="Last Name" Sortable="true" />
-                        <DataGridColumn Field="@nameof(TeamStats.TotalGamesWon)" Caption="Games Played" Sortable="true" />
-                        <DataGridColumn Field="@nameof(TeamStats.TotalGamesLost)" Caption="Games Won" Sortable="true" />
-                        <DataGridColumn Field="@nameof(TeamStats.TotalAverage)" Caption="Average" Sortable="true" />
-                    </DataGridCommandColumn>
-                </DataGridColumns>
-            </DataGrid>
+            <CardText>
+                <DataGrid TItem="TeamStats"
+                          @ref="teamGrid"
+                          Data="@teamStats"
+                          PageSize="5"
+                          SortMode="DataGridSortMode.Single"
+                          Sortable
+                          Bordered
+                          ShowPager
+                          Responsive
+                          ResponsiveMode="@TableResponsiveMode.Mobile">
+                    <DataGridColumns>
+                        <DataGridCommandColumn>
+                            <DataGridColumn Field="@nameof(TeamStats.TeamName)" Caption="Team" Sortable="true" />
+                            <DataGridColumn Field="@nameof(TeamStats.TotalGamesPlayed)" Caption="Last Name" Sortable="true" />
+                            <DataGridColumn Field="@nameof(TeamStats.TotalGamesWon)" Caption="Games Played" Sortable="true" />
+                            <DataGridColumn Field="@nameof(TeamStats.TotalGamesLost)" Caption="Games Won" Sortable="true" />
+                            <DataGridColumn Field="@nameof(TeamStats.TotalAverage)" Caption="Average" Sortable="true" />
+                        </DataGridCommandColumn>
+                    </DataGridColumns>
+                </DataGrid>
+            </CardText>
         </CardBody>
     </Card>
     <br />
@@ -73,30 +50,6 @@ else
             </CardTitle>
             <Divider />
             <CardText>
-                @* <table class="table">
-            <thead>
-            <tr>
-            <th>Player Name</th>
-            <th>Games Played</th>
-            <th>Games Won</th>
-            <th>Games Lost</th>
-            <th>Average</th>
-            </tr>
-            </thead>
-            @foreach (var player in playerData.OrderByDescending(x => x.Average).Where(y => y.GamesPlayed > 0))
-            {
-            <tbody>
-            <tr>
-            <td>@player.FirstName @player.LastName</td>
-            <td>@player.GamesPlayed</td>
-            <td>@player.GamesWon</td>
-            <td>@player.GamesLost</td>
-            <td>@player.Average%</td>
-            </tr>
-
-            </tbody>
-            }
-            </table> *@
                 <DataGrid TItem="PDataModel"
                           @ref="dataGrid"
                           Data="@pData"
@@ -130,6 +83,8 @@ else
 }
 
 @code {
+    [CascadingParameter]
+    LoadingIndicator? loadingIndicator { get; set; }
 
     private APIService aPIService = new();
     private TeamHelper teamHelper = new();
@@ -147,6 +102,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        await loadingIndicator.Show();
         teamDetails = await playerHelper.GetTeamDetails();
         playerData = await playerHelper.ConsolidatePlayer();
         teamStats = await teamHelper.GetAllTeamStats();
@@ -155,5 +111,6 @@ else
         await dataGrid.ApplySorting(new DataGridSortColumnInfo(nameof(PDataModel.Average), SortDirection.Descending));
         await teamGrid.ApplySorting(new DataGridSortColumnInfo(nameof(TeamStats.TotalAverage), SortDirection.Descending));
         await base.OnInitializedAsync();
+        await loadingIndicator.Hide();
     }
 }

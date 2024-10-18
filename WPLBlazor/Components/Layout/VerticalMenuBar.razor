@@ -1,0 +1,58 @@
+﻿<Bar Mode="BarMode.VerticalInline"
+     CollapseMode="BarCollapseMode.Small"
+     Breakpoint="Breakpoint.Desktop"
+     NavigationBreakpoint="Breakpoint.Tablet"
+     ThemeContrast="ThemeContrast.Dark"
+     MenuToggleBehavior=BarMenuToggleBehavior.AllowMultipleMenus
+     Shadow="Shadow.Default">
+     <BarToggler />
+    <BarBrand>
+        <BarItem>
+            <BarLink To="">
+                Welland Pool League
+            </BarLink>
+        </BarItem>
+    </BarBrand>
+    <BarMenu>
+        <BarStart>
+            <BarItem>
+                <BarLink To="">
+                    <BarIcon IconName="IconName.Home" /> 
+                    Home
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="rosters">
+                    <BarIcon IconName="IconName.Users" /> 
+                    Rosters
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="leaderboard">
+                    <BarIcon IconName="IconName.ListUl" />
+                    Leaderboards
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="schedule">
+                    <BarIcon IconName="IconName.Calendar" />
+                    Schedule
+                </BarLink>
+            </BarItem>
+            <AuthorizeView Roles="League_Admin, Super_User">
+                <BarItem>
+                    <BarLink To="league_admin">
+                        <BarIcon IconName="IconName.UserTie" />
+                        Admin
+                    </BarLink>
+                </BarItem>
+            </AuthorizeView>
+        </BarStart>
+    </BarMenu>
+</Bar>
+
+
+
+@code {
+
+}
