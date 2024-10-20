@@ -12,7 +12,7 @@ namespace WPLBlazor.Services
     public class APIService : IAPIService
     {
         
-        private static HttpClient? client;
+        private static HttpClient client = new();
 
         static readonly string BaseURL = "https://wileysoft.codersden.com";
         public APIService()

@@ -56,52 +56,53 @@
         <ModalBody>
             <Form>
                 <Field>
-                    <Fields>
-                        <Field ColumnSize="ColumnSize.IsFull">
-                            <Select TValue="int" SelectedValueChanged="@LoadPlayer">
-                                <SelectItem>Select a Player to Edit</SelectItem>
+                    <Field ColumnSize="ColumnSize.IsFull">
+                        <Select TValue="int" SelectedValueChanged="@LoadPlayer">
+                            <SelectItem>Select a Player to Edit</SelectItem>
+                            @if (players is not null)
+                            {
                                 @foreach (var p1 in players)
                                 {
                                     <SelectItem Value="@p1.Id">@p1.FirstName @p1.LastName</SelectItem>
                                 }
-                            </Select>
-                        </Field>
+                            }
+                        </Select>
+                    </Field>
+                    <Field>
+                        @if (player is not null)
+                        {
+                            <Field Horizontal>
+                                <FieldLabel ColumnSize="ColumnSize.IsQuarter">First Name:</FieldLabel>
+                                <FieldBody><TextEdit @bind-Text="@player.FirstName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                            </Field>
+                            <Field Horizontal>
+                                <FieldLabel>Last Name:</FieldLabel>
+                                <FieldBody><TextEdit @bind-Text="@player.LastName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                            </Field>
 
-                        <Field>
-                            <Fields>
-                                <Field ColumnSize="ColumnSize.IsHalf">
-                                    <FieldLabel>First Name:</FieldLabel>
-                                    <FieldBody><TextEdit @bind-Text="@player.FirstName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
-                                </Field>
-                                <Field>
-                                    <FieldLabel ColumnSize="ColumnSize.IsHalf">Last Name:</FieldLabel>
-                                    <FieldBody><TextEdit @bind-Text="@player.LastName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
-                                </Field>
-                            </Fields>
-                            <Fields>
-                                <Field>
-                                    <FieldLabel>Team:</FieldLabel>
-                                    <FieldBody>
-                                        <Select TValue="int" SelectedValue="@player.TeamId" SelectedValueChanged="@PlayerTeamSelected">
-                                            <SelectItem>Select A Team</SelectItem>
+                            <Field>
+                                <FieldLabel>Team:</FieldLabel>
+                                <FieldBody>
+                                    <Select TValue="int" SelectedValue="@player.TeamId" SelectedValueChanged="@PlayerTeamSelected">
+                                        <SelectItem>Select A Team</SelectItem>
+                                        @if (teams is not null)
+                                        {
                                             @foreach (var t in teams)
                                             {
                                                 <SelectItem Value="@t.Id">@t.TeamName</SelectItem>
                                             }
-                                        </Select>
-                                    </FieldBody>
-                                </Field>
-                            </Fields>
-                            <Fields>
-                                <Field>
-                                    <FieldBody>
-                                        <Button Color="Color.Success" Clicked="@AddPlayerClicked">Add/Edit Player</Button>&nbsp;
-                                        <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
-                                    </FieldBody>
-                                </Field>
-                            </Fields>
+                                        }
+                                    </Select>
+                                </FieldBody>
+                            </Field>
+                        }
+                        <Field>
+                            <FieldBody>
+                                <Button Color="Color.Success" Clicked="@AddPlayerClicked">Add/Edit Player</Button>&nbsp;
+                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                            </FieldBody>
                         </Field>
-                    </Fields>
+                    </Field>
                 </Field>
             </Form>
         </ModalBody>
@@ -117,52 +118,52 @@
         <ModalBody>
             <Form>
                 <Field>
-                    <Fields>
-                        <Field ColumnSize="ColumnSize.IsFull">
-                            @*<Select TValue="int" SelectedValueChanged="@LoadTeam">
-                            <SelectItem Value="0">Select a Team to Edit</SelectItem>
-                            @foreach (var t1 in teams)
-                            {
-                            <SelectItem Value="@t1.Id">@t1.TeamName</SelectItem>
-                            }
-                            </Select> *@
-                            <DropdownList TItem="TeamDetails" TValue="int"
-                                          Data="@teams"
-                                          TextField="@((item)=>item.TeamName)"
-                                          ValueField="@((item)=>item.Id)"
-                                          SelectedValueChanged="@LoadTeam">
-                                Select Team to Edit
-                            </DropdownList>
-                        </Field>
-                    </Fields>
+                    <Field ColumnSize="ColumnSize.IsFull">
+                        @*<Select TValue="int" SelectedValueChanged="@LoadTeam">
+                        <SelectItem Value="0">Select a Team to Edit</SelectItem>
+                        @foreach (var t1 in teams)
+                        {
+                        <SelectItem Value="@t1.Id">@t1.TeamName</SelectItem>
+                        }
+                        </Select> *@
+                        <DropdownList TItem="TeamDetails" TValue="int"
+                                      Data="@teams"
+                                      TextField="@((item)=>item.TeamName)"
+                                      ValueField="@((item)=>item.Id)"
+                                      SelectedValueChanged="@LoadTeam">
+                            Select Team to Edit
+                        </DropdownList>
+                    </Field>
                 </Field>
                 <Field>
-                    <Fields>
-                        <Field ColumnSize="ColumnSize.IsHalf">
+                    @if (addTeam is not null)
+                    {
+                        <Field ColumnSize="ColumnSize.IsFull">
                             <FieldLabel>Team Name:</FieldLabel>
                             <FieldBody><TextEdit @bind-Text="@addTeam.TeamName" /></FieldBody>
                         </Field>
-                        <Field ColumnSize="ColumnSize.IsHalf">
+                        <Field ColumnSize="ColumnSize.IsFull">
                             <FieldLabel>Team Captain:</FieldLabel>
                             <FieldBody>
                                 <Select TValue="int" SelectedValue="@addTeam.Captain_Player_Id" SelectedValueChanged="@TeamCaptainSelected">
                                     <SelectItem>Select A Captain</SelectItem>
-                                    @foreach (var p in players)
+                                    @if (players is not null)
                                     {
-                                        <SelectItem Value="@p.Id">@p.FirstName @p.LastName</SelectItem>
+                                        @foreach (var p in players)
+                                        {
+                                            <SelectItem Value="@p.Id">@p.FirstName @p.LastName</SelectItem>
+                                        }
                                     }
                                 </Select>
                             </FieldBody>
                         </Field>
-                    </Fields>
-                    <Fields>
                         <Field>
                             <FieldBody>
                                 <Button Color="Color.Success" Clicked="@AddTeamClicked">Add/Edit Team</Button>&nbsp;
                                 <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
                             </FieldBody>
                         </Field>
-                    </Fields>
+                    }
                 </Field>
             </Form>
         </ModalBody>
@@ -178,64 +179,76 @@
         <ModalBody>
             <Form>
                 <Field>
-                    <Fields>
-                        <Field ColumnSize="ColumnSize.IsFull">
-                            <FieldBody>
-                                <Select TValue="int" SelectedValueChanged="@LoadSchedule">
-                                    <SelectItem>Select Schedule to Edit</SelectItem>
+                    <Field ColumnSize="ColumnSize.IsFull">
+                        <FieldBody>
+                            <Select TValue="int" SelectedValueChanged="@LoadSchedule">
+                                <SelectItem>Select Schedule to Edit</SelectItem>
+                                @if (schedules is not null)
+                                {
                                     @foreach (var s in schedules)
                                     {
-                                        <SelectItem Value="@s.Id">Week @s.Week_Id, Date: @s.Date, Home Team: @teams.Where(x => x.Id == s.Home_Team).FirstOrDefault().TeamName, Away Team: @teams.Where(x => x.Id == s.Away_Team).FirstOrDefault().TeamName </SelectItem>
+                                        @if (teams is not null)
+                                        {
+                                            <SelectItem Value="@s.Id">Week @s.Week_Id, Date: @s.Date, Home Team: @teams.Where(x => x.Id == s.Home_Team).FirstOrDefault().TeamName, Away Team: @teams.Where(x => x.Id == s.Away_Team).FirstOrDefault().TeamName </SelectItem>
+                                        }
                                     }
-                                </Select>
-                            </FieldBody>
-                        </Field>
-                    </Fields>
+                                }
+                            </Select>
+                        </FieldBody>
+                    </Field>
                     <Field ColumnSize="ColumnSize.IsFull">
-                        <Fields>
-                            <FieldLabel>Date</FieldLabel>
-                            <FieldBody>
+                        <FieldLabel>Date</FieldLabel>
+                        <FieldBody>
+                            @if (schedule is not null)
+                            {
                                 <DateEdit @bind-Date="@schedule.Date" />
-                            </FieldBody>
-                        </Fields>
+                            }
+                        </FieldBody>
                     </Field>
                     <Field>
-                        <Fields>
-                            <FieldLabel>Home Team</FieldLabel>
-                            <FieldBody>
+                        <FieldLabel>Home Team</FieldLabel>
+                        <FieldBody>
+                            @if (schedule is not null)
+                            {
                                 <Select TValue="int" SelectedValue="@schedule.Home_Team">
+
                                     <SelectItem> Select Home Team</SelectItem>
-                                    @foreach (var t3 in teams)
+                                    @if (teams is not null)
                                     {
-                                        <SelectItem Value="@t3.Id">@t3.TeamName</SelectItem>
+                                        @foreach (var t3 in teams)
+                                        {
+                                            <SelectItem Value="@t3.Id">@t3.TeamName</SelectItem>
+                                        }
                                     }
                                 </Select>
-                            </FieldBody>
-                        </Fields>
+                            }
+                        </FieldBody>
                     </Field>
                     <Field>
-                        <Fields>
-                            <FieldLabel>Away Team</FieldLabel>
-                            <FieldBody>
+                        <FieldLabel>Away Team</FieldLabel>
+                        <FieldBody>
+                            @if (schedule is not null)
+                            {
                                 <Select TValue="int" SelectedValue="@schedule.Away_Team">
                                     <SelectItem> Select Away Team</SelectItem>
+                                    @if(teams is not null)
+                                    {
                                     @foreach (var t4 in teams)
                                     {
                                         <SelectItem Value="@t4.Id">@t4.TeamName</SelectItem>
                                     }
+                                    }
                                 </Select>
-                            </FieldBody>
-                        </Fields>
+                            }
+                        </FieldBody>
                     </Field>
                     <Field>
-                        <Fields>
-                            <Field>
-                                <FieldBody>
-                                    <Button Color="Color.Success" Clicked="@AddScheduleClicked">Add/Edit Schedule</Button>&nbsp;
-                                    <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
-                                </FieldBody>
-                            </Field>
-                        </Fields>
+                        <Field>
+                            <FieldBody>
+                                <Button Color="Color.Success" Clicked="@AddScheduleClicked">Add/Edit Schedule</Button>&nbsp;
+                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                            </FieldBody>
+                        </Field>
                     </Field>
                 </Field>
             </Form>
@@ -252,30 +265,33 @@
         <ModalBody>
             <Form>
                 <Field>
-                    <Fields>
-                        <Field ColumnSize="ColumnSize.IsFull">
-                            <Select TValue="int" SelectedValue="@player.Id" SelectedValueChanged="@LoadPlayer">
-                                <SelectItem>Choose Player To Add Games To</SelectItem>
+                    <Field ColumnSize="ColumnSize.IsFull">
+                        <Select TValue="int" SelectedValue="@player.Id" SelectedValueChanged="@LoadPlayer">
+                            <SelectItem>Choose Player To Add Games To</SelectItem>
+                            @if (players is not null)
+                            {
                                 @foreach (var p5 in players)
                                 {
                                     <SelectItem Value="@p5.Id">@p5.FirstName @p5.LastName</SelectItem>
                                 }
-                            </Select>
-                        </Field>
-                    </Fields>
+                            }
+                        </Select>
+                    </Field>
                 </Field>
                 <Field>
-                    <Fields>
-                        <Field ColumnSize="ColumnSize.IsFull">
-                            <FieldLabel>Player Name:</FieldLabel>
+                    <Field ColumnSize="ColumnSize.IsFull">
+                        <FieldLabel>Player Name:</FieldLabel>
+                        @if (player is not null)
+                        {
                             <FieldBody>
                                 <TextEdit @bind-Text="@player.FirstName" Disabled />
                                 <NumericPicker @bind-Value="@player.Id" onchanged="@LoadPlayerData(player.Id)" hidden />
                             </FieldBody>
-                        </Field>
-                    </Fields>
+                        }
+                    </Field>
                 </Field>
-                <Fields>
+                @if (playerData is not null)
+                {
                     <FieldLabel>Week Number:</FieldLabel>
                     <FieldBody>
                         <NumericPicker @bind-Value="@playerData.WeekNumber" onclick="@DoesWeekExist()" />
@@ -292,16 +308,14 @@
                     <FieldBody>
                         <NumericPicker Value="@total" Disabled />
                     </FieldBody>
-                </Fields>
+                }
                 <Field></Field>
-                <Fields>
-                    <Field>
-                        <FieldBody>
-                            <Button Color="Color.Success" Clicked="@AddPlayerDataClicked">Modify Player Games</Button>&nbsp;
-                            <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
-                        </FieldBody>
-                    </Field>
-                </Fields>
+                <Field>
+                    <FieldBody>
+                        <Button Color="Color.Success" Clicked="@AddPlayerDataClicked">Modify Player Games</Button>&nbsp;
+                        <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                    </FieldBody>
+                </Field>
             </Form>
         </ModalBody>
     </ModalContent>
@@ -318,8 +332,7 @@
             <Divider />
             <Form>
                 <Field>
-                    @*                     <Field>
-                    <Fields>
+                    @*<Field>
                     <Field ColumnSize="ColumnSize.IsFull">
                     <Select TValue="int" SelectedValue="@week.WeekNumber" SelectedValueChanged="@LoadWeek">
                     <SelectItem Value="0">Choose Week To Edit</SelectItem>
@@ -333,36 +346,45 @@
                     }
                     </Select>
                     </Field>
-                    </Fields>
                     </Field> *@
                     <Field>
-                        <Fields>
-                            <Field ColumnSize="ColumnSize.IsFull">
-                                <FieldLabel>Week #:</FieldLabel>
-                                <FieldBody>
+                        <Field ColumnSize="ColumnSize.IsFull">
+                            <FieldLabel>Week #:</FieldLabel>
+                            <FieldBody>
+                                @if (week is not null)
+                                {
                                     <NumericEdit @bind-Value="@week.WeekNumber" onchanged="@LoadWeek" />
-                                </FieldBody>
-                                <FieldLabel>Home Team:</FieldLabel>
-                                <FieldBody>
-                                    <Select TValue="int" SelectedValue="@week.Home_Team" SelectedValueChanged="@UpdateHomeTeam">
-                                        <SelectItem Value="0">Select a Home Team</SelectItem>
+                                }
+                            </FieldBody>
+                            <FieldLabel>Home Team:</FieldLabel>
+                            <FieldBody>
+                                <Select TValue="int" SelectedValue="@week.Home_Team" SelectedValueChanged="@UpdateHomeTeam">
+                                    <SelectItem Value="0">Select a Home Team</SelectItem>
+                                    @if (teams is not null)
+                                    {
                                         @foreach (var t1 in teams)
                                         {
                                             <SelectItem Value="t1.Id">@t1.TeamName</SelectItem>
                                         }
-                                    </Select>
-                                </FieldBody>
-                                <FieldLabel>Away Team:</FieldLabel>
-                                <FieldBody>
-                                    <Select TValue="int" SelectedValue="@week.Away_Team" SelectedValueChanged="@UpdateAwayTeam">
-                                        <SelectItem Value="0">Select an Away Team</SelectItem>
+                                    }
+                                </Select>
+                            </FieldBody>
+                            <FieldLabel>Away Team:</FieldLabel>
+                            <FieldBody>
+                                <Select TValue="int" SelectedValue="@week.Away_Team" SelectedValueChanged="@UpdateAwayTeam">
+                                    <SelectItem Value="0">Select an Away Team</SelectItem>
+                                    @if (teams is not null)
+                                    {
                                         @foreach (var t2 in teams)
                                         {
                                             <SelectItem Value="t2.Id">@t2.TeamName</SelectItem>
                                         }
-                                    </Select>
-                                </FieldBody>
-                                <FieldBody>&nbsp;</FieldBody>
+                                    }
+                                </Select>
+                            </FieldBody>
+                            <FieldBody>&nbsp;</FieldBody>
+                            @if (week is not null)
+                            {
                                 <FieldBody>
                                     <Check TValue="bool" @bind-Checked="@week.Home_Won">Home Won</Check>
                                 </FieldBody>
@@ -372,14 +394,13 @@
                                 <FieldBody>
                                     &nbsp;<Check TValue="bool" @bind-Checked="@week.Playoff">Playoff</Check>
                                 </FieldBody>
-                                <FieldBody><br /></FieldBody>
-                                <FieldBody>
-                                    <Button Color="Color.Success" Clicked="@AddWeekClicked">Add Weeks</Button>&nbsp;
-                                    <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
-                                </FieldBody>
-
-                            </Field>
-                        </Fields>
+                            }
+                            <FieldBody><br /></FieldBody>
+                            <FieldBody>
+                                <Button Color="Color.Success" Clicked="@AddWeekClicked">Add Weeks</Button>&nbsp;
+                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                            </FieldBody>
+                        </Field>
                     </Field>
                 </Field>
             </Form>
@@ -396,51 +417,43 @@
         <ModalBody>
             <Form>
                 <Field>
-                    <Fields>
-                        <Field ColumnSize="ColumnSize.IsFull">
-                            <Select TValue="int">
-                                <SelectItem>Select a Player to Edit</SelectItem>
-                                @foreach (var p1 in players)
-                                {
-                                    <SelectItem Value="@p1.Id">@p1.FirstName @p1.LastName</SelectItem>
-                                }
-                            </Select>
-                        </Field>
-                    </Fields>
+                    <Field ColumnSize="ColumnSize.IsFull">
+                        <Select TValue="int">
+                            <SelectItem>Select a Player to Edit</SelectItem>
+                            @foreach (var p1 in players)
+                            {
+                                <SelectItem Value="@p1.Id">@p1.FirstName @p1.LastName</SelectItem>
+                            }
+                        </Select>
+                    </Field>
                 </Field>
                 <Field>
-                    <Fields>
-                        <Field ColumnSize="ColumnSize.IsHalf">
-                            <FieldLabel>First Name:</FieldLabel>
-                            <FieldBody><TextEdit @bind-Text="@player.FirstName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
-                        </Field>
-                        <Field>
-                            <FieldLabel ColumnSize="ColumnSize.IsHalf">Last Name:</FieldLabel>
-                            <FieldBody><TextEdit @bind-Text="@player.LastName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
-                        </Field>
-                    </Fields>
-                    <Fields>
-                        <Field>
-                            <FieldLabel>Team:</FieldLabel>
-                            <FieldBody>
-                                <Select TValue="int" SelectedValue="@player.TeamId" SelectedValueChanged="@PlayerTeamSelected">
-                                    <SelectItem>Select A Team</SelectItem>
-                                    @foreach (var t in teams)
-                                    {
-                                        <SelectItem Value="@t.Id">@t.TeamName</SelectItem>
-                                    }
-                                </Select>
-                            </FieldBody>
-                        </Field>
-                    </Fields>
-                    <Fields>
-                        <Field>
-                            <FieldBody>
-                                <Button Color="Color.Success" Clicked="@AddPlayerClicked">Add/Edit Player</Button>&nbsp;
-                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
-                            </FieldBody>
-                        </Field>
-                    </Fields>
+                    <Field ColumnSize="ColumnSize.IsHalf">
+                        <FieldLabel>First Name:</FieldLabel>
+                        <FieldBody><TextEdit @bind-Text="@player.FirstName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                    </Field>
+                    <Field>
+                        <FieldLabel ColumnSize="ColumnSize.IsHalf">Last Name:</FieldLabel>
+                        <FieldBody><TextEdit @bind-Text="@player.LastName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                    </Field>
+                    <Field>
+                        <FieldLabel>Team:</FieldLabel>
+                        <FieldBody>
+                            <Select TValue="int" SelectedValue="@player.TeamId" SelectedValueChanged="@PlayerTeamSelected">
+                                <SelectItem>Select A Team</SelectItem>
+                                @foreach (var t in teams)
+                                {
+                                    <SelectItem Value="@t.Id">@t.TeamName</SelectItem>
+                                }
+                            </Select>
+                        </FieldBody>
+                    </Field>
+                    <Field>
+                        <FieldBody>
+                            <Button Color="Color.Success" Clicked="@AddPlayerClicked">Add/Edit Player</Button>&nbsp;
+                            <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                        </FieldBody>
+                    </Field>
                 </Field>
             </Form>
         </ModalBody>
@@ -466,7 +479,6 @@
     LoadingIndicator? loadingIndicator { get; set; }
 
     [Inject] private IToastService ToastService { get; set; }
-    private IEnumerable<TeamDetails> TeamData;
 
     //Modals
     private Modal modalAddPlayer = new();
@@ -488,8 +500,6 @@
     private APIService apiService = new();
     private PlayerHelpers playerHelper = new();
     private WeekHelper weekHelper = new();
-    private Auth0API auth0API = new();
-
 
     //Lists
     private List<TeamDetails>? teams = [];
@@ -504,8 +514,6 @@
     private bool toastVisible = false;
     private string? toastMessage;
     private string? toastTitle;
-    private string? message;
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -716,7 +724,6 @@
     async Task LoadWeek(int value)
     {
         week.WeekNumber = value;
-
     }
 
     async Task UpdateHomeTeam(int value)

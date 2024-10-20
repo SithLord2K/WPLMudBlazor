@@ -8,7 +8,7 @@ namespace WPLBlazor.Services
         public List<PlayersView> playersView = [];
         public APIService aPIService = new();
 
-        public async Task<List<PlayersView>> GetPlayersView()
+        public async Task<List<PlayersView>?> GetPlayersView()
         {
             playersView.Clear();
             playersView = await aPIService.GetPlayersView();

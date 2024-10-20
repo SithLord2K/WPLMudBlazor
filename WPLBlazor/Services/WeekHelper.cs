@@ -10,7 +10,7 @@ namespace WPLBlazor.Services
         readonly IAPIService aPIService = new APIService();
         public async Task<List<WeekFullInfo>> GetFullWeek()
         {
-            List<TeamDetails> whatTeam = [];
+            
             var fullWeeks = await aPIService.GetAllWeeks();
             List<PlayerData> playerInfo = [];
             var allPlayers = await aPIService.GetAllPlayers();
@@ -22,42 +22,42 @@ namespace WPLBlazor.Services
                     playerInfo.Add(p);
                 }
             }
-
-
             foreach (Weeks week in fullWeeks)
             {
-                whatTeam = await aPIService.GetTeamDetails();
+                List<TeamDetails>? whatTeam = await aPIService.GetTeamDetails();
                 bool testWeek = week.Forfeit;
-                WeekFullInfo weekFull = new()
+                if (whatTeam is not null)
                 {
+                    WeekFullInfo weekFull = new()
+                    {
 
-                    GamesWon = playerInfo.Where(w => w.WeekNumber == week.WeekNumber).Sum(g => g.GamesWon),
-                    GamesLost = playerInfo.Where(w => w.WeekNumber == week.WeekNumber).Sum(g => g.GamesLost),
-                    WeekNumber = week.WeekNumber,
-                    Home_Team = week.Home_Team,
-                    Away_Team = week.Away_Team,
-                    Home_TeamName = whatTeam.FirstOrDefault(td => td.Id == week.Home_Team).TeamName,
-                    Away_TeamName = whatTeam.FirstOrDefault(td => td.Id == week.Away_Team).TeamName,
-                    Home_Won = week.Home_Won
+                        GamesWon = playerInfo.Where(w => w.WeekNumber == week.WeekNumber).Sum(g => g.GamesWon),
+                        GamesLost = playerInfo.Where(w => w.WeekNumber == week.WeekNumber).Sum(g => g.GamesLost),
+                        WeekNumber = week.WeekNumber,
+                        Home_Team = week.Home_Team,
+                        Away_Team = week.Away_Team,
+                        Home_TeamName = whatTeam.FirstOrDefault(td => td.Id == week.Home_Team).TeamName,
+                        Away_TeamName = whatTeam.FirstOrDefault(td => td.Id == week.Away_Team).TeamName,
+                        Home_Won = week.Home_Won
 
-                };
-                if (week.WeekNumber > 18)
-                {
-                    weekFull.Playoff = true;
+                    };
+                    if (week.WeekNumber > 18)
+                    {
+                        weekFull.Playoff = true;
+                    }
+                    if (weekFull.GamesWon != 0)
+                    {
+                        weekFull.Average = Decimal.Round((decimal)weekFull.GamesWon / ((decimal)weekFull.GamesLost + (decimal)weekFull.GamesWon) * 100, 2);
+                    }
+                    else
+                    {
+                        weekFull.Forfeit = week.Forfeit;
+                        weekFull.GamesWon = 0;
+                        weekFull.GamesLost = 0;
+                        weekFull.Average = 0;
+                    }
+                    WeekHelperFullInfo.Add(weekFull);
                 }
-                if (weekFull.GamesWon != 0)
-                {
-                    weekFull.Average = Decimal.Round((decimal)weekFull.GamesWon / ((decimal)weekFull.GamesLost + (decimal)weekFull.GamesWon) * 100, 2);
-                }
-                else
-                {
-                    weekFull.Forfeit = week.Forfeit;
-                    weekFull.GamesWon = 0;
-                    weekFull.GamesLost = 0;
-                    weekFull.Average = 0;
-                }
-
-                WeekHelperFullInfo.Add(weekFull);
             }
             return WeekHelperFullInfo;
 

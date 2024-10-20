@@ -84,7 +84,7 @@ else
 
 @code {
     [CascadingParameter]
-    LoadingIndicator? loadingIndicator { get; set; }
+    LoadingIndicator loadingIndicator { get; set; } = new();
 
     private APIService aPIService = new();
     private TeamHelper teamHelper = new();
@@ -96,8 +96,8 @@ else
     private List<Players> playerData = [];
     private List<PDataModel> pData = [];
     private PDataModel pDataModel = new();
-    private DataGrid<PDataModel> dataGrid;
-    private DataGrid<TeamStats> teamGrid;
+    private DataGrid<PDataModel> dataGrid =new();
+    private DataGrid<TeamStats> teamGrid =new();
 
 
     protected override async Task OnInitializedAsync()

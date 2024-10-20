@@ -13,7 +13,7 @@
 
         public class Roles
         {
-            public string[] roles { get; set; }
+            public string[]? roles { get; set; }
         }
 
       

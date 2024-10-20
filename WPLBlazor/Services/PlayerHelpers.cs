@@ -5,7 +5,7 @@ namespace WPLBlazor.Services
     public class PlayerHelpers
     {
         private readonly IAPIService aPIService = new APIService();
-        public async Task<List<Players>> ConsolidatePlayer()
+        public async Task<List<Players>?> ConsolidatePlayer()
         {
             var pList = new List<Players>();
 

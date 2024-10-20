@@ -37,7 +37,7 @@ else
 }
 @code {
     [CascadingParameter]
-    LoadingIndicator? loadingIndicator { get; set; }
+    LoadingIndicator loadingIndicator { get; set; } = new();
 
     [Parameter]
     public int ID { get; set; }

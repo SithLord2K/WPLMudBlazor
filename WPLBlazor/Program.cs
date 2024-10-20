@@ -13,7 +13,7 @@ using WPLBlazor.Services;
 using Blazorise.LoadingIndicator;
 
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 // Add API Services
 
@@ -21,8 +21,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
 //Add Authentication Services
-builder.Services
-    .AddAuth0WebAppAuthentication(options =>
+builder.Services.AddAuth0WebAppAuthentication(options =>
     {
         options.Domain = builder.Configuration["Auth0:Domain"];
         options.ClientId = builder.Configuration["Auth0:ClientId"];

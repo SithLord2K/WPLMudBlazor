@@ -9,7 +9,7 @@ namespace WPLBlazor.Services
         private TeamHelper teamHelper = new();
         private PlayerHelpers playerHelper = new();
         private List<TeamStats> teamStats = new();
-        private List<TeamDetails> teamDetails = [];
+        private List<TeamDetails>? teamDetails = [];
         private List<Players> playerData = [];
         private List<PDataModel> pData = [];
         private PDataModel pDataModel = new();
