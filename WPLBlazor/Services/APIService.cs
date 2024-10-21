@@ -55,8 +55,7 @@ namespace WPLBlazor.Services
             {
                 Content = JsonContent.Create<Player>(player)
             };
-            string testing = message.Content.ToString();
-            HttpResponseMessage response = await client.SendAsync(message);
+           HttpResponseMessage response = await client.SendAsync(message);
            if(response.IsSuccessStatusCode)
            {
                 return true;

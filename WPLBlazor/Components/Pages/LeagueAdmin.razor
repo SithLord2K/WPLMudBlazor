@@ -231,12 +231,12 @@
                             {
                                 <Select TValue="int" SelectedValue="@schedule.Away_Team">
                                     <SelectItem> Select Away Team</SelectItem>
-                                    @if(teams is not null)
+                                    @if (teams is not null)
                                     {
-                                    @foreach (var t4 in teams)
-                                    {
-                                        <SelectItem Value="@t4.Id">@t4.TeamName</SelectItem>
-                                    }
+                                        @foreach (var t4 in teams)
+                                        {
+                                            <SelectItem Value="@t4.Id">@t4.TeamName</SelectItem>
+                                        }
                                     }
                                 </Select>
                             }
@@ -266,16 +266,20 @@
             <Form>
                 <Field>
                     <Field ColumnSize="ColumnSize.IsFull">
-                        <Select TValue="int" SelectedValue="@player.Id" SelectedValueChanged="@LoadPlayer">
-                            <SelectItem>Choose Player To Add Games To</SelectItem>
-                            @if (players is not null)
-                            {
-                                @foreach (var p5 in players)
+                        @if (player is not null)
+                        {
+                            <Select TValue="int" SelectedValue="@player.Id" SelectedValueChanged="@LoadPlayer">
+
+                                <SelectItem>Choose Player To Add Games To</SelectItem>
+                                @if (players is not null)
                                 {
-                                    <SelectItem Value="@p5.Id">@p5.FirstName @p5.LastName</SelectItem>
+                                    @foreach (var p5 in players)
+                                    {
+                                        <SelectItem Value="@p5.Id">@p5.FirstName @p5.LastName</SelectItem>
+                                    }
                                 }
-                            }
-                        </Select>
+                            </Select>
+                        }
                     </Field>
                 </Field>
                 <Field>
@@ -358,29 +362,35 @@
                             </FieldBody>
                             <FieldLabel>Home Team:</FieldLabel>
                             <FieldBody>
-                                <Select TValue="int" SelectedValue="@week.Home_Team" SelectedValueChanged="@UpdateHomeTeam">
-                                    <SelectItem Value="0">Select a Home Team</SelectItem>
-                                    @if (teams is not null)
-                                    {
-                                        @foreach (var t1 in teams)
+                                @if (week is not null)
+                                {
+                                    <Select TValue="int" SelectedValue="@week.Home_Team" SelectedValueChanged="@UpdateHomeTeam">
+                                        <SelectItem Value="0">Select a Home Team</SelectItem>
+                                        @if (teams is not null)
                                         {
-                                            <SelectItem Value="t1.Id">@t1.TeamName</SelectItem>
+                                            @foreach (var t1 in teams)
+                                            {
+                                                <SelectItem Value="t1.Id">@t1.TeamName</SelectItem>
+                                            }
                                         }
-                                    }
-                                </Select>
+                                    </Select>
+                                }
                             </FieldBody>
                             <FieldLabel>Away Team:</FieldLabel>
                             <FieldBody>
-                                <Select TValue="int" SelectedValue="@week.Away_Team" SelectedValueChanged="@UpdateAwayTeam">
-                                    <SelectItem Value="0">Select an Away Team</SelectItem>
-                                    @if (teams is not null)
-                                    {
-                                        @foreach (var t2 in teams)
+                                @if (week is not null)
+                                {
+                                    <Select TValue="int" SelectedValue="@week.Away_Team" SelectedValueChanged="@UpdateAwayTeam">
+                                        <SelectItem Value="0">Select an Away Team</SelectItem>
+                                        @if (teams is not null)
                                         {
-                                            <SelectItem Value="t2.Id">@t2.TeamName</SelectItem>
+                                            @foreach (var t2 in teams)
+                                            {
+                                                <SelectItem Value="t2.Id">@t2.TeamName</SelectItem>
+                                            }
                                         }
-                                    }
-                                </Select>
+                                    </Select>
+                                }
                             </FieldBody>
                             <FieldBody>&nbsp;</FieldBody>
                             @if (week is not null)
@@ -420,40 +430,50 @@
                     <Field ColumnSize="ColumnSize.IsFull">
                         <Select TValue="int">
                             <SelectItem>Select a Player to Edit</SelectItem>
-                            @foreach (var p1 in players)
+                            @if (players is not null)
                             {
-                                <SelectItem Value="@p1.Id">@p1.FirstName @p1.LastName</SelectItem>
+                                @foreach (var p1 in players)
+                                {
+                                    <SelectItem Value="@p1.Id">@p1.FirstName @p1.LastName</SelectItem>
+                                }
                             }
                         </Select>
+
                     </Field>
                 </Field>
                 <Field>
-                    <Field ColumnSize="ColumnSize.IsHalf">
-                        <FieldLabel>First Name:</FieldLabel>
-                        <FieldBody><TextEdit @bind-Text="@player.FirstName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
-                    </Field>
-                    <Field>
-                        <FieldLabel ColumnSize="ColumnSize.IsHalf">Last Name:</FieldLabel>
-                        <FieldBody><TextEdit @bind-Text="@player.LastName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
-                    </Field>
-                    <Field>
-                        <FieldLabel>Team:</FieldLabel>
-                        <FieldBody>
-                            <Select TValue="int" SelectedValue="@player.TeamId" SelectedValueChanged="@PlayerTeamSelected">
-                                <SelectItem>Select A Team</SelectItem>
-                                @foreach (var t in teams)
-                                {
-                                    <SelectItem Value="@t.Id">@t.TeamName</SelectItem>
-                                }
-                            </Select>
-                        </FieldBody>
-                    </Field>
-                    <Field>
-                        <FieldBody>
-                            <Button Color="Color.Success" Clicked="@AddPlayerClicked">Add/Edit Player</Button>&nbsp;
-                            <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
-                        </FieldBody>
-                    </Field>
+                    @if (player is not null)
+                    {
+                        <Field ColumnSize="ColumnSize.IsHalf">
+                            <FieldLabel>First Name:</FieldLabel>
+                            <FieldBody><TextEdit @bind-Text="@player.FirstName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                        </Field>
+                        <Field>
+                            <FieldLabel ColumnSize="ColumnSize.IsHalf">Last Name:</FieldLabel>
+                            <FieldBody><TextEdit @bind-Text="@player.LastName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                        </Field>
+                        <Field>
+                            <FieldLabel>Team:</FieldLabel>
+                            <FieldBody>
+                                <Select TValue="int" SelectedValue="@player.TeamId" SelectedValueChanged="@PlayerTeamSelected">
+                                    <SelectItem>Select A Team</SelectItem>
+                                    @if (teams is not null)
+                                    {
+                                        @foreach (var t in teams)
+                                        {
+                                            <SelectItem Value="@t.Id">@t.TeamName</SelectItem>
+                                        }
+                                    }
+                                </Select>
+                            </FieldBody>
+                        </Field>
+                        <Field>
+                            <FieldBody>
+                                <Button Color="Color.Success" Clicked="@AddPlayerClicked">Add/Edit Player</Button>&nbsp;
+                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                            </FieldBody>
+                        </Field>
+                    }
                 </Field>
             </Form>
         </ModalBody>
@@ -476,9 +496,9 @@
 
 @code {
     [CascadingParameter]
-    LoadingIndicator? loadingIndicator { get; set; }
+    LoadingIndicator loadingIndicator { get; set; } = new();
 
-    [Inject] private IToastService ToastService { get; set; }
+    [Inject] private IToastService? ToastService { get; set; }
 
     //Modals
     private Modal modalAddPlayer = new();
@@ -489,8 +509,8 @@
     private Modal modalAssignRoles = new();
 
     //Properties
-    private Player? player { get; set; } = new();
-    private PlayerData? playerData { get; set; } = new();
+    private Player player { get; set; } = new();
+    private PlayerData playerData { get; set; } = new();
     private TeamDetails? addTeam { get; set; } = new();
     private Weeks? week { get; set; } = new();
     private Schedules? schedule { get; set; } = new();
@@ -502,7 +522,7 @@
     private WeekHelper weekHelper = new();
 
     //Lists
-    private List<TeamDetails>? teams = [];
+    private List<TeamDetails> teams = [];
     private List<Player>? players = [];
     private List<Schedules>? schedules = [];
     private List<PlayerData>? pData = [];
@@ -514,6 +534,7 @@
     private bool toastVisible = false;
     private string? toastMessage;
     private string? toastTitle;
+    private AuthenticationState? state { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -523,27 +544,28 @@
         //Authentication
         if (authenticationState is not null)
         {
-            var state = await authenticationState;
+            state = await authenticationState;
+            if (state.User.Identity is not null)
+            {
+                Username = state.User.Identity.Name ?? string.Empty;
+                UserId = state.User.Claims
+                    .Where(c => c.Type.Equals(@"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))
+                    .Select(c => c.Value)
+                    .FirstOrDefault() ?? string.Empty;
 
-            Username = state.User.Identity.Name ?? string.Empty;
-            UserId = state.User.Claims
-                .Where(c => c.Type.Equals(@"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"))
-                .Select(c => c.Value)
-                .FirstOrDefault() ?? string.Empty;
+                // Remove Auth0 prefix
+                UserId = UserId.Split('|')[1];
 
-            // Remove Auth0 prefix
-            UserId = UserId.Split('|')[1];
+                Email = state.User.Claims
+                    .Where(c => c.Type.Equals(@"https://wpl.somee.com/email"))
+                    .Select(c => c.Value)
+                    .FirstOrDefault() ?? string.Empty;
 
-            Email = state.User.Claims
-                .Where(c => c.Type.Equals(@"https://wpl.somee.com/email"))
-                .Select(c => c.Value)
-                .FirstOrDefault() ?? string.Empty;
-
-            Roles = state.User.Claims
-                .Where(c => c.Type.Equals(@"https://wpl.somee.com/roles"))
-                .Select(c => c.Value)
-                .FirstOrDefault() ?? string.Empty;
-
+                Roles = state.User.Claims
+                    .Where(c => c.Type.Equals(@"https://wpl.somee.com/roles"))
+                    .Select(c => c.Value)
+                    .FirstOrDefault() ?? string.Empty;
+            }
             await loadingIndicator.Hide();
         }
     }
@@ -554,7 +576,7 @@
     //Form Tasks
     private async Task AddPlayerClicked()
     {
-        if (player.LastName == null)
+        if (player.LastName is null)
         {
             player.LastName = string.Empty;
         }
@@ -578,104 +600,116 @@
     async Task AddTeamClicked()
     {
         var t = await apiService.GetTeamDetails();
-        var response = await apiService.AddTeam(addTeam);
-        if (response)
+        if (addTeam is not null)
         {
-            toastMessage = $"Team {addTeam.TeamName} has been added or edited.";
-            toastTitle = "Add/Edit Team";
-            toastVisible = true;
-            ClearLists();
+            var response = await apiService.AddTeam(addTeam);
+            if (response)
+            {
+                toastMessage = $"Team {addTeam.TeamName} has been added or edited.";
+                toastTitle = "Add/Edit Team";
+                toastVisible = true;
+                ClearLists();
+            }
+            else
+            {
+                toastMessage = $"Failed to Add Team {addTeam.TeamName}.";
+                toastTitle = "Add/Edit Team";
+                toastVisible = true;
+            }
         }
-        else
-        {
-            toastMessage = $"Failed to Add Team {addTeam.TeamName}.";
-            toastTitle = "Add/Edit Team";
-            toastVisible = true;
-        }
-
-
     }
 
     async Task AddScheduleClicked()
     {
-        var response = await apiService.AddSchedule(schedule);
-        if (response)
+        if (schedule is not null)
         {
-            toastMessage = $"Schedule {schedule.Week_Id} {schedule.Home_Team} {schedule.Away_Team} has been added or edited.";
-            toastTitle = "Add/Edit Schedule";
-            toastVisible = true;
-            ClearLists();
+            var response = await apiService.AddSchedule(schedule);
+            if (response)
+            {
+                toastMessage = $"Schedule {schedule.Week_Id} {schedule.Home_Team} {schedule.Away_Team} has been added or edited.";
+                toastTitle = "Add/Edit Schedule";
+                toastVisible = true;
+                ClearLists();
+            }
+            else
+            {
+                toastMessage = $"Failed to Add Schedule {schedule.Week_Id} {schedule.Home_Team} {schedule.Away_Team}.";
+                toastTitle = "Add/Edit Schedule";
+                toastVisible = true;
+            }
         }
-        else
-        {
-            toastMessage = $"Failed to Add Schedule {schedule.Week_Id} {schedule.Home_Team} {schedule.Away_Team}.";
-            toastTitle = "Add/Edit Schedule";
-            toastVisible = true;
-        }
-
     }
 
     async Task AddPlayerDataClicked()
     {
-        playerData.GamesPlayed = total;
-        playerData.PlayerId = player.Id;
-        if (playerData.GamesWon != 0)
+        if (playerData is not null)
         {
-            playerData.Average = Decimal.Round((decimal)playerData.GamesWon / (decimal)playerData.GamesPlayed * 100, 2);
-        }
-        var response = await apiService.SavePlayerData(playerData);
-        if (response)
-        {
-            toastMessage = $"{player.FirstName} {player.LastName}'s Games Added/Edited.";
-            toastTitle = "Add/Edit Player Games";
-            toastVisible = true;
-            ClearLists();
-        }
-        else
-        {
-            toastMessage = $"Failed to Add/Edit Player {player.FirstName} {player.LastName}'s Games.";
-            toastTitle = "Add/Edit Player Games";
-            toastVisible = true;
+            playerData.GamesPlayed = total;
+            playerData.PlayerId = player.Id;
+            if (playerData.GamesWon != 0)
+            {
+                playerData.Average = Decimal.Round((decimal)playerData.GamesWon / (decimal)playerData.GamesPlayed * 100, 2);
+            }
+            var response = await apiService.SavePlayerData(playerData);
+            if (response)
+            {
+                toastMessage = $"{player.FirstName} {player.LastName}'s Games Added/Edited.";
+                toastTitle = "Add/Edit Player Games";
+                toastVisible = true;
+                ClearLists();
+            }
+            else
+            {
+                toastMessage = $"Failed to Add/Edit Player {player.FirstName} {player.LastName}'s Games.";
+                toastTitle = "Add/Edit Player Games";
+                toastVisible = true;
+            }
         }
     }
 
     async Task AddWeekClicked()
     {
-        weeks = await apiService.GetAllWeeks();
-        if (weeks.Where(x => x.WeekNumber == week.WeekNumber).Where(y => y.Home_Team == week.Home_Team).Where(z => z.Away_Team == week.Away_Team).FirstOrDefault()?.WeekNumber == week.WeekNumber
-        && weeks.Where(x => x.WeekNumber == week.WeekNumber).Where(y => y.Home_Team == week.Home_Team).Where(z => z.Away_Team == week.Away_Team).FirstOrDefault()?.Home_Team == week.Home_Team
-        && weeks.Where(x => x.WeekNumber == week.WeekNumber).Where(y => y.Home_Team == week.Home_Team).Where(z => z.Away_Team == week.Away_Team).FirstOrDefault()?.Away_Team == week.Away_Team)
+        if (week is not null || teams is not null)
         {
-            var response = await apiService.UpdateWeeks(week);
-            if (response)
+            weeks = await apiService.GetAllWeeks();
+            if (weeks.Where(x => x.WeekNumber == week.WeekNumber).Where(y => y.Home_Team == week.Home_Team).Where(z => z.Away_Team == week.Away_Team).FirstOrDefault()?.WeekNumber == week.WeekNumber
+            && weeks.Where(x => x.WeekNumber == week.WeekNumber).Where(y => y.Home_Team == week.Home_Team).Where(z => z.Away_Team == week.Away_Team).FirstOrDefault()?.Home_Team == week.Home_Team
+            && weeks.Where(x => x.WeekNumber == week.WeekNumber).Where(y => y.Home_Team == week.Home_Team).Where(z => z.Away_Team == week.Away_Team).FirstOrDefault()?.Away_Team == week.Away_Team)
             {
-                toastMessage = $"Week: {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName} Added/Edited.";
-                toastTitle = "Add/Edit Player Games";
-                toastVisible = true;
-                ClearLists();
+                var response = await apiService.UpdateWeeks(week);
+                if (response)
+                {
+                    if (teams is not null)
+                    {
+                        toastMessage = $"Week: {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName} Added/Edited.";
+                        toastTitle = "Add/Edit Player Games";
+                        toastVisible = true;
+                        ClearLists();
+                    }
+                }
+                else
+                {
+                    toastMessage = $"Failed to Add/Edit Week for {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName}.";
+                    toastTitle = "Add/Edit Week";
+                    toastVisible = true;
+                }
             }
             else
             {
-                toastMessage = $"Failed to Add/Edit Week for {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName}.";
-                toastTitle = "Add/Edit Week";
-                toastVisible = true;
-            }
-        }
-        else
-        {
-            var response = await apiService.AddWeeks(week);
-            if (response)
-            {
-                toastMessage = $"Week: {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName} Added/Edited.";
-                toastTitle = "Add/Edit Player Games";
-                toastVisible = true;
-                ClearLists();
-            }
-            else
-            {
-                toastMessage = $"Failed to Add/Edit Week for {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName}.";
-                toastTitle = "Add/Edit Week";
-                toastVisible = true;
+                var response = await apiService.AddWeeks(week);
+                if (response)
+                {
+                    toastMessage = $"Week: {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName} Added/Edited.";
+                    toastTitle = "Add/Edit Player Games";
+                    toastVisible = true;
+                    ClearLists();
+                }
+                else
+                {
+                    toastMessage = $"Failed to Add/Edit Week for {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName}.";
+                    toastTitle = "Add/Edit Week";
+                    toastVisible = true;
+                }
             }
         }
     }
@@ -689,13 +723,19 @@
 
     Task ScheduleSelected(DateOnly value)
     {
-        schedule.Date = value;
+        if (schedule is not null)
+        {
+            schedule.Date = value;
+        }
         return Task.CompletedTask;
     }
 
     Task TeamCaptainSelected(int value)
     {
-        addTeam.Captain_Player_Id = value;
+        if (addTeam is not null)
+        {
+            addTeam.Captain_Player_Id = value;
+        }
         return Task.CompletedTask;
     }
 
@@ -721,19 +761,31 @@
         playerData = await apiService.GetSinglePlayerData(value);
     }
 
-    async Task LoadWeek(int value)
+    Task LoadWeek(int value)
     {
-        week.WeekNumber = value;
+        if (week is not null)
+        {
+            week.WeekNumber = value;
+        }
+        return Task.CompletedTask;
     }
 
-    async Task UpdateHomeTeam(int value)
+    Task UpdateHomeTeam(int value)
     {
-        week.Home_Team = value;
+        if (week is not null)
+        {
+            week.Home_Team = value;
+        }
+        return Task.CompletedTask;
     }
 
-    async Task UpdateAwayTeam(int value)
+    Task UpdateAwayTeam(int value)
     {
-        week.Away_Team = value;
+        if (week is not null)
+        {
+            week.Away_Team = value;
+        }
+        return Task.CompletedTask;
     }
 
     //Modal Tasks
@@ -771,27 +823,32 @@
 
     Task GamesPlayedCalc()
     {
-        total = playerData.GamesWon + playerData.GamesLost;
+        if (playerData is not null)
+        {
+            total = playerData.GamesWon + playerData.GamesLost;
+        }
         return Task.CompletedTask;
     }
 
-    async Task DoesWeekExist()
+    Task DoesWeekExist()
     {
-
-        if (pData.Where(x => x.WeekNumber == playerData.WeekNumber && x.PlayerId == player.Id).Count() != 0)
+        if (pData is not null)
         {
-            toastMessage = $"{player.FirstName} {player.LastName} Week Exists.";
-            toastTitle = "Week Exists";
-            toastVisible = true;
-            playerData = pData.Where(x => x.WeekNumber == playerData.WeekNumber && x.PlayerId == player.Id).FirstOrDefault();
+            if (pData.Where(x => x.WeekNumber == playerData.WeekNumber && x.PlayerId == player.Id).Count() != 0)
+            {
+                toastMessage = $"{player.FirstName} {player.LastName} Week Exists.";
+                toastTitle = "Week Exists";
+                toastVisible = true;
+                playerData = pData.Where(x => x.WeekNumber == playerData.WeekNumber && x.PlayerId == player.Id).FirstOrDefault();
+            }
+            else if (playerData.WeekNumber > 0 && pData.Where(x => x.WeekNumber == playerData.WeekNumber && x.PlayerId == player.Id).Count() != 0)
+            {
+                toastMessage = $"{player.FirstName} {player.LastName} Week Doesn't Exist, Adding.";
+                toastTitle = "Week Doesn't Exist";
+                toastVisible = true;
+            }
         }
-        else if (playerData.WeekNumber > 0 && pData.Where(x => x.WeekNumber == playerData.WeekNumber && x.PlayerId == player.Id).Count() != 0)
-        {
-            toastMessage = $"{player.FirstName} {player.LastName} Week Doesn't Exist, Adding.";
-            toastTitle = "Week Doesn't Exist";
-            toastVisible = true;
-        }
-
+        return Task.CompletedTask;
     }
 
     //Toast Service
@@ -810,11 +867,11 @@
         playerData = new();
         schedule = new();
         week = new();
-
-        pData.Clear();
-        players.Clear();
-        schedules.Clear();
-        teams.Clear();
+        
+        pData = new();
+        players = new();
+        schedules = new();
+        teams = new();
 
         teams = await apiService.GetTeamDetails();
         players = await apiService.GetAllPlayers();
