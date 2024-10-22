@@ -6,11 +6,7 @@
 <h1>Leaderboards</h1>
 <br />
 
-@if (teamStats == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
+@if (teamStats != null)
 {
     <Card>
         <CardBody>
@@ -24,20 +20,25 @@ else
                           Data="@teamStats"
                           PageSize="5"
                           SortMode="DataGridSortMode.Single"
-                          Sortable
-                          Bordered
-                          ShowPager
-                          Responsive
+                          Striped="true"
+                          Sortable="true"
+                          Bordered="true"
+                          ShowPager="true"
+                          Responsive="true"
                           ResponsiveMode="@TableResponsiveMode.Mobile">
-                    <DataGridColumns>
-                        <DataGridCommandColumn>
-                            <DataGridColumn Field="@nameof(TeamStats.TeamName)" Caption="Team" Sortable="true" />
-                            <DataGridColumn Field="@nameof(TeamStats.TotalGamesPlayed)" Caption="Last Name" Sortable="true" />
-                            <DataGridColumn Field="@nameof(TeamStats.TotalGamesWon)" Caption="Games Played" Sortable="true" />
-                            <DataGridColumn Field="@nameof(TeamStats.TotalGamesLost)" Caption="Games Won" Sortable="true" />
-                            <DataGridColumn Field="@nameof(TeamStats.TotalAverage)" Caption="Average" Sortable="true" />
-                        </DataGridCommandColumn>
-                    </DataGridColumns>
+                    <ChildContent>
+                        <DataGridCommandColumn TItem="TeamStats"></DataGridCommandColumn>
+                        <DataGridColumn TItem="TeamStats" Field="TeamName" Caption="Team" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="TotalGamesPlayed" Caption="Last Name" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="TotalGamesWon" Caption="Games Played" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="TotalGamesLost" Caption="Games Won" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="TotalAverage" DisplayFormat="{0:P2}" Caption="Average" Sortable="true" />
+                    </ChildContent>
+                    <EmptyTemplate>
+                        <div class="box">
+                            No Team Stats found.
+                        </div>
+                    </EmptyTemplate>
                 </DataGrid>
             </CardText>
         </CardBody>
@@ -51,26 +52,26 @@ else
             <Divider />
             <CardText>
                 <DataGrid TItem="PDataModel"
-                          @ref="dataGrid"
+                          @ref="playerGrid"
                           Data="@pData"
                           PageSize="10"
                           SortMode="DataGridSortMode.Single"
-                          Sortable
-                          Bordered
-                          ShowPager
-                          Responsive
+                          Striped="true"
+                          Sortable="true"
+                          Bordered="true"
+                          ShowPager="true"
+                          Responsive="true"
                           ResponsiveMode="@TableResponsiveMode.Mobile">
-                    <DataGridColumns>
-                        <DataGridCommandColumn>
-                            <DataGridColumn Field="@nameof(PDataModel.FirstName)" Caption="First Name" Sortable="true" />
-                            <DataGridColumn Field="@nameof(PDataModel.LastName)" Caption="Last Name" Sortable="true" />
-                            <DataGridColumn Field="@nameof(PDataModel.GamesPlayed)" Caption="Games Played" Sortable="true" Filterable FilterMethod="DataGridColumnFilterMethod.Equals" />
-                            <DataGridColumn Field="@nameof(PDataModel.GamesWon)" Caption="Games Won" Sortable="true" />
-                            <DataGridColumn Field="@nameof(PDataModel.GamesLost)" Caption="Games Lost" Sortable="true" />
-                            <DataGridColumn Field="@nameof(PDataModel.Average)" Caption="Average" Sortable="true" />
-                            <DataGridColumn Field="@nameof(PDataModel.TeamName)" Caption="Team" Sortable="true" Filterable FilterMethod="DataGridColumnFilterMethod.Equals" />
-                        </DataGridCommandColumn>
-                    </DataGridColumns>
+                    <ChildContent>
+                        <DataGridCommandColumn TItem="PDataModel"></DataGridCommandColumn>
+                        <DataGridColumn TItem="PDataModel" Field="FirstName" Caption="First Name" Sortable="true" />
+                        <DataGridColumn TItem="PDataModel" Field="LastName" Caption="Last Name" Sortable="true" />
+                        <DataGridColumn TItem="PDataModel" Field="GamesPlayed" Caption="Games Played" Sortable="true" Filterable FilterMethod="DataGridColumnFilterMethod.Equals" />
+                        <DataGridColumn TItem="PDataModel" Field="GamesWon" Caption="Games Won" Sortable="true" />
+                        <DataGridColumn TItem="PDataModel" Field="GamesLost" Caption="Games Lost" Sortable="true" />
+                        <DataGridColumn TItem="PDataModel" Field="Average" DisplayFormat="{0:P2}" Caption="Average" Sortable="true" />
+                        <DataGridColumn TItem="PDataModel" Field="TeamName" Caption="Team" Sortable="true" Filterable FilterMethod="DataGridColumnFilterMethod.Equals" />
+                    </ChildContent>
                     <EmptyTemplate>
                         <div class="box">
                             No Player Stats Found!
@@ -96,8 +97,8 @@ else
     private List<Players>? playerData = [];
     private List<PDataModel> pData = [];
     private PDataModel pDataModel = new();
-    private DataGrid<PDataModel> dataGrid =new();
-    private DataGrid<TeamStats> teamGrid =new();
+    private DataGrid<PDataModel> playerGrid = new();
+    private DataGrid<TeamStats> teamGrid = new();
 
 
     protected override async Task OnInitializedAsync()
@@ -108,7 +109,7 @@ else
         teamStats = await teamHelper.GetAllTeamStats();
         pData = await pDataService.GetFullPlayerData();
 
-        await dataGrid.ApplySorting(new DataGridSortColumnInfo(nameof(PDataModel.Average), SortDirection.Descending));
+        await playerGrid.ApplySorting(new DataGridSortColumnInfo(nameof(PDataModel.Average), SortDirection.Descending));
         await teamGrid.ApplySorting(new DataGridSortColumnInfo(nameof(TeamStats.TotalAverage), SortDirection.Descending));
         await base.OnInitializedAsync();
         await loadingIndicator.Hide();

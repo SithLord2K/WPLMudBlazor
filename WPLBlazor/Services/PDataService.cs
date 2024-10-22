@@ -18,8 +18,9 @@ namespace WPLBlazor.Services
             teamDetails = await playerHelper.GetTeamDetails();
             playerData = await playerHelper.ConsolidatePlayer();
             teamStats = await teamHelper.GetAllTeamStats();
-            foreach (var player in playerData)
+            foreach (var player in playerData.Where(x => x.TeamId != 12))
             {
+
                 PDataModel pDataModel = new();
                 pDataModel.TeamName = teamDetails.Where(x => x.Id == player.TeamId).FirstOrDefault().TeamName;
                 pDataModel.FirstName = player.FirstName;
@@ -29,13 +30,13 @@ namespace WPLBlazor.Services
                 pDataModel.GamesPlayed = player.GamesPlayed;
                 if (pDataModel.GamesPlayed > 0)
                 {
-                    pDataModel.Average = Decimal.Round(((decimal)player.GamesWon / (decimal)player.GamesPlayed) * 100, 2);
+                    pDataModel.Average = Decimal.Round(((decimal)player.GamesWon / (decimal)player.GamesPlayed), 2);
                 }
 
                 pData.Add(pDataModel);
             }
+
             return pData;
         }
-
     }
 }

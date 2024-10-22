@@ -20,7 +20,7 @@ namespace WPLBlazor.Services
             weekTotals = (List<Weeks>)await aPIService.GetAllWeeks();
             teamTotals = await playerHelpers.ConsolidatePlayer();
 
-            foreach (var team in teams)
+            foreach (var team in teams.Where(x => x.TeamName != "Bye"))
             {
                 if (teamTotals is not null)
                 {
@@ -36,7 +36,7 @@ namespace WPLBlazor.Services
                     teamStats.TotalGamesPlayed = teamStats.TotalGamesWon + teamStats.TotalGamesLost;
                     if (teamStats.TotalGamesWon > 0)
                     {
-                        teamStats.TotalAverage = Decimal.Round(((decimal)teamStats.TotalGamesWon / (decimal)teamStats.TotalGamesPlayed) * 100, 2);
+                        teamStats.TotalAverage = Decimal.Round(((decimal)teamStats.TotalGamesWon / (decimal)teamStats.TotalGamesPlayed), 2);
                     }
                     teamStats.WeeksPlayed = weekTotals.Count;
                     allTeamStats.Add(teamStats);

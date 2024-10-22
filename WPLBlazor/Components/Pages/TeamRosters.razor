@@ -11,22 +11,24 @@
 <br />
 @if (teams is not null)
 {
-    @foreach (var team in teams)
-    {
-        <Card>
-            <CardBody>
-                <CardTitle Size="4">@team.TeamName</CardTitle>
-                <Divider />
-                <CardText>
-                    <Table Bordered Striped Responsive>
-                        <TableHeader Width="Width.Auto">
-                            <TableHeaderCell><center>Player Name</center></TableHeaderCell>
-                            <TableHeaderCell><center>Games Played</center></TableHeaderCell>
-                            <TableHeaderCell><center>Captain?</center></TableHeaderCell>
-                        </TableHeader>
+    <Card>
+        <Table Bordered Striped Responsive>
+            <TableHeader Width="Width.Auto">
+                <TableHeaderCell><center>Player Name</center></TableHeaderCell>
+                <TableHeaderCell><center>Games Played</center></TableHeaderCell>
+                <TableHeaderCell><center>Captain?</center></TableHeaderCell>
+            </TableHeader>
+            @foreach (var team in teams)
+            {
+                @if(team.TeamName == "Bye")
+                {
+                    continue;
+                }
+                <TableBody Width="Width.Auto">
+                    <TableRowGroup Title="@team.TeamName">
                         @foreach (var roster in rosters.Where(x => x.TeamId == team.Id))
                         {
-                            <TableBody Width="Width.Auto">
+                            <TableRow>
                                 <TableRowCell><center><a href="/player_detail/@roster.Player_Id">@roster.Player_Name</a></center></TableRowCell>
                                 @if (players is not null)
                                 {
@@ -40,15 +42,17 @@
                                 {
                                     <TableRowCell></TableRowCell>
                                 }
-
-                            </TableBody>
+                            </TableRow>
                         }
-                    </Table>
-                </CardText>
-            </CardBody>
-        </Card>
-        <br />
-    }
+                    </TableRowGroup>
+                </TableBody>
+            }
+        </Table>
+
+
+
+    </Card>
+    <br />
 }
 
 @code {

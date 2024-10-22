@@ -4,7 +4,7 @@
 
 <PageTitle>@playerInfo.FirstName @playerInfo.LastName's Details</PageTitle>
 
-@if (playerDetail.Id == 0)
+@if (playerDetail.Count == 0)
 {
     <p><em>@playerInfo.FirstName @playerInfo.LastName has not played any games.</em></p>
     <p><a href="/rosters"><Icon Name="IconName.ArrowLeft" /> Back</a></p>
@@ -14,10 +14,27 @@ else
     <Card>
         <CardBody>
             <CardTitle Size="3">
-               <a href="/rosters" style="font-size:small"><Icon Name="IconName.ArrowLeft" /> Back</a>  <center>@playerDetail.FirstName @playerDetail.LastName</center>
+                <a href="/rosters" style="font-size:small"><Icon Name="IconName.ArrowLeft" /> Back</a>  <center>@playerDetail.FirstOrDefault().FirstName @playerDetail.FirstOrDefault().LastName</center>
             </CardTitle>
             <CardText>
-                <Table Bordered Striped Responsive>
+                <DataGrid TItem="Players"
+                    Data="@playerDetail"
+                    Striped="true"
+                    Responsive="true">
+                    <ChildContent>
+                        <DataGridCommandColumn TItem="Players"></DataGridCommandColumn>
+                        <DataGridColumn TItem="Players" Field="GamesWon" Caption="Games Won" />
+                        <DataGridColumn TItem="Players" Field="GamesLost" Caption="Games Lost" />
+                        <DataGridColumn TItem="Players" Field="GamesPlayed" Caption="Games Played" />
+                        <DataGridColumn TItem="Players" Field="Average" DisplayFormat="{0:P2}" Caption="Average" />
+                    </ChildContent>
+                    <EmptyTemplate>
+                        <div class="box">
+                            No Tracked Games for @playerInfo.FirstName @playerInfo.LastName!
+                        </div>
+                    </EmptyTemplate>
+                </DataGrid>
+                @* <Table Bordered Striped Responsive>
                     <TableHeader Width="Width.Auto">
                         <TableHeaderCell><center>Games Won</center></TableHeaderCell>
                         <TableHeaderCell><center>Games Lost</center></TableHeaderCell>
@@ -28,9 +45,9 @@ else
                         <TableRowCell><center>@playerDetail.GamesWon</center></TableRowCell>
                         <TableRowCell><center>@playerDetail.GamesLost</center></TableRowCell>
                         <TableRowCell><center>@playerDetail.GamesPlayed</center></TableRowCell>
-                        <TableRowCell><center>@playerDetail.Average%</center></TableRowCell>
+                        <TableRowCell><center>@playerDetail.Average</center></TableRowCell>
                     </TableBody>
-                </Table>
+                </Table> *@
             </CardText>
         </CardBody>
     </Card>
@@ -47,13 +64,13 @@ else
     private RosterHelper rosterHelper = new();
     private PlayerData player = new();
     private Player playerInfo = new();
-    private Players playerDetail = new();
+    private List<Players> playerDetail = new();
 
     protected override async Task OnInitializedAsync()
     {
         await loadingIndicator.Show();
         playerInfo = await aPIService.GetSinglePlayer(ID);
-        playerDetail = await playerHelper.GetPlayerDetails(ID);
+        playerDetail.Add(await playerHelper.GetPlayerDetails(ID));
         await loadingIndicator.Hide();
     }
 

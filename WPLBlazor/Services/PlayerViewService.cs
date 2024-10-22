@@ -16,7 +16,7 @@ namespace WPLBlazor.Services
             {
                 if(player.GamesPlayed > 0)
                 {
-                    player.Average = Decimal.Round(((decimal)player.GamesWon / (decimal)player.GamesPlayed) * 100, 2);
+                    player.Average = Decimal.Round(((decimal)player.GamesWon / (decimal)player.GamesPlayed), 2);
                 }
             }
             if (playersView.Count > 0)

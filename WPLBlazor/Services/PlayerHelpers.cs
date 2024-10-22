@@ -36,7 +36,7 @@ namespace WPLBlazor.Services
                             playerTotals.GamesPlayed = getPlayerData.Sum(z => z.GamesPlayed);
                             if (playerTotals.GamesWon != 0 && playerTotals.GamesPlayed != 0)
                             {
-                                playerTotals.Average = Decimal.Round(((decimal)playerTotals.GamesWon / (decimal)playerTotals.GamesPlayed) * 100, 2);
+                                playerTotals.Average = Decimal.Round(((decimal)playerTotals.GamesWon / (decimal)playerTotals.GamesPlayed), 2);
                             }
                             playerTotals.WeekNumber = getPlayerData.Count;
                         }
@@ -63,7 +63,7 @@ namespace WPLBlazor.Services
                 playerTotals.GamesPlayed = getPlayerData.Sum(y => y.GamesPlayed);
                 if (playerTotals.GamesWon != 0 && playerTotals.GamesPlayed != 0)
                 {
-                    playerTotals.Average = Decimal.Round(((decimal)playerTotals.GamesWon / (decimal)playerTotals.GamesPlayed) * 100, 2);
+                    playerTotals.Average = Decimal.Round(((decimal)playerTotals.GamesWon / (decimal)playerTotals.GamesPlayed), 2);
                 }
                 playerTotals.WeekNumber = getPlayerData.Count;
             }
@@ -81,7 +81,7 @@ namespace WPLBlazor.Services
             teamStats.TotalGamesWon = teamTotals.Sum(x => x.GamesWon);
             teamStats.TotalGamesLost = teamTotals.Sum(y => y.GamesLost);
             teamStats.TotalGamesPlayed = teamStats.TotalGamesWon + teamStats.TotalGamesLost;
-            teamStats.TotalAverage = Decimal.Round(((decimal)teamStats.TotalGamesWon / (decimal)teamStats.TotalGamesPlayed) * 100, 2);
+            teamStats.TotalAverage = Decimal.Round(((decimal)teamStats.TotalGamesWon / (decimal)teamStats.TotalGamesPlayed), 2);
             teamStats.WeeksPlayed = weekTotals.Count;
 
             return teamStats;
@@ -93,7 +93,7 @@ namespace WPLBlazor.Services
             List<TeamDetails> teamDetails = [];
             teamDetails = await aPIService.GetTeamDetails();
 
-            return teamDetails;
+            return teamDetails.Where(x => x.TeamName != "Bye").ToList();
         }
     }
 }

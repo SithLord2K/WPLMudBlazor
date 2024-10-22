@@ -8,6 +8,6 @@
         public int Player_Id { get; set; }
         public string? Player_Name { get; set; }
 
-
+        public bool IsCaptain { get; set; }
     }
 }
