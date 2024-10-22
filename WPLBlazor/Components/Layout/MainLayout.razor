@@ -4,24 +4,37 @@
 
 <link href="_content/Blazorise.LoadingIndicator/blazorise.loadingindicator.css" rel="stylesheet" />
 <Layout Sider>
-    <LayoutSider>
-        <LayoutSiderContent>
-            <VerticalMenuBar />
-        </LayoutSiderContent>
-    </LayoutSider>
     <Layout>
-        <LayoutHeader>
-            <Header  />
+        <LayoutHeader Fixed>
+            <Header />
         </LayoutHeader>
-        <LayoutContent Padding="Padding.Is3">
-            <LoadingIndicator>
-                @Body
-            </LoadingIndicator>
-        </LayoutContent>
-        <LayoutFooter>
-            <center>Site created and maintained by Chris Wiley on Golden Brothers 1</center>
-            <center>This site was made using Blazorise: @($"v{VersionProvider.MilestoneVersion}")</center>
-        </LayoutFooter>
+        <Layout Sider>
+            <LayoutSider>
+                <LayoutSiderContent>
+                    <VerticalMenuBar />
+                </LayoutSiderContent>
+            </LayoutSider>
+            <Layout>
+                <LayoutContent Padding="Padding.Is3">
+                    <LoadingIndicator IndicatorVerticalPlacement="LoadingIndicatorPlacement.Top" FadeIn>
+                        <ChildContent>
+                            @Body
+                        </ChildContent>
+                        <IndicatorTemplate>
+                            <Animate Animation="Animations.FadeDownRight" Auto Duration="TimeSpan.FromMilliseconds( 700 )">
+                                <Div>
+                                    <SpinKit Type="SpinKitType.Circle" Color="#089F00" Size="100px" />
+                                </Div>
+                            </Animate>
+                        </IndicatorTemplate>
+                    </LoadingIndicator>
+                </LayoutContent>
+                <LayoutFooter>
+                    <center>Site created and maintained by Chris Wiley on Golden Brothers 1</center>
+                    <center>This site was made using Blazorise: @($"v{VersionProvider.MilestoneVersion}")</center>
+                </LayoutFooter>
+            </Layout>
+        </Layout>
     </Layout>
 </Layout>
 

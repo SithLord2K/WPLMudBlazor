@@ -1,13 +1,20 @@
-﻿<Bar Breakpoint="Breakpoint.Desktop"
+﻿<Bar Mode="BarMode.Horizontal"
+     Breakpoint="Breakpoint.Desktop"
      ThemeContrast="ThemeContrast.Light"
      Shadow="Shadow.Default">
-     <BarMenu>
-         <BarEnd>
-             <BarItem Padding="Padding.Is2">
-                 <Login />
-             </BarItem>
-         </BarEnd>
-     </BarMenu>
+    <BarMenu>
+        <BarStart>
+            <BarBrand>&nbsp;<img src="favicon.png" width="50" height="50" /></BarBrand>
+            <BarLink To="">
+                <BarBrand><h2>Welland Pool League</h2></BarBrand>
+            </BarLink>
+        </BarStart>
+        <BarEnd>
+            <BarItem Padding="Padding.Is2">
+                <Login />
+            </BarItem>
+        </BarEnd>
+    </BarMenu>
 </Bar>
 
 @code {
