@@ -14,18 +14,19 @@
     <Card>
         <Table Bordered Striped Responsive>
             <TableHeader Width="Width.Auto">
-                <TableHeaderCell><center>Player Name</center></TableHeaderCell>
-                <TableHeaderCell><center>Games Played</center></TableHeaderCell>
-                <TableHeaderCell><center>Captain?</center></TableHeaderCell>
+
             </TableHeader>
             @foreach (var team in teams)
             {
-                @if(team.TeamName == "Bye")
+                @if (team.TeamName == "Bye")
                 {
                     continue;
                 }
                 <TableBody Width="Width.Auto">
                     <TableRowGroup Title="@team.TeamName">
+                        <TableHeaderCell><center>Player Name</center></TableHeaderCell>
+                        <TableHeaderCell><center>Games Played</center></TableHeaderCell>
+                        <TableHeaderCell><center>Captain?</center></TableHeaderCell>
                         @foreach (var roster in rosters.Where(x => x.TeamId == team.Id))
                         {
                             <TableRow>
@@ -48,9 +49,6 @@
                 </TableBody>
             }
         </Table>
-
-
-
     </Card>
     <br />
 }
