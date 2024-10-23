@@ -29,10 +29,12 @@
                     <ChildContent>
                         <DataGridCommandColumn TItem="TeamStats"></DataGridCommandColumn>
                         <DataGridColumn TItem="TeamStats" Field="TeamName" Caption="Team" Sortable="true" />
-                        <DataGridColumn TItem="TeamStats" Field="TotalGamesPlayed" Caption="Last Name" Sortable="true" />
-                        <DataGridColumn TItem="TeamStats" Field="TotalGamesWon" Caption="Games Played" Sortable="true" />
-                        <DataGridColumn TItem="TeamStats" Field="TotalGamesLost" Caption="Games Won" Sortable="true" />
-                        <DataGridColumn TItem="TeamStats" Field="TotalAverage" DisplayFormat="{0:P2}" Caption="Average" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="TotalGamesPlayed" Caption="Total Games Played" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="TotalGamesWon" Caption="Total Games Won" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="TotalGamesLost" Caption="Total Games Lost" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="WeeksWon" Caption="Weeks Won" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="WeeksPlayed" Caption="Weeks Played" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="TotalAverage" DisplayFormat="{0:P2}" Caption="Team Average" Sortable="true" />
                     </ChildContent>
                     <EmptyTemplate>
                         <div class="box">
@@ -64,13 +66,13 @@
                           ResponsiveMode="@TableResponsiveMode.Mobile">
                     <ChildContent>
                         <DataGridCommandColumn TItem="PDataModel"></DataGridCommandColumn>
+                        <DataGridColumn TItem="PDataModel" Field="TeamName" Caption="Team" Sortable="true" Filterable FilterMethod="DataGridColumnFilterMethod.Equals" FixedPosition="TableColumnFixedPosition.Start" />
                         <DataGridColumn TItem="PDataModel" Field="FirstName" Caption="First Name" Sortable="true" />
                         <DataGridColumn TItem="PDataModel" Field="LastName" Caption="Last Name" Sortable="true" />
                         <DataGridColumn TItem="PDataModel" Field="GamesPlayed" Caption="Games Played" Sortable="true" Filterable FilterMethod="DataGridColumnFilterMethod.Equals" />
                         <DataGridColumn TItem="PDataModel" Field="GamesWon" Caption="Games Won" Sortable="true" />
                         <DataGridColumn TItem="PDataModel" Field="GamesLost" Caption="Games Lost" Sortable="true" />
                         <DataGridColumn TItem="PDataModel" Field="Average" DisplayFormat="{0:P2}" Caption="Average" Sortable="true" />
-                        <DataGridColumn TItem="PDataModel" Field="TeamName" Caption="Team" Sortable="true" Filterable FilterMethod="DataGridColumnFilterMethod.Equals" />
                     </ChildContent>
                     <EmptyTemplate>
                         <div class="box">
@@ -99,7 +101,6 @@
     private PDataModel pDataModel = new();
     private DataGrid<PDataModel> playerGrid = new();
     private DataGrid<TeamStats> teamGrid = new();
-
 
     protected override async Task OnInitializedAsync()
     {

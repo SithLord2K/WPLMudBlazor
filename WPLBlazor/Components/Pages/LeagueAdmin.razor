@@ -392,12 +392,25 @@
                                     </Select>
                                 }
                             </FieldBody>
+                            <FieldLabel>Winning Team:</FieldLabel>
+                            <FieldBody>
+                                @if (week is not null)
+                                {
+                                    <Select TValue="int" SelectedValue="@week.WinningTeamId" SelectedValueChanged="@UpdateWinningTeam">
+                                        <SelectItem Value="0">Select an Winning Team</SelectItem>
+                                        @if (teams is not null)
+                                        {
+                                            @foreach (var t3 in teams)
+                                            {
+                                                <SelectItem Value="t3.Id">@t3.TeamName</SelectItem>
+                                            }
+                                        }
+                                    </Select>
+                                }
+                            </FieldBody>
                             <FieldBody>&nbsp;</FieldBody>
                             @if (week is not null)
                             {
-                                <FieldBody>
-                                    <Check TValue="bool" @bind-Checked="@week.Home_Won">Home Won</Check>
-                                </FieldBody>
                                 <FieldBody>
                                     &nbsp;<Check TValue="bool" @bind-Checked="@week.Forfeit">Forfeit</Check>
                                 </FieldBody>
@@ -784,6 +797,14 @@
         if (week is not null)
         {
             week.Away_Team = value;
+        }
+        return Task.CompletedTask;
+    }
+    Task UpdateWinningTeam(int value)
+    {
+        if (week is not null)
+        {
+            week.WinningTeamId = value;
         }
         return Task.CompletedTask;
     }

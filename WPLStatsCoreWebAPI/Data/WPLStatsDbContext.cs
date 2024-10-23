@@ -61,6 +61,7 @@ public partial class WPLStatsDbContext : DbContext
             entity.Property(e => e.Home_Won);
             entity.Property(e => e.Forfeit);
             entity.Property(e => e.Playoff);
+            entity.Property(e => e.WinningTeamId);
 
         });
 
@@ -92,6 +93,7 @@ public partial class WPLStatsDbContext : DbContext
             entity.Property(e => e.Away_Team);
             entity.Property(e => e.Forfeit);
             entity.Property(e => e.Playoff);
+            entity.Property(e => e.WinningTeamId);
         });
 
         OnModelCreatingPartial(modelBuilder);

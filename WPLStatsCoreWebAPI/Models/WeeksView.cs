@@ -8,5 +8,6 @@
         public bool Forfeit { get; set; }
         public bool Home_Won { get; set; }
         public bool Playoff { get; set; }
+        public int WinningTeamId { get; set; }
     }
 }

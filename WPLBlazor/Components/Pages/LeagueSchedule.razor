@@ -18,28 +18,32 @@
             <CardText>
                 <center><h3>@day.Date.ToLongDateString()</h3></center>
                 <center><h4>Week: @day.Week_Id</h4></center>
-                <Table Striped Bordered Responsive>
-                    <TableHeader Width="Width.Auto">
-                        <TableHeaderCell><center>Win</center></TableHeaderCell>
-                        <TableHeaderCell><center>Home Team</center></TableHeaderCell>
-                        <TableHeaderCell></TableHeaderCell>
-                        <TableHeaderCell><center>Away Team</center></TableHeaderCell>
-                        <TableHeaderCell><center>Win</center></TableHeaderCell>
-                        <TableHeaderCell><center>Table Number</center></TableHeaderCell>
+                <Table Striped Bordered>
+                    <TableHeader Width="Width.Auto" ThemeContrast="ThemeContrast.Dark">
+                        <TableRow>
+                            <TableHeaderCell><center>Win</center></TableHeaderCell>
+                            <TableHeaderCell><center>Home Team</center></TableHeaderCell>
+                            <TableHeaderCell></TableHeaderCell>
+                            <TableHeaderCell><center>Away Team</center></TableHeaderCell>
+                            <TableHeaderCell><center>Win</center></TableHeaderCell>
+                            <TableHeaderCell><center>Table Number</center></TableHeaderCell>
+                        </TableRow>
                     </TableHeader>
                     @foreach (var d in schedules.Where(x => x.Date == day.Date))
                     {
-                        @if (teams is not null)
-                        {
-                            <TableBody Width="Width.Auto">
-                                <TableRowCell><center><Check Checked="@HomeWinChecked(d.Week_Id, d.Home_Team).Result" Disabled /></center></TableRowCell>
-                            <TableRowCell><center>@teams.Where(x => x.Id == d.Home_Team).FirstOrDefault().TeamName</center></TableRowCell>
-                            <TableRowCell><center>vs</center></TableRowCell>
-                            <TableRowCell><center>@teams.Where(x => x.Id == d.Away_Team).FirstOrDefault().TeamName</center></TableRowCell>
-                            <TableRowCell><center><Check Checked="@AwayWinChecked(d.Week_Id, d.Away_Team).Result" Disabled /></center></TableRowCell>
-                            <TableRowCell><center>@d.Table_Number</center></TableRowCell>
+                        <TableBody Width="Width.Auto">
+                            @if (teams is not null)
+                            {
+                                <TableRow>
+                                    <TableRowCell><center><Check Checked="@HomeWinChecked(d.Week_Id, d.Home_Team).Result" Disabled /></center></TableRowCell>
+                                    <TableRowCell><center>@teams.Where(x => x.Id == d.Home_Team).FirstOrDefault().TeamName</center></TableRowCell>
+                                    <TableRowCell><center>vs</center></TableRowCell>
+                                    <TableRowCell><center>@teams.Where(x => x.Id == d.Away_Team).FirstOrDefault().TeamName</center></TableRowCell>
+                                    <TableRowCell><center><Check Checked="@AwayWinChecked(d.Week_Id, d.Away_Team).Result" Disabled /></center></TableRowCell>
+                                    <TableRowCell><center>@d.Table_Number</center></TableRowCell>
+                                </TableRow>
+                            }
                         </TableBody>
-                        }
                     }
                 </Table>
             </CardText>
@@ -56,13 +60,13 @@
     private APIService aPIService = new();
     private RosterHelper RosterHelper = new();
     private TeamHelper teamHelper = new();
-    private WeekHelper weekHelper  = new();
+    private WeekHelper weekHelper = new();
     private List<Schedules> schedules = [];
     private List<TeamDetails> teams = [];
     private List<TeamStats> teamStats = [];
     private List<WeekFullInfo> weeks = [];
     private WeekFullInfo homeWeek = new();
-  
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -93,7 +97,7 @@
             await loadingIndicator.Hide();
             return false;
         }
-        
+
     }
 
     async Task<bool> AwayWinChecked(int WeekId, int HomeId)

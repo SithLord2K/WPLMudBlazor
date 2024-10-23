@@ -12,5 +12,6 @@
         public int Home_Team { get; set; }
         public int Away_Team { get; set; }
         public bool Home_Won { get; set; }
+        public int WinningTeamId { get; set; }
     }
 }

@@ -29,16 +29,17 @@ namespace WPLBlazor.Services
 
                         TeamName = team.TeamName,
                         TotalGamesWon = teamTotals.Where(y => y.TeamId == team.Id).Sum(x => x.GamesWon),
-                        TotalGamesLost = teamTotals.Where(y => y.TeamId == team.Id).Sum(y => y.GamesLost)
+                        TotalGamesLost = teamTotals.Where(y => y.TeamId == team.Id).Sum(y => y.GamesLost),
+                        WeeksWon = weekTotals.Where(z => z.WinningTeamId == team.Id).Count(),
+                        WeeksPlayed = weekTotals.Count
                     };
 
                     //teamStats.Week_Id = teamTotals.Where(y => y.TeamId == team.Id).FirstOrDefault().WeekNumber;
                     teamStats.TotalGamesPlayed = teamStats.TotalGamesWon + teamStats.TotalGamesLost;
                     if (teamStats.TotalGamesWon > 0)
                     {
-                        teamStats.TotalAverage = Decimal.Round(((decimal)teamStats.TotalGamesWon / (decimal)teamStats.TotalGamesPlayed), 2);
+                        teamStats.TotalAverage = Decimal.Round(((decimal)teamStats.WeeksWon / (decimal)teamStats.WeeksPlayed), 2);
                     }
-                    teamStats.WeeksPlayed = weekTotals.Count;
                     allTeamStats.Add(teamStats);
                 }
             }

@@ -1,0 +1,34 @@
+﻿@page "/changelog"
+@attribute [StreamRendering]
+
+<h3>ChangeLog</h3>
+<br />
+<Card>
+    <CardHeader>
+        October 23,2024
+    </CardHeader>
+    <CardBody>
+        <CardText>
+            <OrderedList>
+                <OrderedListItem>
+                    Changes were made as to how the Team Average is calculated on the Leaderboard.
+                    Previously it was calculating based on the games won and the games played, this will now calculate based on the weeks won and the weeks played.
+                </OrderedListItem>
+                <OrderedListItem>
+                    Changes were also made to the database and the Weeks form to use the Winning Team Id.
+                </OrderedListItem>
+                <OrderedListItem>
+                    Shuffled some of the columns on the Leaderboard page. Fixed some cokumn names.
+                </OrderedListItem>
+            </OrderedList>
+        </CardText>
+    </CardBody>
+    <CardFooter>
+        <CardText>
+            Author: Chris Wiley
+        </CardText>
+    </CardFooter>
+</Card>
+@code {
+
+}

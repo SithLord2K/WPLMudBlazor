@@ -9,4 +9,5 @@ public partial class Week
     public int Away_Team { get; set; }
     public bool Forfeit { get; set; }
     public bool Playoff { get; set; }
+    public int WinningTeamId { get; set; }
 }
