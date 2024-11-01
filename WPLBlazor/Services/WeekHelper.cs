@@ -30,31 +30,17 @@ namespace WPLBlazor.Services
                 {
                     WeekFullInfo weekFull = new()
                     {
-
-                        GamesWon = playerInfo.Where(w => w.WeekNumber == week.WeekNumber).Sum(g => g.GamesWon),
-                        GamesLost = playerInfo.Where(w => w.WeekNumber == week.WeekNumber).Sum(g => g.GamesLost),
                         WeekNumber = week.WeekNumber,
                         Home_Team = week.Home_Team,
                         Away_Team = week.Away_Team,
                         Home_TeamName = whatTeam.FirstOrDefault(td => td.Id == week.Home_Team).TeamName,
                         Away_TeamName = whatTeam.FirstOrDefault(td => td.Id == week.Away_Team).TeamName,
-                        Home_Won = week.Home_Won
+                        WinningTeamId = week.WinningTeamId
 
                     };
                     if (week.WeekNumber > 18)
                     {
                         weekFull.Playoff = true;
-                    }
-                    if (weekFull.GamesWon != 0)
-                    {
-                        weekFull.Average = Decimal.Round((decimal)weekFull.GamesWon / ((decimal)weekFull.GamesLost + (decimal)weekFull.GamesWon) * 100, 2);
-                    }
-                    else
-                    {
-                        weekFull.Forfeit = week.Forfeit;
-                        weekFull.GamesWon = 0;
-                        weekFull.GamesLost = 0;
-                        weekFull.Average = 0;
                     }
                     WeekHelperFullInfo.Add(weekFull);
                 }

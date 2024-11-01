@@ -2,13 +2,11 @@ using WPLBlazor.Components;
 using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
-using Microsoft.EntityFrameworkCore;
 using Auth0.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using WPLBlazor.AuthenticationStateSyncer.PersistingRevalidatingAuthenticationStateProvider;
-using WPLBlazor.AuthenticationStateSyncer;
 using WPLBlazor.Services;
 using Blazorise.LoadingIndicator;
 

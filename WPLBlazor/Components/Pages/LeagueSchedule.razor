@@ -1,16 +1,30 @@
 ﻿@page "/schedule"
 @attribute [StreamRendering]
-
 @using Schedules = WPLBlazor.Models.Schedules
+@inject NavigationManager navigationManager
 
 <PageTitle>Schedule</PageTitle>
-
+<anchor id="top" />
 <h1>Schedule</h1>
 <br />
 
+        Select date to jump to that week:
+<Addons>
+    <Addon AddonType="AddonType.Body">
+        <DatePicker @ref="@datePicker" TValue="DateOnly?" DisabledDays="@disabledDays" DateChanged="@SelectedDate" />
+    </Addon>
+    <Addon AddonType="AddonType.End">
+        <Button Color="Blazorise.Color.Light" Clicked="@(()=>datePicker.ToggleAsync())">
+            <Icon Name="IconName.Calendar" />
+        </Button>
+    </Addon>
+</Addons>
+<br />
 
-    @foreach (var day in schedules.DistinctBy(x => x.Date))
+
+@foreach (var day in schedules.DistinctBy(x => x.Date))
 {
+    <anchor id="@day.Date" />
     <Card>
         <CardBody>
             <CardTitle Size="4"></CardTitle>
@@ -18,7 +32,7 @@
                 <center><h3>@day.Date.ToLongDateString()</h3></center>
                 <center><h4>Week: @day.Week_Id</h4></center>
                 <Table Striped Bordered>
-                    <TableHeader Width="Width.Auto" ThemeContrast="ThemeContrast.Dark">
+                    <TableHeader ThemeContrast="ThemeContrast.Dark">
                         <TableRow>
                             <TableHeaderCell><center>Win</center></TableHeaderCell>
                             <TableHeaderCell><center>Home Team</center></TableHeaderCell>
@@ -30,7 +44,7 @@
                     </TableHeader>
                     @foreach (var d in schedules.Where(x => x.Date == day.Date))
                     {
-                        <TableBody Width="Width.Auto">
+                        <TableBody>
                             @if (teams is not null)
                             {
                                 <TableRow>
@@ -50,6 +64,14 @@
     </Card>
     <br />
 }
+<Button
+    Shadow="Blazorise.Shadow.Default"
+    Style="position:fixed; bottom: 16px; right: 0; margin-right: 16px; opacity: 1"
+    Clicked="@ScrollToTop">
+    <Icon Name="IconName.ArrowUp" />
+</Button>
+
+
 
 
 @code {
@@ -65,11 +87,22 @@
     private List<TeamStats> teamStats = [];
     private List<WeekFullInfo> weeks = [];
     private WeekFullInfo homeWeek = new();
-
+    private DayOfWeek[] disabledDays = [];
+    private DatePicker<DateOnly?> datePicker;
+    private DateTime? value;
 
     protected override async Task OnInitializedAsync()
     {
         await loadingIndicator.Show();
+        disabledDays = new[]
+        {
+            DayOfWeek.Sunday,
+            DayOfWeek.Monday,
+            DayOfWeek.Wednesday,
+            DayOfWeek.Thursday,
+            DayOfWeek.Friday,
+            DayOfWeek.Saturday
+        };
         teams = await aPIService.GetTeamDetails();
         schedules = await RosterHelper.GetSchedules();
         teamStats = await teamHelper.GetAllTeamStats();
@@ -80,13 +113,13 @@
     async Task<bool> HomeWinChecked(int WeekId, int HomeId)
     {
         await loadingIndicator.Show();
-        homeWeek = weeks.Where(x => x.WeekNumber == WeekId && x.Home_Team == HomeId).FirstOrDefault();
+        homeWeek = weeks.Where(x => x.WeekNumber == WeekId && x.Home_Team == HomeId && x.WinningTeamId == HomeId).FirstOrDefault();
         if (homeWeek == null)
         {
             await loadingIndicator.Hide();
             return false;
         }
-        if (homeWeek.Home_Won)
+        if (homeWeek.WinningTeamId == HomeId)
         {
             await loadingIndicator.Hide();
             return true;
@@ -99,16 +132,16 @@
 
     }
 
-    async Task<bool> AwayWinChecked(int WeekId, int HomeId)
+    async Task<bool> AwayWinChecked(int WeekId, int AwayId)
     {
         await loadingIndicator.Show();
-        homeWeek = weeks.Where(x => x.WeekNumber == WeekId && x.Away_Team == HomeId).FirstOrDefault();
+        homeWeek = weeks.Where(x => x.WeekNumber == WeekId && x.Away_Team == AwayId && x.WinningTeamId == AwayId).FirstOrDefault();
         if (homeWeek == null)
         {
             await loadingIndicator.Hide();
             return false;
         }
-        if (!homeWeek.Home_Won)
+        if (homeWeek.WinningTeamId == AwayId)
         {
             await loadingIndicator.Hide();
             return true;
@@ -118,5 +151,25 @@
             await loadingIndicator.Hide();
             return false;
         }
+    }
+    private void SelectedDate(DateOnly? selectedDate)
+    {
+
+        string uri = navigationManager.Uri.ToString();
+        if (!uri.Contains("#"))
+        {
+            uri = uri + "#";
+        }
+        navigationManager.NavigateTo($"{uri}{selectedDate}");
+        selectedDate = null;
+    }
+    private void ScrollToTop()
+    {
+        string uri = navigationManager.Uri.ToString();
+        if (!uri.Contains("#"))
+        {
+            uri = uri + "#";
+        }
+        navigationManager.NavigateTo($"{uri}top");
     }
 }
