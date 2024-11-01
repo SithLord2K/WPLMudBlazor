@@ -1,7 +1,39 @@
 ﻿@page "/changelog"
 @attribute [StreamRendering]
+@inject NavigationManager navigationManager
 
+<anchor id="top" />
 <h3>ChangeLog</h3>
+<br />
+
+<Card>
+    <CardHeader>
+        November 1,2024
+    </CardHeader>
+    <CardBody>
+        <CardText>
+            <OrderedList>
+                <OrderedListItem>
+                    Changes were made to the Schedule page to add a Date Picker to the top to navigate to a specific week instead of scrolling.
+                </OrderedListItem>
+                <OrderedListItem>
+                    Added a 'Scroll to Top' button to the right corner of the page for easy navigation back to the Date Picker.
+                </OrderedListItem>
+                <OrderedListItem>
+                    Changes were made to the winning team checkbox as it would occasionally not check a win for the correct team.
+                </OrderedListItem>
+                <OrderedListItem>
+                    I also added a 'Scroll to Top' button on this page.
+                </OrderedListItem>
+            </OrderedList>
+        </CardText>
+    </CardBody>
+    <CardFooter>
+        <CardText>
+            Author: Chris Wiley
+        </CardText>
+    </CardFooter>
+</Card>
 <br />
 <Card>
     <CardHeader>
@@ -29,6 +61,19 @@
         </CardText>
     </CardFooter>
 </Card>
+<Button Shadow="Blazorise.Shadow.Default"
+        Style="position:fixed; bottom: 16px; right: 0; margin-right: 16px; opacity: 1"
+        Clicked="@ScrollToTop">
+    <Icon Name="IconName.ArrowUp" />
+</Button>
 @code {
-
+    private void ScrollToTop()
+    {
+        string uri = navigationManager.Uri.ToString();
+        if (!uri.Contains("#"))
+        {
+            uri = uri + "#";
+        }
+        navigationManager.NavigateTo($"{uri}top");
+    }
 }
