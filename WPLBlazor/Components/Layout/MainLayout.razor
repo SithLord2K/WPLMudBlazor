@@ -16,14 +16,14 @@
             </LayoutSider>
             <Layout>
                 <LayoutContent Padding="Padding.Is3">
-                    <LoadingIndicator IndicatorVerticalPlacement="LoadingIndicatorPlacement.Top" FadeIn>
+                    <LoadingIndicator IndicatorVerticalPlacement="LoadingIndicatorPlacement.Middle" FadeIn>
                         <ChildContent>
                             @Body
                         </ChildContent>
                         <IndicatorTemplate>
-                            <Animate Animation="Animations.FadeDownRight" Auto Duration="TimeSpan.FromMilliseconds( 700 )">
+                            <Animate Animation="Animations.FadeDownRight" Auto >
                                 <Div>
-                                    <SpinKit Type="SpinKitType.Circle" Color="#089F00" Size="100px" />
+                                    <SpinKit Type="SpinKitType.CircleFade" Size="100px" />
                                 </Div>
                             </Animate>
                         </IndicatorTemplate>
