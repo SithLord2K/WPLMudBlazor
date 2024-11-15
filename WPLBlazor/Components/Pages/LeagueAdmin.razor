@@ -99,10 +99,79 @@
                         <Field>
                             <FieldBody>
                                 <Button Color="Color.Success" Clicked="@AddPlayerClicked">Add/Edit Player</Button>&nbsp;
-                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                                <Button Color="Color.Danger" Type="ButtonType.Reset">Reset</Button>
                             </FieldBody>
                         </Field>
                     </Field>
+                </Field>
+            </Form>
+        </ModalBody>
+    </ModalContent>
+</Modal>
+<!--PlayerData Modal-->
+<Modal @ref="modalAddPlayerData">
+    <ModalContent Centered Scrollable>
+        <ModalHeader>
+            <ModalTitle>Add/Edit Player Games</ModalTitle>
+            <CloseButton AutoClose="true" />
+        </ModalHeader>
+        <ModalBody>
+            <Form>
+                <Field>
+                    <Field ColumnSize="ColumnSize.IsFull">
+                        @if (player is not null)
+                        {
+                            <Select TValue="int" SelectedValue="@player.Id" SelectedValueChanged="@LoadPlayer">
+
+                                <SelectItem>Choose Player To Add Games To</SelectItem>
+                                @if (players is not null)
+                                {
+                                    @foreach (var p5 in players)
+                                    {
+                                        <SelectItem Value="@p5.Id">@p5.FirstName @p5.LastName</SelectItem>
+                                    }
+                                }
+                            </Select>
+                        }
+                    </Field>
+                </Field>
+                <Field>
+                    <Field ColumnSize="ColumnSize.IsFull">
+                        <FieldLabel>Player Name:</FieldLabel>
+                        @if (player is not null)
+                        {
+                            <FieldBody>
+                                <TextEdit @bind-Text="@player.FirstName" Disabled />
+                                <NumericPicker @bind-Value="@player.Id" onchange="@LoadPlayerData(player.Id)" hidden />
+                            </FieldBody>
+                        }
+                    </Field>
+                </Field>
+                @if (playerData is not null)
+                {
+                    <FieldLabel>Week Number:</FieldLabel>
+                    <FieldBody>
+                        <NumericPicker @bind-Value="@playerData.WeekNumber" onchange="@DoesWeekExist()" />
+                    </FieldBody>
+                    <FieldLabel>Games Won:</FieldLabel>
+                    <FieldBody>
+                        <NumericPicker @bind-Value="@playerData.GamesWon" onchange="@GamesPlayedCalc()" />
+                    </FieldBody>
+                    <FieldLabel>Games Lost:</FieldLabel>
+                    <FieldBody>
+                        <NumericPicker @bind-Value="@playerData.GamesLost" onchange="@GamesPlayedCalc()" />
+                    </FieldBody>
+                    <FieldLabel>Games Played:</FieldLabel>
+                    <FieldBody>
+                        <NumericPicker Value="@total" Disabled />
+                    </FieldBody>
+                }
+                <Field></Field>
+                <Field>
+                    <FieldBody>
+                        <Button Color="Color.Success" Clicked="@AddPlayerDataClicked">Modify Player Games</Button>&nbsp;
+                        <Button Color="Color.Danger" Type="ButtonType.Reset">Reset</Button>
+                    </FieldBody>
                 </Field>
             </Form>
         </ModalBody>
@@ -160,7 +229,7 @@
                         <Field>
                             <FieldBody>
                                 <Button Color="Color.Success" Clicked="@AddTeamClicked">Add/Edit Team</Button>&nbsp;
-                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                                <Button Color="Color.Danger" Type="ButtonType.Reset">Reset</Button>
                             </FieldBody>
                         </Field>
                     }
@@ -246,79 +315,10 @@
                         <Field>
                             <FieldBody>
                                 <Button Color="Color.Success" Clicked="@AddScheduleClicked">Add/Edit Schedule</Button>&nbsp;
-                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                                <Button Color="Color.Danger" Type="ButtonType.Reset">Reset</Button>
                             </FieldBody>
                         </Field>
                     </Field>
-                </Field>
-            </Form>
-        </ModalBody>
-    </ModalContent>
-</Modal>
-<!--PlayerData Modal-->
-<Modal @ref="modalAddPlayerData">
-    <ModalContent Centered Scrollable>
-        <ModalHeader>
-            <ModalTitle>Add/Edit Player Games</ModalTitle>
-            <CloseButton AutoClose="true" />
-        </ModalHeader>
-        <ModalBody>
-            <Form>
-                <Field>
-                    <Field ColumnSize="ColumnSize.IsFull">
-                        @if (player is not null)
-                        {
-                            <Select TValue="int" SelectedValue="@player.Id" SelectedValueChanged="@LoadPlayer">
-
-                                <SelectItem>Choose Player To Add Games To</SelectItem>
-                                @if (players is not null)
-                                {
-                                    @foreach (var p5 in players)
-                                    {
-                                        <SelectItem Value="@p5.Id">@p5.FirstName @p5.LastName</SelectItem>
-                                    }
-                                }
-                            </Select>
-                        }
-                    </Field>
-                </Field>
-                <Field>
-                    <Field ColumnSize="ColumnSize.IsFull">
-                        <FieldLabel>Player Name:</FieldLabel>
-                        @if (player is not null)
-                        {
-                            <FieldBody>
-                                <TextEdit @bind-Text="@player.FirstName" Disabled />
-                                <NumericPicker @bind-Value="@player.Id" onchanged="@LoadPlayerData(player.Id)" hidden />
-                            </FieldBody>
-                        }
-                    </Field>
-                </Field>
-                @if (playerData is not null)
-                {
-                    <FieldLabel>Week Number:</FieldLabel>
-                    <FieldBody>
-                        <NumericPicker @bind-Value="@playerData.WeekNumber" onclick="@DoesWeekExist()" />
-                    </FieldBody>
-                    <FieldLabel>Games Won:</FieldLabel>
-                    <FieldBody>
-                        <NumericPicker @bind-Value="@playerData.GamesWon" onchange="@GamesPlayedCalc()" />
-                    </FieldBody>
-                    <FieldLabel>Games Lost:</FieldLabel>
-                    <FieldBody>
-                        <NumericPicker @bind-Value="@playerData.GamesLost" onchange="@GamesPlayedCalc()" />
-                    </FieldBody>
-                    <FieldLabel>Games Played:</FieldLabel>
-                    <FieldBody>
-                        <NumericPicker Value="@total" Disabled />
-                    </FieldBody>
-                }
-                <Field></Field>
-                <Field>
-                    <FieldBody>
-                        <Button Color="Color.Success" Clicked="@AddPlayerDataClicked">Modify Player Games</Button>&nbsp;
-                        <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
-                    </FieldBody>
                 </Field>
             </Form>
         </ModalBody>
@@ -421,7 +421,7 @@
                             <FieldBody><br /></FieldBody>
                             <FieldBody>
                                 <Button Color="Color.Success" Clicked="@AddWeekClicked">Add Weeks</Button>&nbsp;
-                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                                <Button Color="Color.Danger" Type="ButtonType.Reset">Reset</Button>
                             </FieldBody>
                         </Field>
                     </Field>
@@ -430,6 +430,7 @@
         </ModalBody>
     </ModalContent>
 </Modal>
+<!--Future Admin Buttons-->
 <!--Assign Roles-->
 <Modal @ref="modalAssignRoles">
     <ModalContent Centered>
@@ -523,7 +524,7 @@
 
     //Properties
     private Player player { get; set; } = new();
-    private PlayerData playerData { get; set; } = new();
+    private PlayerData playerData = new();
     private TeamDetails? addTeam { get; set; } = new();
     private Weeks? week { get; set; } = new();
     private Schedules? schedule { get; set; } = new();
@@ -570,12 +571,12 @@
                 UserId = UserId.Split('|')[1];
 
                 Email = state.User.Claims
-                    .Where(c => c.Type.Equals(@"https://wpl.somee.com/email"))
+                    .Where(c => c.Type.Equals(@"https://wpl.codersden.com/email"))
                     .Select(c => c.Value)
                     .FirstOrDefault() ?? string.Empty;
 
                 Roles = state.User.Claims
-                    .Where(c => c.Type.Equals(@"https://wpl.somee.com/roles"))
+                    .Where(c => c.Type.Equals(@"https://wpl.codersden.com/roles"))
                     .Select(c => c.Value)
                     .FirstOrDefault() ?? string.Empty;
             }
@@ -857,16 +858,8 @@
         {
             if (pData.Where(x => x.WeekNumber == playerData.WeekNumber && x.PlayerId == player.Id).Count() != 0)
             {
-                toastMessage = $"{player.FirstName} {player.LastName} Week Exists.";
-                toastTitle = "Week Exists";
-                toastVisible = true;
-                playerData = pData.Where(x => x.WeekNumber == playerData.WeekNumber && x.PlayerId == player.Id).FirstOrDefault();
-            }
-            else if (playerData.WeekNumber > 0 && pData.Where(x => x.WeekNumber == playerData.WeekNumber && x.PlayerId == player.Id).Count() != 0)
-            {
-                toastMessage = $"{player.FirstName} {player.LastName} Week Doesn't Exist, Adding.";
-                toastTitle = "Week Doesn't Exist";
-                toastVisible = true;
+                playerData.GamesWon = pData.Where(x => x.PlayerId == player.Id && x.WeekNumber == playerData.WeekNumber).First().GamesWon;
+                playerData.GamesLost = pData.Where(x => x.PlayerId == player.Id && x.WeekNumber == playerData.WeekNumber).First().GamesLost;
             }
         }
         return Task.CompletedTask;

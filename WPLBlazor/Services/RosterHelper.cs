@@ -1,11 +1,10 @@
-﻿using MvvmHelpers;
-using WPLBlazor.Models;
+﻿using WPLBlazor.Models;
 using Roster = WPLBlazor.Models.Roster;
 
 namespace WPLBlazor.Services
 {
 
-    public class RosterHelper : BaseViewModel
+    public class RosterHelper
     {
         private readonly IAPIService aPIService = new APIService();
         public List<Player> players = [];

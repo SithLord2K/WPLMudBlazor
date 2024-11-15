@@ -1,9 +1,8 @@
-﻿using MvvmHelpers;
-using WPLBlazor.Models;
+﻿using WPLBlazor.Models;
 
 namespace WPLBlazor.Services
 {
-    public class WeekHelper : BaseViewModel
+    public class WeekHelper
     {
         public List<WeekFullInfo> WeekHelperFullInfo { get; set; } = [];
 
