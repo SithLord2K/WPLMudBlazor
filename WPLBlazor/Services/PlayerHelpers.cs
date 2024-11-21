@@ -36,7 +36,7 @@ namespace WPLBlazor.Services
                             playerTotals.GamesPlayed = getPlayerData.Sum(z => z.GamesPlayed);
                             if (playerTotals.GamesWon != 0 && playerTotals.GamesPlayed != 0)
                             {
-                                playerTotals.Average = Decimal.Round(((decimal)playerTotals.GamesWon / (decimal)playerTotals.GamesPlayed), 2);
+                                playerTotals.Average = ((decimal)playerTotals.GamesWon / (decimal)playerTotals.GamesPlayed);
                             }
                             playerTotals.WeekNumber = getPlayerData.Count;
                         }
@@ -55,7 +55,7 @@ namespace WPLBlazor.Services
             var playerInfo = await aPIService.GetSinglePlayer(id);
             if (getPlayerData.Count > 0)
             {
-                playerTotals.Id = getPlayerData.FirstOrDefault().PlayerId;
+                playerTotals.Id = getPlayerData.First().PlayerId;
                 playerTotals.FirstName = playerInfo.FirstName;
                 playerTotals.LastName = playerInfo.LastName;
                 playerTotals.GamesWon = getPlayerData.Sum(gw => gw.GamesWon);
@@ -63,7 +63,7 @@ namespace WPLBlazor.Services
                 playerTotals.GamesPlayed = getPlayerData.Sum(y => y.GamesPlayed);
                 if (playerTotals.GamesWon != 0 && playerTotals.GamesPlayed != 0)
                 {
-                    playerTotals.Average = Decimal.Round(((decimal)playerTotals.GamesWon / (decimal)playerTotals.GamesPlayed), 2);
+                    playerTotals.Average = ((decimal)playerTotals.GamesWon / (decimal)playerTotals.GamesPlayed);
                 }
                 playerTotals.WeekNumber = getPlayerData.Count;
             }

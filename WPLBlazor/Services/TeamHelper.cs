@@ -38,7 +38,7 @@ namespace WPLBlazor.Services
                     teamStats.TotalGamesPlayed = teamStats.TotalGamesWon + teamStats.TotalGamesLost;
                     if (teamStats.TotalGamesWon > 0)
                     {
-                        teamStats.TotalAverage = Decimal.Round(((decimal)teamStats.WeeksWon / (decimal)teamStats.WeeksPlayed), 2);
+                        teamStats.TotalAverage =((decimal)teamStats.WeeksWon / (decimal)teamStats.WeeksPlayed);
                     }
                     allTeamStats.Add(teamStats);
                 }

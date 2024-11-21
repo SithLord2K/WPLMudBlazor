@@ -37,7 +37,10 @@
             <CardText>
                 <center><h3>@day.Date.ToLongDateString()</h3></center>
                 <center><h4>Week: @day.Week_Id</h4></center>
-                <Table Striped Bordered>
+                <Table 
+                    Striped
+                    Bordered
+                    Responsive>
                     <TableHeader ThemeContrast="ThemeContrast.Dark">
                         <TableRow>
                             <TableHeaderCell><center>Win</center></TableHeaderCell>
@@ -55,9 +58,9 @@
                             {
                                 <TableRow>
                                     <TableRowCell><center><Check Checked="@HomeWinChecked(d.Week_Id, d.Home_Team).Result" Disabled /></center></TableRowCell>
-                                    <TableRowCell><center>@teams.Where(x => x.Id == d.Home_Team).FirstOrDefault().TeamName</center></TableRowCell>
+                                    <TableRowCell><center>@teams.Where(x => x.Id == d.Home_Team).First().TeamName</center></TableRowCell>
                                     <TableRowCell><center>vs</center></TableRowCell>
-                                    <TableRowCell><center>@teams.Where(x => x.Id == d.Away_Team).FirstOrDefault().TeamName</center></TableRowCell>
+                                    <TableRowCell><center>@teams.Where(x => x.Id == d.Away_Team).First().TeamName</center></TableRowCell>
                                     <TableRowCell><center><Check Checked="@AwayWinChecked(d.Week_Id, d.Away_Team).Result" Disabled /></center></TableRowCell>
                                     <TableRowCell><center>@d.Table_Number</center></TableRowCell>
                                 </TableRow>

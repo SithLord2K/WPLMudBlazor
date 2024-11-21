@@ -39,7 +39,7 @@
             </AuthorizeView>
             &nbsp;
             <AuthorizeView Roles="League_Admin, Super_User, Captain">
-                <Tooltip Text="Use to add week stats, ie: which team won, if there was a forfeit or if it is a playoff game.">
+                <Tooltip Text="Use to add week stats, ie: Which team won, if there was a forfeit or if it is a playoff game.">
                     <Button Color="Color.Success" Clicked="@ShowWeeksModal">Add/Edit Weeks</Button>
                 </Tooltip>
             </AuthorizeView>
@@ -98,7 +98,7 @@
                         }
                         <Field>
                             <FieldBody>
-                                <Button Color="Color.Success" Clicked="@AddPlayerClicked">Add/Edit Player</Button>&nbsp;
+                                <Button Color="Color.Success" Clicked="@AddPlayerClicked">Save Player</Button>&nbsp;
                                 <Button Color="Color.Danger" Type="ButtonType.Reset">Reset</Button>
                             </FieldBody>
                         </Field>
@@ -169,7 +169,7 @@
                 <Field></Field>
                 <Field>
                     <FieldBody>
-                        <Button Color="Color.Success" Clicked="@AddPlayerDataClicked">Modify Player Games</Button>&nbsp;
+                        <Button Color="Color.Success" Clicked="@AddPlayerDataClicked">Save Player Games</Button>&nbsp;
                         <Button Color="Color.Danger" Type="ButtonType.Reset">Reset</Button>
                     </FieldBody>
                 </Field>
@@ -188,13 +188,6 @@
             <Form>
                 <Field>
                     <Field ColumnSize="ColumnSize.IsFull">
-                        @*<Select TValue="int" SelectedValueChanged="@LoadTeam">
-                        <SelectItem Value="0">Select a Team to Edit</SelectItem>
-                        @foreach (var t1 in teams)
-                        {
-                        <SelectItem Value="@t1.Id">@t1.TeamName</SelectItem>
-                        }
-                        </Select> *@
                         <DropdownList TItem="TeamDetails" TValue="int"
                                       Data="@teams"
                                       TextField="@((item)=>item.TeamName)"
@@ -228,7 +221,7 @@
                         </Field>
                         <Field>
                             <FieldBody>
-                                <Button Color="Color.Success" Clicked="@AddTeamClicked">Add/Edit Team</Button>&nbsp;
+                                <Button Color="Color.Success" Clicked="@AddTeamClicked">Save Team</Button>&nbsp;
                                 <Button Color="Color.Danger" Type="ButtonType.Reset">Reset</Button>
                             </FieldBody>
                         </Field>
@@ -314,7 +307,7 @@
                     <Field>
                         <Field>
                             <FieldBody>
-                                <Button Color="Color.Success" Clicked="@AddScheduleClicked">Add/Edit Schedule</Button>&nbsp;
+                                <Button Color="Color.Success" Clicked="@AddScheduleClicked">Save Schedule</Button>&nbsp;
                                 <Button Color="Color.Danger" Type="ButtonType.Reset">Reset</Button>
                             </FieldBody>
                         </Field>
@@ -336,21 +329,6 @@
             <Divider />
             <Form>
                 <Field>
-                    @*<Field>
-                    <Field ColumnSize="ColumnSize.IsFull">
-                    <Select TValue="int" SelectedValue="@week.WeekNumber" SelectedValueChanged="@LoadWeek">
-                    <SelectItem Value="0">Choose Week To Edit</SelectItem>
-                    @foreach (var s in schedules)
-                    {
-                    <SelectItem Value="@week.WeekNumber">
-                    Week #: @s.Week_Id,
-                    Home: @teams.Where(x => x.Id == s.Home_Team).FirstOrDefault().TeamName,
-                    Away: @teams.Where(x => x.Id == s.Away_Team).FirstOrDefault().TeamName
-                    </SelectItem>
-                    }
-                    </Select>
-                    </Field>
-                    </Field> *@
                     <Field>
                         <Field ColumnSize="ColumnSize.IsFull">
                             <FieldLabel>Week #:</FieldLabel>
@@ -420,7 +398,7 @@
                             }
                             <FieldBody><br /></FieldBody>
                             <FieldBody>
-                                <Button Color="Color.Success" Clicked="@AddWeekClicked">Add Weeks</Button>&nbsp;
+                                <Button Color="Color.Success" Clicked="@AddWeekClicked">Save Week</Button>&nbsp;
                                 <Button Color="Color.Danger" Type="ButtonType.Reset">Reset</Button>
                             </FieldBody>
                         </Field>
@@ -571,12 +549,12 @@
                 UserId = UserId.Split('|')[1];
 
                 Email = state.User.Claims
-                    .Where(c => c.Type.Equals(@"https://wpl.codersden.com/email"))
+                    .Where(c => c.Type.Equals(@"https://wpl.somee.com/email"))
                     .Select(c => c.Value)
                     .FirstOrDefault() ?? string.Empty;
 
                 Roles = state.User.Claims
-                    .Where(c => c.Type.Equals(@"https://wpl.codersden.com/roles"))
+                    .Where(c => c.Type.Equals(@"https://wpl.somee.com/roles"))
                     .Select(c => c.Value)
                     .FirstOrDefault() ?? string.Empty;
             }

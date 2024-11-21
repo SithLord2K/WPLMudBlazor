@@ -32,8 +32,8 @@ namespace WPLBlazor.Services
                         WeekNumber = week.WeekNumber,
                         Home_Team = week.Home_Team,
                         Away_Team = week.Away_Team,
-                        Home_TeamName = whatTeam.FirstOrDefault(td => td.Id == week.Home_Team).TeamName,
-                        Away_TeamName = whatTeam.FirstOrDefault(td => td.Id == week.Away_Team).TeamName,
+                        Home_TeamName = whatTeam.First(td => td.Id == week.Home_Team).TeamName,
+                        Away_TeamName = whatTeam.First(td => td.Id == week.Away_Team).TeamName,
                         WinningTeamId = week.WinningTeamId
 
                     };

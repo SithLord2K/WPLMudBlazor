@@ -24,7 +24,7 @@
                 }
                 <TableBody Width="Width.Auto">
                     <TableRowGroup Title="@team.TeamName">
-                        <TableHeaderCell><center>Player Name</center></TableHeaderCell>
+                        <TableHeaderCell><center>Name</center></TableHeaderCell>
                         <TableHeaderCell><center>Games Played</center></TableHeaderCell>
                         <TableHeaderCell><center>Captain?</center></TableHeaderCell>
                         @foreach (var roster in rosters.Where(x => x.TeamId == team.Id))
@@ -33,7 +33,7 @@
                                 <TableRowCell><center><a href="/player_detail/@roster.Player_Id">@roster.Player_Name</a></center></TableRowCell>
                                 @if (players is not null)
                                 {
-                                    <TableRowCell><center>@players.Where(x => x.Id == roster.Player_Id).FirstOrDefault().GamesPlayed</center></TableRowCell>
+                                    <TableRowCell><center>@players.Where(x => x.Id == roster.Player_Id).First().GamesPlayed</center></TableRowCell>
                                 }
                                 @if (roster.Player_Id == roster.Captain_Player_Id)
                                 {

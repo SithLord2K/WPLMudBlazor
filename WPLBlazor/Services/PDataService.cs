@@ -22,7 +22,7 @@ namespace WPLBlazor.Services
             {
 
                 PDataModel pDataModel = new();
-                pDataModel.TeamName = teamDetails.Where(x => x.Id == player.TeamId).FirstOrDefault().TeamName;
+                pDataModel.TeamName = teamDetails.Where(x => x.Id == player.TeamId).First().TeamName;
                 pDataModel.FirstName = player.FirstName;
                 pDataModel.LastName = player.LastName;
                 pDataModel.GamesWon = player.GamesWon;
@@ -30,7 +30,7 @@ namespace WPLBlazor.Services
                 pDataModel.GamesPlayed = player.GamesPlayed;
                 if (pDataModel.GamesPlayed > 0)
                 {
-                    pDataModel.Average = Decimal.Round(((decimal)player.GamesWon / (decimal)player.GamesPlayed), 2);
+                    pDataModel.Average = ((decimal)player.GamesWon / (decimal)player.GamesPlayed);
                 }
 
                 pData.Add(pDataModel);
