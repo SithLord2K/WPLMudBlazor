@@ -31,6 +31,7 @@ namespace WPLBlazor.Services
                         TotalGamesWon = teamTotals.Where(y => y.TeamId == team.Id).Sum(x => x.GamesWon),
                         TotalGamesLost = teamTotals.Where(y => y.TeamId == team.Id).Sum(y => y.GamesLost),
                         WeeksWon = weekTotals.Where(z => z.WinningTeamId == team.Id).Count(),
+                        WeeksLost = weekTotals.Where(z => z.WinningTeamId != team.Id).Count(),
                         WeeksPlayed = weekTotals.Count
                     };
 

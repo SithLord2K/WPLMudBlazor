@@ -1,4 +1,6 @@
-﻿namespace WPLBlazor.Models
+﻿using Microsoft.Extensions.Diagnostics.HealthChecks;
+
+namespace WPLBlazor.Models
 {
     public class TeamStats
     {
@@ -8,6 +10,7 @@
         public int TotalGamesPlayed { get; set; }
         public decimal TotalAverage { get; set; }
         public int WeeksWon { get; set; }
+        public int WeeksLost { get; set; }
         public int WeeksPlayed { get; set; }
     }
 }
