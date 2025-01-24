@@ -1,4 +1,5 @@
 ﻿@page "/league_admin"
+@using Microsoft.Data.SqlClient
 @attribute [StreamRendering]
 
 <PageTitle>League Administration</PageTitle>
@@ -14,35 +15,52 @@
         <CardTitle Size="3">Administration Functions</CardTitle>
         <CardText>
             <Divider />
-            <AuthorizeView Roles="League_Admin, Super_User">
-                <Tooltip Text="Use to add/edit players in the database.">
-                    <Button Color="Color.Success" Clicked="@ShowPlayerModal">Add/Edit Players</Button>
-                </Tooltip>
-            </AuthorizeView>
-            &nbsp;
-            <AuthorizeView Roles="League_Admin, Super_User, Captain">
-                <Tooltip Text="Use to add games won and lost for players.">
-                    <Button Color="Color.Success" Clicked="@ShowPlayerDataModal">Add/Edit Player Games</Button>
-                </Tooltip>
-            </AuthorizeView>
-            &nbsp;
-            <AuthorizeView Roles="League_Admin, Super_User">
-                <Tooltip Text="Use to add/edit teams in the database.">
-                    <Button Color="Color.Success" Clicked="@ShowTeamModal">Add/Edit Teams</Button>
-                </Tooltip>
-            </AuthorizeView>
-            &nbsp;
-            <AuthorizeView Roles="League_Admin, Super_User">
-                <Tooltip Text="Use to Add/edit the schedule.">
-                    <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
-                </Tooltip>
-            </AuthorizeView>
-            &nbsp;
-            <AuthorizeView Roles="League_Admin, Super_User, Captain">
-                <Tooltip Text="Use to add week stats, ie: Which team won, if there was a forfeit or if it is a playoff game.">
-                    <Button Color="Color.Success" Clicked="@ShowWeeksModal">Add/Edit Weeks</Button>
-                </Tooltip>
-            </AuthorizeView>
+            <Table>
+                <TableRow Width="Width.Auto">
+                    <TableRowCell>
+                        <AuthorizeView Roles="League_Admin, Super_User">
+                            <Tooltip Text="Use to add/edit players in the database.">
+                                <Button Color="Color.Success" Clicked="@ShowPlayerModal">Add/Edit Players</Button>
+                            </Tooltip>
+                        </AuthorizeView>
+                    </TableRowCell>
+                    <TableRowCell>
+                        <AuthorizeView Roles="League_Admin, Super_User, Captain">
+                            <Tooltip Text="Use to add games won and lost for players.">
+                                <Button Color="Color.Success" Clicked="@ShowPlayerDataModal">Add/Edit Player Games</Button>
+                            </Tooltip>
+                        </AuthorizeView>
+                    </TableRowCell>
+                    <TableRowCell>
+                        <AuthorizeView Roles="League_Admin, Super_User">
+                            <Tooltip Text="Use to add/edit teams in the database.">
+                                <Button Color="Color.Success" Clicked="@ShowTeamModal">Add/Edit Teams</Button>
+                            </Tooltip>
+                        </AuthorizeView>
+                    </TableRowCell>
+                    <TableRowCell>
+                        <AuthorizeView Roles="League_Admin, Super_User">
+                            <Tooltip Text="Use to Add/edit the schedule.">
+                                <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
+                            </Tooltip>
+                        </AuthorizeView>
+                    </TableRowCell>
+                    <TableRowCell>
+                        <AuthorizeView Roles="League_Admin, Super_User, Captain">
+                            <Tooltip Text="Use to add week stats, ie: Which team won, if there was a forfeit or if it is a playoff game.">
+                                <Button Color="Color.Success" Clicked="@ShowWeeksModal">Add/Edit Weeks</Button>
+                            </Tooltip>
+                        </AuthorizeView>
+                    </TableRowCell>
+                    <TableRowCell>
+                        <AuthorizeView Roles="Super_User">
+                            <Tooltip Text="Use to archive the season and prepare for the next season.">
+                                <Button Color="Color.Success" Clicked="@ArchiveSeason">Archive Season</Button>
+                            </Tooltip>
+                        </AuthorizeView>
+                    </TableRowCell>
+                </TableRow>
+            </Table>
         </CardText>
     </CardBody>
 </Card>
@@ -189,10 +207,10 @@
                 <Field>
                     <Field ColumnSize="ColumnSize.IsFull">
                         <DropdownList TItem="TeamDetails" TValue="int"
-                                      Data="@teams"
-                                      TextField="@((item)=>item.TeamName)"
-                                      ValueField="@((item)=>item.Id)"
-                                      SelectedValueChanged="@LoadTeam">
+                        Data="@teams"
+                        TextField="@((item)=>item.TeamName)"
+                        ValueField="@((item)=>item.Id)"
+                        SelectedValueChanged="@LoadTeam">
                             Select Team to Edit
                         </DropdownList>
                     </Field>
@@ -562,8 +580,12 @@
         }
     }
 
-    //AntiForgery Tasks
+    //Archive Tasks
+    private async Task ArchiveSeason()
+    {
 
+        await Task.Delay(5000);
+    }
 
     //Form Tasks
     private async Task AddPlayerClicked()
@@ -859,7 +881,7 @@
         playerData = new();
         schedule = new();
         week = new();
-        
+
         pData = new();
         players = new();
         schedules = new();
