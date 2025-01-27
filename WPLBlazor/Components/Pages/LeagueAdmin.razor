@@ -322,12 +322,12 @@
                             }
                         </FieldBody>
                     </Field>
-                        <Field ColumnSize="ColumnSize.IsFull">
-                            <FieldLabel>Table #:</FieldLabel>
-                            <FieldBody>
-                                <NumericEdit @bind-Value="@schedule.Table_Number" />
-                            </FieldBody>
-                        </Field>
+                    <Field ColumnSize="ColumnSize.IsFull">
+                        <FieldLabel>Table #:</FieldLabel>
+                        <FieldBody>
+                            <NumericEdit @bind-Value="@schedule.Table_Number" />
+                        </FieldBody>
+                    </Field>
                     <Field>
                         <Field>
                             <FieldBody>
@@ -643,6 +643,26 @@
     {
         if (schedule is not null)
         {
+            if(schedule.Home_Team != 1)
+        {
+                schedule.Table_Number = null;
+            }
+            else if(schedule.Home_Team != 2)
+            {
+                schedule.Table_Number = null;
+            }
+             else if(schedule.Home_Team != 3)
+            {
+                schedule.Table_Number = null;
+            }
+            else if (schedule.Home_Team != 4)
+            {
+                schedule.Table_Number = null;
+            }
+            else if (schedule.Home_Team != 11)
+            {
+                schedule.Table_Number = null;
+            }
             var response = await apiService.AddSchedule(schedule);
             if (response)
             {
