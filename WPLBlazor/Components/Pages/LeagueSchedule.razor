@@ -15,6 +15,7 @@
                     TValue="DateOnly?"
                     DisabledDays="@disabledDays"
                     DateChanged="@SelectedDate"
+                    Date="@selectedDate"
                     ReadOnly="true"
                     DisplayFormat="MMMM dd, yyyy" />
     </Addon>
@@ -38,9 +39,9 @@
                 <center><h3>@day.Date.ToLongDateString()</h3></center>
                 <center><h4>Week: @day.Week_Id</h4></center>
                 <Table 
-                    Striped
-                    Bordered
-                    Responsive>
+                Striped
+                Bordered
+                Responsive>
                     <TableHeader ThemeContrast="ThemeContrast.Dark">
                         <TableRow>
                             <TableHeaderCell><center>Win</center></TableHeaderCell>
@@ -74,10 +75,10 @@
     <br />
 }
 <Button Shadow="Blazorise.Shadow.Default"
-        Style="position:fixed; bottom: 10px; right: 0; margin-right: 16px; opacity: .5"
-        Color="Color.Dark"
-        TextColor="TextColor.Light"
-        Clicked="@ScrollToTop">
+Style="position:fixed; bottom: 10px; right: 0; margin-right: 16px; opacity: .5"
+Color="Color.Dark"
+TextColor="TextColor.Light"
+Clicked="@ScrollToTop">
     <Icon Name="IconName.ArrowUp" />
 </Button>
 
@@ -119,6 +120,14 @@
         teamStats = await teamHelper.GetAllTeamStats();
         weeks = await weekHelper.GetFullWeek();
         await loadingIndicator.Hide();
+
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        selectedDate = DateOnly.FromDateTime(DateTime.Now);
+        SelectedDate(selectedDate);
+        base.OnAfterRender(firstRender);    
     }
 
     async Task<bool> HomeWinChecked(int WeekId, int HomeId)
