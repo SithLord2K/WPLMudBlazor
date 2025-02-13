@@ -97,7 +97,7 @@ Clicked="@ScrollToTop">
     private List<TeamDetails> teams = [];
     private List<TeamStats> teamStats = [];
     private List<WeekFullInfo> weeks = [];
-    private WeekFullInfo homeWeek = new();
+    private WeekFullInfo? homeWeek = new();
     private DayOfWeek[] disabledDays = [];
     private DatePicker<DateOnly?> datePicker { get; set; }
     public DateOnly? selectedDate = new();
@@ -121,38 +121,6 @@ Clicked="@ScrollToTop">
         weeks = await weekHelper.GetFullWeek();
         await loadingIndicator.Hide();
 
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        selectedDate = DateOnly.FromDateTime(DateTime.Now);
-        if(DateTime.Now.DayOfWeek.ToString() != "Tuesday")
-        {
-            switch (DateTime.Now.DayOfWeek.ToString())
-            {
-                case "Monday":
-                    selectedDate = DateOnly.FromDateTime(DateTime.Now.AddDays(1));
-                    break;
-                case "Wednesday":
-                    selectedDate = DateOnly.FromDateTime(DateTime.Now.AddDays(6));
-                    break;
-                case "Thursday":
-                    selectedDate = DateOnly.FromDateTime(DateTime.Now.AddDays(5));
-                    break;
-                case "Friday":
-                    selectedDate = DateOnly.FromDateTime(DateTime.Now.AddHours(4));
-                    break;
-                case "Saturday":
-                    selectedDate = DateOnly.FromDateTime(DateTime.Now.AddDays(3));
-                    break;
-                case "Sunday":
-                    selectedDate = DateOnly.FromDateTime(DateTime.Now.AddDays(2));
-                    break;
-            }
-        }
-
-        SelectedDate(selectedDate);
-        base.OnAfterRender(firstRender);    
     }
 
     async Task<bool> HomeWinChecked(int WeekId, int HomeId)
