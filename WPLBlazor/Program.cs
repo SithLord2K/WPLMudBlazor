@@ -40,10 +40,10 @@ builder.Services
     .AddInteractiveServerComponents();
 
 builder.Services
-.AddBlazorise(options =>
-     {
-         options.Immediate = true;
-     })
+    .AddBlazorise(options =>
+    {
+        options.Immediate = true;
+    })
     .AddBootstrap5Providers()
     .AddFontAwesomeIcons()
     .AddLoadingIndicator();
