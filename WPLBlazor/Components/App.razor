@@ -20,22 +20,22 @@
     <link href="_content/Blazorise.LoadingIndicator/blazorise.loadingindicator.css" rel="stylesheet" />
 
     <!--Radzen-->
-    <RadzenTheme Theme="material_dark" @rendermode="InteractiveServer" />
+    @* <RadzenTheme Theme="material_dark" @rendermode="InteractiveServer" /> *@
 
     <HeadOutlet />
 </head>
 
 <body>
-    <Routes @rendermode=RenderMode.InteractiveServer />
+    <Routes @rendermode=InteractiveServer />
     <script src="_framework/blazor.web.js"></script>
 
     <!--Radzen.Blazor.js-->
-    <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
+    @* <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script> *@
 
 </body>
 
 </html>
-@code {
+@* @code {
     [CascadingParameter]
     private HttpContext HttpContext { get; set; }
 
@@ -56,4 +56,4 @@
             }
         }
     }
-}
+} *@

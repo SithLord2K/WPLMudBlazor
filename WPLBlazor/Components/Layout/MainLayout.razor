@@ -3,7 +3,7 @@
 @inject IVersionProvider VersionProvider
 
  <link href="_content/Blazorise.LoadingIndicator/blazorise.loadingindicator.css" rel="stylesheet" />
-@*
+
 <Layout Sider>
     <Layout Display="Display.Flex">
         <LayoutHeader Fixed>
@@ -37,9 +37,9 @@
             </Layout>
         </Layout>
     </Layout>
-</Layout> *@
+</Layout>
 
-<!--RadzenLayout-->
+@* <!--RadzenLayout-->
 <RadzenLayout>
     <RadzenHeader>
         <RadzenRow AlignItems="AlignItems.Center" Gap="4rem"class="rz-w-100">
@@ -74,14 +74,14 @@
         <center>Site created and maintained by Chris Wiley on Golden Brothers 1</center>
         <center>This site was made using Blazorise: @($"v{VersionProvider.MilestoneVersion}")</center>
     </RadzenFooter>
-</RadzenLayout>
+</RadzenLayout> *@
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
-<RadzenComponents @rendermode="InteractiveServer" />
+
 
 @code {
     bool sidebarExpanded = true;
