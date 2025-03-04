@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Components.Authorization;
 using WPLBlazor.AuthenticationStateSyncer.PersistingRevalidatingAuthenticationStateProvider;
 using WPLBlazor.Services;
 using Blazorise.LoadingIndicator;
+using Radzen;
 
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
@@ -47,6 +48,14 @@ builder.Services
     .AddBootstrap5Providers()
     .AddFontAwesomeIcons()
     .AddLoadingIndicator();
+
+//Radzen Services
+builder.Services.AddRadzenComponents();
+builder.Services.AddRadzenCookieThemeService(options =>
+{
+    options.Name = "WPLTheme"; // The name of the cookie
+    options.Duration = TimeSpan.FromDays(365); // The duration of the cookie
+});
 
 var app = builder.Build();
 

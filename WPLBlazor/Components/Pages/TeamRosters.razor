@@ -7,11 +7,12 @@
 
 <PageTitle>Team Rosters</PageTitle>
 
-<h1>Rosters</h1>
-<br />
+
 @if (teams is not null)
 {
-    <Card>
+    <RadzenCard Variant="Variant.Outlined" class="rz-border-radius-3">
+        <h1>Rosters</h1>
+        <br />
         <Table Bordered Striped Responsive>
             <TableHeader Width="Width.Auto">
 
@@ -49,7 +50,7 @@
                 </TableBody>
             }
         </Table>
-    </Card>
+    </RadzenCard>
     <br />
 }
 

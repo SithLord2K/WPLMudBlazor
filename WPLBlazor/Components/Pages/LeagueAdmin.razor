@@ -1,69 +1,70 @@
 ﻿@page "/league_admin"
-@using Microsoft.Data.SqlClient
+<!--@using Microsoft.Data.SqlClient-->
 @attribute [StreamRendering]
 
 <PageTitle>League Administration</PageTitle>
 
-<h1>League Administration</h1>
-<br />
-<p>Hello @Username!</p>
-<p>Email: @Email</p>
-<p>Role: @Roles</p>
+
 <!--Buttons With Authorizations-->
-<Card>
+<RadzenCard Variant="Variant.Outlined" class="rz-border-radius-3">
+    <h1>League Administration</h1>
+    <br />
+    <p>Hello @Username!</p>
+    <p>Email: @Email</p>
+    <p>Role: @Roles</p>
     <CardBody>
         <CardTitle Size="3">Administration Functions</CardTitle>
         <CardText>
             <Divider />
-            <Table>
-                <TableRow Width="Width.Auto">
-                    <TableRowCell>
+            <RadzenTable>
+                <RadzenTableRow>
+                    <RadzenTableCell>
                         <AuthorizeView Roles="League_Admin, Super_User">
                             <Tooltip Text="Use to add/edit players in the database.">
                                 <Button Color="Color.Success" Clicked="@ShowPlayerModal">Add/Edit Players</Button>
                             </Tooltip>
                         </AuthorizeView>
-                    </TableRowCell>
-                    <TableRowCell>
+                    </RadzenTableCell>
+                    <RadzenTableCell>
                         <AuthorizeView Roles="League_Admin, Super_User, Captain">
                             <Tooltip Text="Use to add games won and lost for players.">
                                 <Button Color="Color.Success" Clicked="@ShowPlayerDataModal">Add/Edit Player Games</Button>
                             </Tooltip>
                         </AuthorizeView>
-                    </TableRowCell>
-                    <TableRowCell>
+                    </RadzenTableCell>
+                    <RadzenTableCell>
                         <AuthorizeView Roles="League_Admin, Super_User">
                             <Tooltip Text="Use to add/edit teams in the database.">
                                 <Button Color="Color.Success" Clicked="@ShowTeamModal">Add/Edit Teams</Button>
                             </Tooltip>
                         </AuthorizeView>
-                    </TableRowCell>
-                    <TableRowCell>
+                    </RadzenTableCell>
+                    <RadzenTableCell>
                         <AuthorizeView Roles="League_Admin, Super_User">
                             <Tooltip Text="Use to Add/edit the schedule.">
                                 <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
                             </Tooltip>
                         </AuthorizeView>
-                    </TableRowCell>
-                    <TableRowCell>
+                    </RadzenTableCell>
+                    <RadzenTableCell>
                         <AuthorizeView Roles="League_Admin, Super_User, Captain">
                             <Tooltip Text="Use to add week stats, ie: Which team won, if there was a forfeit or if it is a playoff game.">
                                 <Button Color="Color.Success" Clicked="@ShowWeeksModal">Add/Edit Weeks</Button>
                             </Tooltip>
                         </AuthorizeView>
-                    </TableRowCell>
-                    <TableRowCell>
+                    </RadzenTableCell>
+                    <RadzenTableCell>
                         <AuthorizeView Roles="Super_User">
                             <Tooltip Text="Use to archive the season and prepare for the next season.">
                                 <Button Color="Color.Success" Clicked="@ArchiveSeason">Archive Season</Button>
                             </Tooltip>
                         </AuthorizeView>
-                    </TableRowCell>
-                </TableRow>
-            </Table>
+                    </RadzenTableCell>
+                </RadzenTableRow>
+            </RadzenTable>
         </CardText>
     </CardBody>
-</Card>
+</RadzenCard>
 <!--Player Add/Edit Modal-->
 <Modal @ref="modalAddPlayer">
     <ModalContent Centered>
@@ -117,7 +118,7 @@
                         <Field>
                             <FieldBody>
                                 <Button Color="Color.Success" Clicked="@AddPlayerClicked">Save Player</Button>&nbsp;
-                                <Button Color="Color.Danger" Type="ButtonType.Reset">Reset</Button>
+                                <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
                             </FieldBody>
                         </Field>
                     </Field>
@@ -188,7 +189,7 @@
                 <Field>
                     <FieldBody>
                         <Button Color="Color.Success" Clicked="@AddPlayerDataClicked">Save Player Games</Button>&nbsp;
-                        <Button Color="Color.Danger" Type="ButtonType.Reset">Reset</Button>
+                        <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
                     </FieldBody>
                 </Field>
             </Form>
@@ -240,7 +241,7 @@
                         <Field>
                             <FieldBody>
                                 <Button Color="Color.Success" Clicked="@AddTeamClicked">Save Team</Button>&nbsp;
-                                <Button Color="Color.Danger" Type="ButtonType.Reset">Reset</Button>
+                                <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
                             </FieldBody>
                         </Field>
                     }
@@ -332,7 +333,7 @@
                         <Field>
                             <FieldBody>
                                 <Button Color="Color.Success" Clicked="@AddScheduleClicked">Save Schedule</Button>&nbsp;
-                                <Button Color="Color.Danger" Type="ButtonType.Reset">Reset</Button>
+                                <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
                             </FieldBody>
                         </Field>
                     </Field>
@@ -423,7 +424,7 @@
                             <FieldBody><br /></FieldBody>
                             <FieldBody>
                                 <Button Color="Color.Success" Clicked="@AddWeekClicked">Save Week</Button>&nbsp;
-                                <Button Color="Color.Danger" Type="ButtonType.Reset">Reset</Button>
+                                <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
                             </FieldBody>
                         </Field>
                     </Field>
@@ -486,7 +487,7 @@
                         <Field>
                             <FieldBody>
                                 <Button Color="Color.Success" Clicked="@AddPlayerClicked">Add/Edit Player</Button>&nbsp;
-                                <Button Color="Color.Light" Type="ButtonType.Reset">Clear</Button>
+                                <Button Color="Color.Light" Type="Blazorise.ButtonType.Reset">Clear</Button>
                             </FieldBody>
                         </Field>
                     }

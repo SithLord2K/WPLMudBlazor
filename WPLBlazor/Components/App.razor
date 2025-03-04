@@ -19,6 +19,9 @@
     <link href="_content/Blazorise.SpinKit/blazorise.spinkit.css" rel="stylesheet" />
     <link href="_content/Blazorise.LoadingIndicator/blazorise.loadingindicator.css" rel="stylesheet" />
 
+    <!--Radzen-->
+    <RadzenTheme Theme="material_dark" @rendermode="InteractiveServer" />
+
     <HeadOutlet />
 </head>
 
@@ -26,6 +29,31 @@
     <Routes @rendermode=RenderMode.InteractiveServer />
     <script src="_framework/blazor.web.js"></script>
 
+    <!--Radzen.Blazor.js-->
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
+
 </body>
 
 </html>
+@code {
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; }
+
+    [Inject]
+    private ThemeService ThemeService { get; set; }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        if (HttpContext != null)
+        {
+            var theme = HttpContext.Request.Cookies["WPLTheme"];
+
+            if (!string.IsNullOrEmpty(theme))
+            {
+                ThemeService.SetTheme(theme, false);
+            }
+        }
+    }
+}

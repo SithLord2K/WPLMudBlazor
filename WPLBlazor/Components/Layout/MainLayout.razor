@@ -2,8 +2,8 @@
 @inherits LayoutComponentBase
 @inject IVersionProvider VersionProvider
 
-<link href="_content/Blazorise.LoadingIndicator/blazorise.loadingindicator.css" rel="stylesheet" />
-
+ <link href="_content/Blazorise.LoadingIndicator/blazorise.loadingindicator.css" rel="stylesheet" />
+@*
 <Layout Sider>
     <Layout Display="Display.Flex">
         <LayoutHeader Fixed>
@@ -37,10 +37,52 @@
             </Layout>
         </Layout>
     </Layout>
-</Layout>
+</Layout> *@
+
+<!--RadzenLayout-->
+<RadzenLayout>
+    <RadzenHeader>
+        <RadzenRow AlignItems="AlignItems.Center" Gap="4rem"class="rz-w-100">
+            <RadzenColumn class="rz-text-align-start">
+                <RadzenSidebarToggle Click="@(() => sidebarExpanded = !sidebarExpanded)" />
+                <RadzenImage Path="favicon.png" Style="width: 50px" />
+                <RadzenLabel Text="Welland Pool League" />
+            </RadzenColumn>
+            <RadzenColumn class="rz-text-align-end">
+                <RadzenAppearanceToggle />
+                <Login />
+            </RadzenColumn>
+        </RadzenRow>
+    </RadzenHeader>
+    <RadzenSidebar Responsive="false" Style="width: max-content">
+        <RadzenPanelMenu DisplayStyle="@(sidebarExpanded ? MenuItemDisplayStyle.IconAndText : MenuItemDisplayStyle.Icon)" ShowArrow="false">
+            <RadzenPanelMenuItem Text="Home" Path="" Icon="home" />
+            <RadzenPanelMenuItem Text="Rosters" Path="rosters" Icon="patient_list" />
+            <RadzenPanelMenuItem Text="Leaderboards" Path="leaderboard" Icon="list" />
+            <RadzenPanelMenuItem Text="Schedule" Path="schedule" Icon="calendar_month" />
+            <AuthorizeView Roles="League_Admin, Super_User">
+                <RadzenPanelMenuItem Text="Admin" Path="league_admin" Icon="account_circle" />
+            </AuthorizeView>
+        </RadzenPanelMenu>
+    </RadzenSidebar>
+    <RadzenBody>
+        <LoadingIndicator IndicatorVerticalPlacement="LoadingIndicatorPlacement.Middle" FadeIn>
+        @Body
+        </LoadingIndicator>
+    </RadzenBody>
+    <RadzenFooter>
+        <center>Site created and maintained by Chris Wiley on Golden Brothers 1</center>
+        <center>This site was made using Blazorise: @($"v{VersionProvider.MilestoneVersion}")</center>
+    </RadzenFooter>
+</RadzenLayout>
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+<RadzenComponents @rendermode="InteractiveServer" />
+
+@code {
+    bool sidebarExpanded = true;
+}
