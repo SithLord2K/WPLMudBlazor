@@ -6,7 +6,7 @@
 
 
 <!--Buttons With Authorizations-->
-<RadzenCard Variant="Variant.Outlined" class="rz-border-radius-3">
+<Card>
     <h1>League Administration</h1>
     <br />
     <p>Hello @Username!</p>
@@ -16,55 +16,55 @@
         <CardTitle Size="3">Administration Functions</CardTitle>
         <CardText>
             <Divider />
-            <RadzenTable>
-                <RadzenTableRow>
-                    <RadzenTableCell>
+            <Table>
+                <TableRow>
+                    <TableRowCell>
                         <AuthorizeView Roles="League_Admin, Super_User">
                             <Tooltip Text="Use to add/edit players in the database.">
                                 <Button Color="Color.Success" Clicked="@ShowPlayerModal">Add/Edit Players</Button>
                             </Tooltip>
                         </AuthorizeView>
-                    </RadzenTableCell>
-                    <RadzenTableCell>
+                    </TableRowCell>
+                    <TableRowCell>
                         <AuthorizeView Roles="League_Admin, Super_User, Captain">
                             <Tooltip Text="Use to add games won and lost for players.">
                                 <Button Color="Color.Success" Clicked="@ShowPlayerDataModal">Add/Edit Player Games</Button>
                             </Tooltip>
                         </AuthorizeView>
-                    </RadzenTableCell>
-                    <RadzenTableCell>
+                    </TableRowCell>
+                    <TableRowCell>
                         <AuthorizeView Roles="League_Admin, Super_User">
                             <Tooltip Text="Use to add/edit teams in the database.">
                                 <Button Color="Color.Success" Clicked="@ShowTeamModal">Add/Edit Teams</Button>
                             </Tooltip>
                         </AuthorizeView>
-                    </RadzenTableCell>
-                    <RadzenTableCell>
+                    </TableRowCell>
+                    <TableRowCell>
                         <AuthorizeView Roles="League_Admin, Super_User">
                             <Tooltip Text="Use to Add/edit the schedule.">
                                 <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
                             </Tooltip>
                         </AuthorizeView>
-                    </RadzenTableCell>
-                    <RadzenTableCell>
+                    </TableRowCell>
+                    <TableRowCell>
                         <AuthorizeView Roles="League_Admin, Super_User, Captain">
                             <Tooltip Text="Use to add week stats, ie: Which team won, if there was a forfeit or if it is a playoff game.">
                                 <Button Color="Color.Success" Clicked="@ShowWeeksModal">Add/Edit Weeks</Button>
                             </Tooltip>
                         </AuthorizeView>
-                    </RadzenTableCell>
-                    <RadzenTableCell>
+                    </TableRowCell>
+                    <TableRowCell>
                         <AuthorizeView Roles="Super_User">
                             <Tooltip Text="Use to archive the season and prepare for the next season.">
                                 <Button Color="Color.Success" Clicked="@ArchiveSeason">Archive Season</Button>
                             </Tooltip>
                         </AuthorizeView>
-                    </RadzenTableCell>
-                </RadzenTableRow>
-            </RadzenTable>
+                    </TableRowCell>
+                </TableRow>
+            </Table>
         </CardText>
     </CardBody>
-</RadzenCard>
+</Card>
 <!--Player Add/Edit Modal-->
 <Modal @ref="modalAddPlayer">
     <ModalContent Centered>
