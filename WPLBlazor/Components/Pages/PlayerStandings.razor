@@ -3,9 +3,9 @@
 
 <PageTitle>Player Standings</PageTitle>
 
-@if (teamStats != null)
-}
-<Card>
+@if (pData != null)
+{
+    <Card>
         <CardBody>
             <CardTitle Size="3">
                 Player Standings
@@ -42,9 +42,9 @@
             </CardText>
         </CardBody>
     </Card>
-}
+   }         
 
-@code {
+    @code {
     [CascadingParameter]
     LoadingIndicator loadingIndicator { get; set; } = new();
 
@@ -70,7 +70,6 @@
         pData = await pDataService.GetFullPlayerData();
 
         await playerGrid.ApplySorting(new DataGridSortColumnInfo(nameof(PDataModel.Average), SortDirection.Descending));
-        await teamGrid.ApplySorting(new DataGridSortColumnInfo(nameof(TeamStats.TotalAverage), SortDirection.Descending));
         await base.OnInitializedAsync();
         await loadingIndicator.Hide();
     }
