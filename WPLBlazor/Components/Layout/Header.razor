@@ -1,4 +1,6 @@
-﻿<Bar Mode="BarMode.Horizontal"
+﻿@attribute [StreamRendering]
+
+<Bar Mode="BarMode.Horizontal"
      Breakpoint="Breakpoint.Desktop"
      CollapseMode="BarCollapseMode.Small"
      NavigationBreakpoint="Breakpoint.Desktop"
@@ -6,17 +8,18 @@
      ThemeContrast="ThemeContrast.Dark"
      Shadow="Shadow.Default"
      Height="Height.Auto">
-        <BarStart>
-            &nbsp;<img src="favicon.png" width="50" height="50" />
-            <BarLink To="" Title="Welland Pool League">
-                <h2>WPL</h2>
+    <BarStart Gap="Gap.Is1">
+        <BarItem>
+            <BarLink To="" Title="Welland Pool League" TextSize="TextSize.Heading3" Height="Height.Auto">
+                <Image Source="Images/appicon2.png"/>
+                Welland Pool League
             </BarLink>
-        </BarStart>
-        <BarEnd>
-            <Login />&nbsp;&nbsp;
-        </BarEnd>
+        </BarItem>
+    </BarStart>
+    <BarEnd Gap="Gap.Is1" Padding="Padding.Is2">
+        <BarItem>
+            <Login />
+        </BarItem>
+    </BarEnd>
 </Bar>
 
-@code {
-
-}

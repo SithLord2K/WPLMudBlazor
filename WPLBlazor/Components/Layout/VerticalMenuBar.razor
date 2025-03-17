@@ -1,4 +1,5 @@
-﻿<Bar Mode="BarMode.VerticalInline"
+﻿@attribute [StreamRendering]
+<Bar Mode="BarMode.VerticalInline"
      CollapseMode="BarCollapseMode.Small"
      Breakpoint="Breakpoint.Desktop"
      NavigationBreakpoint="Breakpoint.Mobile"
@@ -6,39 +7,51 @@
      ThemeContrast="ThemeContrast.Dark"
      MenuToggleBehavior=BarMenuToggleBehavior.AllowSingleMenu
      Shadow="Shadow.Default">
-    <BarToggler />
+    @* <BarToggler /> *@
     <BarMenu>
         <BarStart>
-             <BarBrand Float="Float.Start">
 
-            </BarBrand>
             <BarItem>
-                <BarLink To="">
+                <BarLink To="" Title="Home">
                     <BarIcon IconName="IconName.Home" />
                     Home
                 </BarLink>
             </BarItem>
             <BarItem>
-                <BarLink To="rosters">
+                <BarLink To="rosters" Title="Rosters">
                     <BarIcon IconName="IconName.Users" />
                     Rosters
                 </BarLink>
             </BarItem>
             <BarItem>
-                <BarLink To="leaderboard">
+                <BarLink To="leaderboard" Title="Leaderboards">
                     <BarIcon IconName="IconName.ListUl" />
                     Leaderboards
                 </BarLink>
             </BarItem>
             <BarItem>
-                <BarLink To="schedule">
-                    <BarIcon IconName="IconName.Calendar" />
-                    Schedule
-                </BarLink>
+                <BarDropdown>
+                    <BarDropdownToggle>
+                        <BarIcon IconName="IconName.Calendar" />
+                        Schedules
+                    </BarDropdownToggle>
+                    <BarDropdownMenu>
+                        <BarDropdownItem>
+                            <BarLink To="schedule" Title="Season Schedule">
+                                Season
+                            </BarLink>
+                        </BarDropdownItem>
+                        <BarDropdownItem>
+                            <BarLink To="playoffs" Title="Playoffs Schedule">
+                                Playoffs
+                            </BarLink>
+                        </BarDropdownItem>
+                    </BarDropdownMenu>
+                </BarDropdown>
             </BarItem>
             <AuthorizeView Roles="League_Admin, Super_User">
                 <BarItem>
-                    <BarLink To="league_admin">
+                    <BarLink To="league_admin" Title="Admin">
                         <BarIcon IconName="IconName.UserTie" />
                         Admin
                     </BarLink>
@@ -46,8 +59,15 @@
             </AuthorizeView>
         </BarStart>
         <BarEnd>
+            <Divider />
             <BarItem>
-                <BarLink To="changelog">
+                <BarLink To="Downloads/Poolscoresheet.xls" Title="Download Scoresheet">
+                    <BarIcon IconName="IconName.FileDownload" />
+                    Download Scoresheet
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="changelog" Title="Changelog">
                     <BarIcon IconName="IconName.ExclamationCircle" />
                     Changelog
                 </BarLink>

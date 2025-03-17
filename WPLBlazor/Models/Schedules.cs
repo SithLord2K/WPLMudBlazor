@@ -10,5 +10,6 @@ namespace WPLBlazor.Models
         public int Home_Team { get; set; }
         public int Away_Team { get; set; }
         public int? Table_Number { get; set; }
+        public bool Playoffs { get; set; }
     }
 }

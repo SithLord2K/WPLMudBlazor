@@ -1,13 +1,14 @@
 ﻿@using WPLBlazor.Models
+@attribute [StreamRendering]
 @inherits LayoutComponentBase
 @inject IVersionProvider VersionProvider
 
- <link href="_content/Blazorise.LoadingIndicator/blazorise.loadingindicator.css" rel="stylesheet" />
+<link href="_content/Blazorise.LoadingIndicator/blazorise.loadingindicator.css" rel="stylesheet" />
 
 <Layout Sider>
     <Layout Display="Display.Flex">
         <LayoutHeader Fixed>
-               <Header />
+            <Header />
         </LayoutHeader>
         <Layout Sider>
             <LayoutSider>
@@ -22,9 +23,9 @@
                             @Body
                         </ChildContent>
                         <IndicatorTemplate>
-                            <Animate Animation="Animations.FadeDownRight" Auto >
+                            <Animate Animation="Animations.FadeDownRight" Auto>
                                 <Div>
-                                    <SpinKit Type="SpinKitType.CircleFade" Size="100px" />
+                                    <SpinKit Type="SpinKitType.CircleFade" Size="50px" Centered />
                                 </Div>
                             </Animate>
                         </IndicatorTemplate>
@@ -32,7 +33,6 @@
                 </LayoutContent>
                 <LayoutFooter>
                     <center>Site created and maintained by Chris Wiley on Golden Brothers 1</center>
-                    <center>This site was made using Blazorise: @($"v{VersionProvider.MilestoneVersion}")</center>
                 </LayoutFooter>
             </Layout>
         </Layout>
