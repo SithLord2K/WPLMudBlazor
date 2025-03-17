@@ -10,7 +10,7 @@
     @* <BarToggler /> *@
     <BarMenu>
         <BarStart>
-
+            <BarItem />
             <BarItem>
                 <BarLink To="" Title="Home">
                     <BarIcon IconName="IconName.Home" />
@@ -24,10 +24,26 @@
                 </BarLink>
             </BarItem>
             <BarItem>
-                <BarLink To="leaderboard" Title="Leaderboards">
-                    <BarIcon IconName="IconName.ListUl" />
-                    Leaderboards
-                </BarLink>
+                <BarDropdown>
+                    <BarDropdownToggle>
+                        <BarIcon IconName="IconName.ListUl" />
+                        Standings
+                    </BarDropdownToggle>
+                    <BarDropdownMenu>
+                        <BarDropdownItem>
+                            <BarLink To="team_standings" Title="Team Standings">
+                                <BarIcon IconName="IconName.Users" />
+                                Team
+                            </BarLink>
+                        </BarDropdownItem>
+                        <BarDropdownItem>
+                            <BarLink To="player_standings" Title="Player Standings">
+                                <BarIcon IconName="IconName.User" />
+                                Player
+                            </BarLink>
+                        </BarDropdownItem>
+                    </BarDropdownMenu>
+                </BarDropdown>
             </BarItem>
             <BarItem>
                 <BarDropdown>
@@ -38,11 +54,13 @@
                     <BarDropdownMenu>
                         <BarDropdownItem>
                             <BarLink To="schedule" Title="Season Schedule">
+                                <BarIcon IconName="IconName.Walking" />
                                 Season
                             </BarLink>
                         </BarDropdownItem>
                         <BarDropdownItem>
                             <BarLink To="playoffs" Title="Playoffs Schedule">
+                                <BarIcon IconName="IconName.Running" />
                                 Playoffs
                             </BarLink>
                         </BarDropdownItem>
@@ -50,6 +68,7 @@
                 </BarDropdown>
             </BarItem>
             <AuthorizeView Roles="League_Admin, Super_User">
+                <Divider />
                 <BarItem>
                     <BarLink To="league_admin" Title="Admin">
                         <BarIcon IconName="IconName.UserTie" />

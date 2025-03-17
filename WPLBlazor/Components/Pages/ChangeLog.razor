@@ -3,155 +3,177 @@
 @inject NavigationManager navigationManager
 
 <anchor id="top" />
-<h3>ChangeLog</h3>
-<br />
-
 <Card>
-    <CardHeader>
-        January 27,2025
-    </CardHeader>
+    <CardTitle>Changelog</CardTitle>
     <CardBody>
-        <CardText>
-            <OrderedList>
-                <OrderedListItem>
-                    Added Table Number field to the Add/Edit Schedules form
-                </OrderedListItem>
-            </OrderedList>
-        </CardText>
+        <Card>
+            <CardHeader>
+                March 17, 2025
+            </CardHeader>
+            <CardBody>
+                <CardText>
+                    <OrderedList>
+                        <OrderedListItem>
+                            Changed Leaderboard page to two separate pages, Team Standings and Player Standings
+                        </OrderedListItem>
+                    </OrderedList>
+                </CardText>
+            </CardBody>
+            <CardFooter>
+                <CardText>
+                    Author: Chris Wiley
+                </CardText>
+            </CardFooter>
+        </Card>
+        <br />
+        <Card>
+            <CardHeader>
+                January 27,2025
+            </CardHeader>
+            <CardBody>
+                <CardText>
+                    <OrderedList>
+                        <OrderedListItem>
+                            Added Table Number field to the Add/Edit Schedules form
+                        </OrderedListItem>
+                    </OrderedList>
+                </CardText>
+            </CardBody>
+            <CardFooter>
+                <CardText>
+                    Author: Chris Wiley
+                </CardText>
+            </CardFooter>
+        </Card>
+        <br />
+        <Card>
+            <CardHeader>
+                January 24,2025
+            </CardHeader>
+            <CardBody>
+                <CardText>
+                    <OrderedList>
+                        <OrderedListItem>
+                            Added Weeks Lost row to the Team Leaderboard
+                        </OrderedListItem>
+                        <OrderedListItem>
+                            Started ground work to be able to archive the current season and clear the tables for the next season.
+                        </OrderedListItem>
+                    </OrderedList>
+                </CardText>
+            </CardBody>
+            <CardFooter>
+                <CardText>
+                    Author: Chris Wiley
+                </CardText>
+            </CardFooter>
+        </Card>
+        <br />
+        <Card>
+            <CardHeader>
+                November 21,2024
+            </CardHeader>
+            <CardBody>
+                <CardText>
+                    <OrderedList>
+                        <OrderedListItem>
+                            Removed Rounding for Averages to make it all consistent and more accurate.
+                        </OrderedListItem>
+                    </OrderedList>
+                </CardText>
+            </CardBody>
+            <CardFooter>
+                <CardText>
+                    Author: Chris Wiley
+                </CardText>
+            </CardFooter>
+        </Card>
+        <br />
+        <Card>
+            <CardHeader>
+                November 15,2024
+            </CardHeader>
+            <CardBody>
+                <CardText>
+                    <OrderedList>
+                        <OrderedListItem>
+                            Updated Packages.
+                        </OrderedListItem>
+                        <OrderedListItem>
+                            Removed a Depricated package that wasn't being used.
+                        </OrderedListItem>
+                        <OrderedListItem>
+                            Corrected code on AddPlayerData Modal to properly load data when the Week Number is Changed.
+                        </OrderedListItem>
+                        <OrderedListItem>
+                            I also added a 'Scroll to Top' button on this page.
+                        </OrderedListItem>
+                    </OrderedList>
+                </CardText>
+            </CardBody>
+            <CardFooter>
+                <CardText>
+                    Author: Chris Wiley
+                </CardText>
+            </CardFooter>
+        </Card>
+        <br />
+        <Card>
+            <CardHeader>
+                November 1,2024
+            </CardHeader>
+            <CardBody>
+                <CardText>
+                    <OrderedList>
+                        <OrderedListItem>
+                            Changes were made to the Schedule page to add a Date Picker to the top to navigate to a specific week instead of scrolling.
+                        </OrderedListItem>
+                        <OrderedListItem>
+                            Added a 'Scroll to Top' button to the right corner of the page for easy navigation back to the Date Picker.
+                        </OrderedListItem>
+                        <OrderedListItem>
+                            Changes were made to the winning team checkbox as it would occasionally not check a win for the correct team.
+                        </OrderedListItem>
+                        <OrderedListItem>
+                            I also added a 'Scroll to Top' button on this page.
+                        </OrderedListItem>
+                    </OrderedList>
+                </CardText>
+            </CardBody>
+            <CardFooter>
+                <CardText>
+                    Author: Chris Wiley
+                </CardText>
+            </CardFooter>
+        </Card>
+        <br />
+        <Card>
+            <CardHeader>
+                October 23,2024
+            </CardHeader>
+            <CardBody>
+                <CardText>
+                    <OrderedList>
+                        <OrderedListItem>
+                            Changes were made as to how the Team Average is calculated on the Leaderboard.
+                            Previously it was calculating based on the games won and the games played, this will now calculate based on the weeks won and the weeks played.
+                        </OrderedListItem>
+                        <OrderedListItem>
+                            Changes were also made to the database and the Weeks form to use the Winning Team Id.
+                        </OrderedListItem>
+                        <OrderedListItem>
+                            Shuffled some of the columns on the Leaderboard page. Fixed some cokumn names.
+                        </OrderedListItem>
+                    </OrderedList>
+                </CardText>
+            </CardBody>
+            <CardFooter>
+                <CardText>
+                    Author: Chris Wiley
+                </CardText>
+            </CardFooter>
+        </Card>
     </CardBody>
-    <CardFooter>
-        <CardText>
-            Author: Chris Wiley
-        </CardText>
-    </CardFooter>
-</Card>
-<br />
-<Card>
-    <CardHeader>
-        January 24,2025
-    </CardHeader>
-    <CardBody>
-        <CardText>
-            <OrderedList>
-                <OrderedListItem>
-                    Added Weeks Lost row to the Team Leaderboard
-                </OrderedListItem>
-                <OrderedListItem>
-                    Started ground work to be able to archive the current season and clear the tables for the next season.
-                </OrderedListItem>
-            </OrderedList>
-        </CardText>
-    </CardBody>
-    <CardFooter>
-        <CardText>
-            Author: Chris Wiley
-        </CardText>
-    </CardFooter>
-</Card>
-<br />
-<Card>
-    <CardHeader>
-        November 21,2024
-    </CardHeader>
-    <CardBody>
-        <CardText>
-            <OrderedList>
-                <OrderedListItem>
-                    Removed Rounding for Averages to make it all consistent and more accurate.
-                </OrderedListItem>
-            </OrderedList>
-        </CardText>
-    </CardBody>
-    <CardFooter>
-        <CardText>
-            Author: Chris Wiley
-        </CardText>
-    </CardFooter>
-</Card>
-<br />
-<Card>
-    <CardHeader>
-        November 15,2024
-    </CardHeader>
-    <CardBody>
-        <CardText>
-            <OrderedList>
-                <OrderedListItem>
-                    Updated Packages.
-                </OrderedListItem>
-                <OrderedListItem>
-                    Removed a Depricated package that wasn't being used.
-                </OrderedListItem>
-                <OrderedListItem>
-                    Corrected code on AddPlayerData Modal to properly load data when the Week Number is Changed.
-                </OrderedListItem>
-                <OrderedListItem>
-                    I also added a 'Scroll to Top' button on this page.
-                </OrderedListItem>
-            </OrderedList>
-        </CardText>
-    </CardBody>
-    <CardFooter>
-        <CardText>
-            Author: Chris Wiley
-        </CardText>
-    </CardFooter>
-</Card>
-<br />
-<Card>
-    <CardHeader>
-        November 1,2024
-    </CardHeader>
-    <CardBody>
-        <CardText>
-            <OrderedList>
-                <OrderedListItem>
-                    Changes were made to the Schedule page to add a Date Picker to the top to navigate to a specific week instead of scrolling.
-                </OrderedListItem>
-                <OrderedListItem>
-                    Added a 'Scroll to Top' button to the right corner of the page for easy navigation back to the Date Picker.
-                </OrderedListItem>
-                <OrderedListItem>
-                    Changes were made to the winning team checkbox as it would occasionally not check a win for the correct team.
-                </OrderedListItem>
-                <OrderedListItem>
-                    I also added a 'Scroll to Top' button on this page.
-                </OrderedListItem>
-            </OrderedList>
-        </CardText>
-    </CardBody>
-    <CardFooter>
-        <CardText>
-            Author: Chris Wiley
-        </CardText>
-    </CardFooter>
-</Card>
-<br />
-<Card>
-    <CardHeader>
-        October 23,2024
-    </CardHeader>
-    <CardBody>
-        <CardText>
-            <OrderedList>
-                <OrderedListItem>
-                    Changes were made as to how the Team Average is calculated on the Leaderboard.
-                    Previously it was calculating based on the games won and the games played, this will now calculate based on the weeks won and the weeks played.
-                </OrderedListItem>
-                <OrderedListItem>
-                    Changes were also made to the database and the Weeks form to use the Winning Team Id.
-                </OrderedListItem>
-                <OrderedListItem>
-                    Shuffled some of the columns on the Leaderboard page. Fixed some cokumn names.
-                </OrderedListItem>
-            </OrderedList>
-        </CardText>
-    </CardBody>
-    <CardFooter>
-        <CardText>
-            Author: Chris Wiley
-        </CardText>
-    </CardFooter>
 </Card>
 <Button Shadow="Blazorise.Shadow.Default"
         Style="position:fixed; bottom: 16px; right: 0; margin-right: 16px; opacity: 1"

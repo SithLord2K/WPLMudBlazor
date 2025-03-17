@@ -1,0 +1,78 @@
+﻿@page "/team_standings"
+@attribute [StreamRendering]
+
+<PageTitle>Team Standings</PageTitle>
+
+@if (teamStats != null)
+{
+    <Card>
+        <CardBody>
+            <CardTitle Size="3">
+                Team Standings
+            </CardTitle>
+            <Divider />
+            <CardText>
+                <DataGrid TItem="TeamStats"
+                          @ref="teamGrid"
+                          Data="@teamStats"
+                          PageSize="5"
+                          SortMode="DataGridSortMode.Single"
+                          Striped="true"
+                          Sortable="true"
+                          Bordered="true"
+                          ShowPager="true"
+                          Responsive="true"
+                          ResponsiveMode="@TableResponsiveMode.Mobile">
+                    <ChildContent>
+                        <DataGridCommandColumn TItem="TeamStats"></DataGridCommandColumn>
+                        <DataGridColumn TItem="TeamStats" Field="TeamName" Caption="Team" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="TotalGamesPlayed" Caption="Total Games Played" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="TotalGamesWon" Caption="Total Games Won" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="TotalGamesLost" Caption="Total Games Lost" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="WeeksWon" Caption="Weeks Won" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="WeeksLost" Caption="Weeks Lost" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="WeeksPlayed" Caption="Weeks Played" Sortable="true" />
+                        <DataGridColumn TItem="TeamStats" Field="TotalAverage" DisplayFormat="{0:P2}" Caption="Team Average" Sortable="true" />
+                    </ChildContent>
+                    <EmptyTemplate>
+                        <div class="box">
+                            No Team Stats found.
+                        </div>
+                    </EmptyTemplate>
+                </DataGrid>
+            </CardText>
+        </CardBody>
+    </Card>
+}
+
+@code {
+    [CascadingParameter]
+    LoadingIndicator loadingIndicator { get; set; } = new();
+
+    private APIService aPIService = new();
+    private TeamHelper teamHelper = new();
+    private PlayerHelpers playerHelper = new();
+    private PDataService pDataService = new();
+
+    private List<TeamStats> teamStats = new();
+    private List<TeamDetails> teamDetails = [];
+    private List<Players>? playerData = [];
+    private List<PDataModel> pData = [];
+    private PDataModel pDataModel = new();
+    private DataGrid<PDataModel> playerGrid = new();
+    private DataGrid<TeamStats> teamGrid = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await loadingIndicator.Show();
+        teamDetails = await playerHelper.GetTeamDetails();
+        playerData = await playerHelper.ConsolidatePlayer();
+        teamStats = await teamHelper.GetAllTeamStats();
+        pData = await pDataService.GetFullPlayerData();
+
+        await playerGrid.ApplySorting(new DataGridSortColumnInfo(nameof(PDataModel.Average), SortDirection.Descending));
+        await teamGrid.ApplySorting(new DataGridSortColumnInfo(nameof(TeamStats.TotalAverage), SortDirection.Descending));
+        await base.OnInitializedAsync();
+        await loadingIndicator.Hide();
+    }
+}

@@ -1,53 +1,14 @@
-﻿@page "/leaderboard"
+﻿@page "/player_standings"
 @attribute [StreamRendering]
 
-<PageTitle>Leaderboards</PageTitle>
+<PageTitle>Player Standings</PageTitle>
 
 @if (teamStats != null)
-{
-    <Card>
+}
+<Card>
         <CardBody>
             <CardTitle Size="3">
-                Team Leaderboard
-            </CardTitle>
-            <Divider />
-            <CardText>
-                <DataGrid TItem="TeamStats"
-                          @ref="teamGrid"
-                          Data="@teamStats"
-                          PageSize="5"
-                          SortMode="DataGridSortMode.Single"
-                          Striped="true"
-                          Sortable="true"
-                          Bordered="true"
-                          ShowPager="true"
-                          Responsive="true"
-                          ResponsiveMode="@TableResponsiveMode.Mobile">
-                    <ChildContent>
-                        <DataGridCommandColumn TItem="TeamStats"></DataGridCommandColumn>
-                        <DataGridColumn TItem="TeamStats" Field="TeamName" Caption="Team" Sortable="true" />
-                        <DataGridColumn TItem="TeamStats" Field="TotalGamesPlayed" Caption="Total Games Played" Sortable="true" />
-                        <DataGridColumn TItem="TeamStats" Field="TotalGamesWon" Caption="Total Games Won" Sortable="true" />
-                        <DataGridColumn TItem="TeamStats" Field="TotalGamesLost" Caption="Total Games Lost" Sortable="true" />
-                        <DataGridColumn TItem="TeamStats" Field="WeeksWon" Caption="Weeks Won" Sortable="true" />
-                        <DataGridColumn TItem="TeamStats" Field="WeeksLost" Caption="Weeks Lost" Sortable="true" />
-                        <DataGridColumn TItem="TeamStats" Field="WeeksPlayed" Caption="Weeks Played" Sortable="true" />
-                        <DataGridColumn TItem="TeamStats" Field="TotalAverage" DisplayFormat="{0:P2}" Caption="Team Average" Sortable="true" />
-                    </ChildContent>
-                    <EmptyTemplate>
-                        <div class="box">
-                            No Team Stats found.
-                        </div>
-                    </EmptyTemplate>
-                </DataGrid>
-            </CardText>
-        </CardBody>
-    </Card>
-    <br />
-    <Card>
-        <CardBody>
-            <CardTitle Size="3">
-                Player Leaderboard
+                Player Standings
             </CardTitle>
             <Divider />
             <CardText>
