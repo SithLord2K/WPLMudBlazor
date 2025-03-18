@@ -85,6 +85,7 @@ public partial class WPLStatsDbContext : DbContext
             entity.Property(e => e.Away_Team);
             entity.Property(e => e.Table_Number);
             entity.Property(e => e.Playoffs);
+            entity.Property(e => e.Week_Id_Playoff);
         });
         modelBuilder.Entity<WeeksView>(entity =>
         {

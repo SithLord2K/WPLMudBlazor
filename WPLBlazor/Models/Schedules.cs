@@ -11,5 +11,6 @@ namespace WPLBlazor.Models
         public int Away_Team { get; set; }
         public int? Table_Number { get; set; }
         public bool Playoffs { get; set; }
+        public int? Week_Id_Playoff { get; set; }
     }
 }

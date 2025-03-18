@@ -62,7 +62,7 @@ namespace WPLBlazor.API.Controllers
             {
                 return Problem("Schedule is null.");
             }
-            if (!ScheduleExists(schedule.Week_Id, schedule.Home_Team, schedule.Away_Team))
+            if (!ScheduleExists(schedule.Week_Id, schedule.Week_Id_Playoff, schedule.Home_Team, schedule.Away_Team))
                 {
                 _context.Schedule.Add(schedule);
                 await _context.SaveChangesAsync();
@@ -75,9 +75,9 @@ namespace WPLBlazor.API.Controllers
             return CreatedAtAction("GetShedule", new { id = schedule.Week_Id }, schedule);
         }
 
-        private bool ScheduleExists(int week_id, int home_team, int away_team)
+        private bool ScheduleExists(int week_id, int? week_Id_Playoff, int home_team, int away_team)
         {
-            return (_context.Schedule?.Any(e => e.Week_Id == week_id && e.Home_Team == home_team && e.Away_Team == away_team)).GetValueOrDefault();
+            return (_context.Schedule?.Any(e => e.Week_Id == week_id && e.Week_Id_Playoff == week_Id_Playoff && e.Home_Team == home_team && e.Away_Team == away_team)).GetValueOrDefault();
         }
     }
 

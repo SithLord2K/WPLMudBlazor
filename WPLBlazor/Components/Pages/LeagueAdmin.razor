@@ -10,8 +10,8 @@
         <CardText>Name: @Username</CardText>
         <CardText>Email: @Email</CardText>
         <CardText>Role: @Roles</CardText>
+        <Divider />
         <CardText>
-            <Divider />
             <Table>
                 <TableRow>
                     <TableRowCell>
@@ -214,10 +214,10 @@
                 <Field>
                     <Field ColumnSize="ColumnSize.IsFull">
                         <DropdownList TItem="TeamDetails" TValue="int"
-                                      Data="@teams"
-                                      TextField="@((item)=>item.TeamName)"
-                                      ValueField="@((item)=>item.Id)"
-                                      SelectedValueChanged="@LoadTeam">
+                        Data="@teams"
+                        TextField="@((item)=>item.TeamName)"
+                        ValueField="@((item)=>item.Id)"
+                        SelectedValueChanged="@LoadTeam">
                             Select Team to Edit
                         </DropdownList>
                     </Field>
@@ -288,7 +288,21 @@
                         <FieldBody>
                             @if (schedule is not null)
                             {
-                                <DateEdit @bind-Date="@schedule.Date" />
+                                <Addons>
+                                    <Addon AddonType="AddonType.Body">
+                                        <DatePicker @ref="@datePicker"
+                                        TValue="DateOnly"
+                                        DisabledDays="@disabledDays"
+                                        @bind-Date="@schedule.Date"
+                                        ReadOnly="true"
+                                        DisplayFormat="MMMM dd, yyyy" />
+                                    </Addon>
+                                    <Addon AddonType="AddonType.End">
+                                        <Button Color="Blazorise.Color.Light" Clicked="@(()=>datePicker.ToggleAsync())">
+                                            <Icon Name="IconName.Calendar" />
+                                        </Button>
+                                    </Addon>
+                                </Addons>
                             }
                         </FieldBody>
                     </Field>
@@ -298,7 +312,7 @@
                             <FieldBody>
                                 @if (schedule is not null)
                                 {
-                                    <Select TValue="int" SelectedValue="@schedule.Home_Team">
+                                    <Select TValue="int" @bind-SelectedValue="@schedule.Home_Team">
 
                                         <SelectItem> Select Home Team</SelectItem>
                                         @if (teams is not null)
@@ -317,7 +331,7 @@
                             <FieldBody>
                                 @if (schedule is not null)
                                 {
-                                    <Select TValue="int" SelectedValue="@schedule.Away_Team">
+                                    <Select TValue="int" @bind-SelectedValue="@schedule.Away_Team">
                                         <SelectItem> Select Away Team</SelectItem>
                                         @if (teams is not null)
                                         {
@@ -334,20 +348,20 @@
                     <Field ColumnSize="ColumnSize.IsFull">
                         <FieldLabel>Table #:</FieldLabel>
                         <FieldBody>
-                            <NumericPicker @bind-Value="@schedule.Table_Number" Min="0" Max="3" />
+                            <NumericPicker TValue="int?" @bind-Value="@schedule.Table_Number" Min="0" Max="3" />
                         </FieldBody>
                     </Field>
                     <Fields>
                         <Field ColumnSize="ColumnSize.IsHalf">
                             <FieldLabel>Playoffs:</FieldLabel>
                             <FieldBody>
-                                <Check Checked="@schedule.Playoffs" />
+                                <Check TValue="bool" @bind-Checked="@schedule.Playoffs" />
                             </FieldBody>
                         </Field>
                         <Field ColumnSize="ColumnSize.IsHalf">
                             <FieldLabel>Week #</FieldLabel>
                             <FieldBody>
-                                <NumericPicker @bind-Value="@schedule.Week_Id" Min="0" />
+                                <NumericPicker TValue="int?" @bind-Value="@schedule.Week_Id_Playoff" Min="0" />
                             </FieldBody>
                         </Field>
                     </Fields>
@@ -566,7 +580,7 @@
     private PlayerData playerData = new();
     private TeamDetails? addTeam { get; set; } = new();
     private Weeks? week { get; set; } = new();
-    private Schedules? schedule { get; set; } = new();
+    private Schedules schedule { get; set; } = new();
     private int selectedTeam { get; set; } = new();
 
     //Services
@@ -587,11 +601,22 @@
     private bool toastVisible = false;
     private string? toastMessage;
     private string? toastTitle;
+    private DayOfWeek[] disabledDays = [];
+    private DatePicker<DateOnly> datePicker { get; set; }
     private AuthenticationState? state { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         await loadingIndicator.Show();
+        disabledDays = new[]
+       {
+            DayOfWeek.Sunday,
+            DayOfWeek.Monday,
+            DayOfWeek.Wednesday,
+            DayOfWeek.Thursday,
+            DayOfWeek.Friday,
+            DayOfWeek.Saturday
+        };
         ClearLists();
 
         //Authentication
@@ -626,7 +651,6 @@
     //Archive Tasks
     private async Task ArchiveSeason()
     {
-
         await Task.Delay(5000);
     }
 
@@ -680,6 +704,7 @@
     {
         if (schedule is not null)
         {
+
             if (schedule.Home_Team != 1)
             {
                 schedule.Table_Number = null;
@@ -700,6 +725,7 @@
             {
                 schedule.Table_Number = null;
             }
+
             var response = await apiService.AddSchedule(schedule);
             if (response)
             {
@@ -820,7 +846,6 @@
     async Task LoadPlayer(int value)
     {
         player = await apiService.GetSinglePlayer(value);
-
     }
 
     async Task LoadTeam(int value)
@@ -847,7 +872,8 @@
         return Task.CompletedTask;
     }
 
-    Task UpdateHomeTeam(int value)
+    //Update Tasks
+        Task UpdateHomeTeam(int value)
     {
         if (week is not null)
         {
@@ -872,7 +898,14 @@
         }
         return Task.CompletedTask;
     }
-
+    Task UpdatePlayoffWeek(int value)
+    {
+        if (schedule is not null)
+        {
+            schedule.Week_Id_Playoff = value;
+        }
+        return Task.CompletedTask;
+    }
     //Modal Tasks
     Task ShowPlayerModal()
     {

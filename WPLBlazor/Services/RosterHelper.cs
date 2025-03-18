@@ -81,7 +81,9 @@ namespace WPLBlazor.Services
                 Home_Team = sched.Home_Team,
                 Away_Team = sched.Away_Team,
                 Week_Id = sched.Week_Id,
-                Table_Number = sched.Table_Number
+                Table_Number = sched.Table_Number,
+                Playoffs = sched.Playoffs,
+                Week_Id_Playoff = sched.Week_Id_Playoff
             };
             schedules.Add(scheDule);
         }
