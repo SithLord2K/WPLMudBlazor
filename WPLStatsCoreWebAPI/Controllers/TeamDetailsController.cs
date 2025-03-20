@@ -11,14 +11,9 @@ namespace WPLBlazor.API.Controllers
 #endif
     [Route("/[controller]")]
     [ApiController]
-    public class TeamDetailsController : ControllerBase
+    public class TeamDetailsController(WPLStatsDbContext context) : ControllerBase
     {
-        private readonly WPLStatsDbContext _context;
-
-        public TeamDetailsController(WPLStatsDbContext context)
-        {
-            _context = context;
-        }
+        private readonly WPLStatsDbContext _context = context;
 
         // GET: api/TeamDetails
         [HttpGet]

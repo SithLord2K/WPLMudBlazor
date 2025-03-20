@@ -12,13 +12,9 @@ namespace WPLBlazor.API.Controllers
 #endif
     [Route("/[controller]")]
     [ApiController]
-    public class PlayersViewController : ControllerBase
+    public class PlayersViewController(WPLStatsDbContext context) : ControllerBase
     {
-        private readonly WPLStatsDbContext _context;
-        public PlayersViewController(WPLStatsDbContext context)
-        {
-            _context = context;
-        }
+        private readonly WPLStatsDbContext _context = context;
 
         // GET: api/PlayersView
         [HttpGet]

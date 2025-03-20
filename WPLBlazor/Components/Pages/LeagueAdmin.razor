@@ -213,13 +213,20 @@
             <Form>
                 <Field>
                     <Field ColumnSize="ColumnSize.IsFull">
-                        <DropdownList TItem="TeamDetails" TValue="int"
-                        Data="@teams"
-                        TextField="@((item)=>item.TeamName)"
-                        ValueField="@((item)=>item.Id)"
-                        SelectedValueChanged="@LoadTeam">
-                            Select Team to Edit
-                        </DropdownList>
+                        @if (addTeam is not null)
+                        {
+                            <Select TValue="int" SelectedValue="@addTeam.Id" SelectedValueChanged="@LoadTeam">
+
+                                <SelectItem>Choose Team to Edit</SelectItem>
+                                @if (teams is not null)
+                                {
+                                    @foreach (var team in teams)
+                                    {
+                                        <SelectItem Value="@team.Id">@team.TeamName</SelectItem>
+                                    }
+                                }
+                            </Select>
+                        }
                     </Field>
                 </Field>
                 <Field>
@@ -291,11 +298,11 @@
                                 <Addons>
                                     <Addon AddonType="AddonType.Body">
                                         <DatePicker @ref="@datePicker"
-                                        TValue="DateOnly"
-                                        DisabledDays="@disabledDays"
-                                        @bind-Date="@schedule.Date"
-                                        ReadOnly="true"
-                                        DisplayFormat="MMMM dd, yyyy" />
+                                                    TValue="DateOnly"
+                                                    DisabledDays="@disabledDays"
+                                                    @bind-Date="@schedule.Date"
+                                                    ReadOnly="true"
+                                                    DisplayFormat="MMMM dd, yyyy" />
                                     </Addon>
                                     <Addon AddonType="AddonType.End">
                                         <Button Color="Blazorise.Color.Light" Clicked="@(()=>datePicker.ToggleAsync())">
@@ -361,7 +368,7 @@
                         <Field ColumnSize="ColumnSize.IsHalf">
                             <FieldLabel>Week #</FieldLabel>
                             <FieldBody>
-                                <NumericPicker TValue="int?" @bind-Value="@schedule.Week_Id_Playoff" Min="0" />
+                                <NumericPicker TValue="int?" @bind-Value="@playOffWeek" Min="0" />
                             </FieldBody>
                         </Field>
                     </Fields>
@@ -582,6 +589,7 @@
     private Weeks? week { get; set; } = new();
     private Schedules schedule { get; set; } = new();
     private int selectedTeam { get; set; } = new();
+    private int? playOffWeek { get; set; } = new();
 
     //Services
     private APIService apiService = new();
@@ -704,41 +712,58 @@
     {
         if (schedule is not null)
         {
-
-            if (schedule.Home_Team != 1)
+            if (schedule.Home_Team == schedule.Away_Team)
             {
-                schedule.Table_Number = null;
-            }
-            else if (schedule.Home_Team != 2)
-            {
-                schedule.Table_Number = null;
-            }
-            else if (schedule.Home_Team != 3)
-            {
-                schedule.Table_Number = null;
-            }
-            else if (schedule.Home_Team != 4)
-            {
-                schedule.Table_Number = null;
-            }
-            else if (schedule.Home_Team != 11)
-            {
-                schedule.Table_Number = null;
-            }
-
-            var response = await apiService.AddSchedule(schedule);
-            if (response)
-            {
-                toastMessage = $"Schedule {schedule.Week_Id} {schedule.Home_Team} {schedule.Away_Team} has been added or edited.";
+                toastMessage = $"Home Team and Away Team cannot be the same.";
                 toastTitle = "Add/Edit Schedule";
                 toastVisible = true;
-                ClearLists();
+                return;
             }
             else
             {
-                toastMessage = $"Failed to Add Schedule {schedule.Week_Id} {schedule.Home_Team} {schedule.Away_Team}.";
-                toastTitle = "Add/Edit Schedule";
-                toastVisible = true;
+                if (schedule.Home_Team != 1)
+                {
+                    schedule.Table_Number = null;
+                }
+                else if (schedule.Home_Team != 2)
+                {
+                    schedule.Table_Number = null;
+                }
+                else if (schedule.Home_Team != 3)
+                {
+                    schedule.Table_Number = null;
+                }
+                else if (schedule.Home_Team != 4)
+                {
+                    schedule.Table_Number = null;
+                }
+                else if (schedule.Home_Team != 11)
+                {
+                    schedule.Table_Number = null;
+                }
+                if (schedule.Playoffs)
+                {
+                    schedule.Week_Id_Playoff = playOffWeek;
+                }
+                else
+                {
+                    schedule.Week_Id = (int)playOffWeek;
+                }
+
+                var response = await apiService.AddSchedule(schedule);
+                if (!response)
+                {
+                    toastMessage = $"Schedule {playOffWeek} {schedule.Home_Team} {schedule.Away_Team} has been added or edited.";
+                    toastTitle = "Add/Edit Schedule";
+                    toastVisible = true;
+                    ClearLists();
+                }
+                else
+                {
+                    toastMessage = $"Failed to Add Schedule {schedule.Week_Id} {schedule.Home_Team} {schedule.Away_Team}.";
+                    toastTitle = "Add/Edit Schedule";
+                    toastVisible = true;
+                }
             }
         }
     }
@@ -873,7 +898,7 @@
     }
 
     //Update Tasks
-        Task UpdateHomeTeam(int value)
+    Task UpdateHomeTeam(int value)
     {
         if (week is not null)
         {

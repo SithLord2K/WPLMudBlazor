@@ -12,14 +12,9 @@ namespace WPLBlazor.API.Controllers
 #endif
     [Route("/[controller]")]
     [ApiController]
-    public class PlayerDataController : ControllerBase
+    public class PlayerDataController(WPLStatsDbContext context) : ControllerBase
     {
-        private readonly WPLStatsDbContext _context;
-
-        public PlayerDataController(WPLStatsDbContext context)
-        {
-            _context = context;
-        }
+        private readonly WPLStatsDbContext _context = context;
 
         // GET: api/PlayerData
         [HttpGet]
@@ -36,7 +31,7 @@ namespace WPLBlazor.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<List<PlayerData>>> GetPlayerData(int id)
         {
-            List<PlayerData> playerData = new List<PlayerData>();
+            List<PlayerData> playerData = [];
             if (_context.PlayerData == null)
             {
                 return NotFound();

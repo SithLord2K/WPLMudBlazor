@@ -24,48 +24,16 @@
                 </BarLink>
             </BarItem>
             <BarItem>
-                <BarDropdown>
-                    <BarDropdownToggle>
-                        <BarIcon IconName="IconName.ListUl" />
-                        Standings
-                    </BarDropdownToggle>
-                    <BarDropdownMenu>
-                        <BarDropdownItem>
-                            <BarLink To="team_standings" Title="Team Standings">
-                                <BarIcon IconName="IconName.Users" />
-                                Team
-                            </BarLink>
-                        </BarDropdownItem>
-                        <BarDropdownItem>
-                            <BarLink To="player_standings" Title="Player Standings">
-                                <BarIcon IconName="IconName.User" />
-                                Player
-                            </BarLink>
-                        </BarDropdownItem>
-                    </BarDropdownMenu>
-                </BarDropdown>
+                <BarLink To="standings">
+                    <BarIcon IconName="IconName.ListUl" />
+                    Standings
+                </BarLink>
             </BarItem>
             <BarItem>
-                <BarDropdown>
-                    <BarDropdownToggle>
-                        <BarIcon IconName="IconName.Calendar" />
-                        Schedules
-                    </BarDropdownToggle>
-                    <BarDropdownMenu>
-                        <BarDropdownItem>
-                            <BarLink To="schedule" Title="Season Schedule">
-                                <BarIcon IconName="IconName.Walking" />
-                                Season
-                            </BarLink>
-                        </BarDropdownItem>
-                        <BarDropdownItem>
-                            <BarLink To="playoffs" Title="Playoffs Schedule">
-                                <BarIcon IconName="IconName.Running" />
-                                Playoffs
-                            </BarLink>
-                        </BarDropdownItem>
-                    </BarDropdownMenu>
-                </BarDropdown>
+                <BarLink To="schedules">
+                    <BarIcon IconName="IconName.Calendar" />
+                    Schedules
+                </BarLink>
             </BarItem>
             <AuthorizeView Roles="League_Admin, Super_User">
                 <Divider />

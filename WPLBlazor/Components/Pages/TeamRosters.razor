@@ -13,8 +13,7 @@
             <Divider />
             <CardText>
                 <Table Bordered Striped Responsive>
-                    <TableHeader Width="Width.Auto">
-
+                    <TableHeader Border="Border.Is1" Width="Width.Auto">
                     </TableHeader>
                     @foreach (var team in teams)
                     {
@@ -24,20 +23,20 @@
                         }
                         <TableBody Width="Width.Auto">
                             <TableRowGroup Title="@team.TeamName">
-                                <TableHeaderCell><center>Name</center></TableHeaderCell>
-                                <TableHeaderCell><center>Games Played</center></TableHeaderCell>
-                                <TableHeaderCell><center>Captain?</center></TableHeaderCell>
+                                <TableHeaderCell TextAlignment="TextAlignment.Center">Name</TableHeaderCell>
+                                <TableHeaderCell TextAlignment="TextAlignment.Center">Games Played</TableHeaderCell>
+                                <TableHeaderCell TextAlignment="TextAlignment.Center">Captain?</TableHeaderCell>
                                 @foreach (var roster in rosters.Where(x => x.TeamId == team.Id))
                                 {
                                     <TableRow>
                                         <TableRowCell><center><a href="/player_detail/@roster.Player_Id">@roster.Player_Name</a></center></TableRowCell>
                                         @if (players is not null)
                                         {
-                                            <TableRowCell><center>@players.Where(x => x.Id == roster.Player_Id).First().GamesPlayed</center></TableRowCell>
+                                            <TableRowCell TextAlignment="TextAlignment.Center">@players.Where(x => x.Id == roster.Player_Id).First().GamesPlayed</TableRowCell>
                                         }
                                         @if (roster.Player_Id == roster.Captain_Player_Id)
                                         {
-                                            <TableRowCell><center><Icon Name="IconName.Check" /></center></TableRowCell>
+                                            <TableRowCell TextAlignment="TextAlignment.Center"><Icon Name="IconName.Check" /></TableRowCell>
                                         }
                                         else
                                         {

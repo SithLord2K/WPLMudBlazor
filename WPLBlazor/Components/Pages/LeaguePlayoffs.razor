@@ -16,16 +16,16 @@
                         <CardTitle>
 
                         </CardTitle>
-                        <CardText>
-                            <center><h3>@day.Date.ToLongDateString()</h3></center>
-                            <center><h4>Week: @day.Week_Id_Playoff</h4></center>
+                        <CardText TextAlignment="TextAlignment.Center">
+                            <h3>@day.Date.ToLongDateString()</h3>
+                            <h4>Week: @day.Week_Id_Playoff</h4>
                             <Table Striped Bordered Responsive>
                                 <TableHeader ThemeContrast="ThemeContrast.Dark">
                                     <TableRow>
-                                        <TableHeaderCell><center>Home Team</center></TableHeaderCell>
-                                        <TableHeaderCell></TableHeaderCell>
-                                        <TableHeaderCell><center>Away Team</center></TableHeaderCell>
-                                        <TableHeaderCell><center>Table #</center></TableHeaderCell>
+                                        <TableHeaderCell TextAlignment="TextAlignment.Center">Home Team</TableHeaderCell>
+                                        <TableHeaderCell TextAlignment="TextAlignment.Center"></TableHeaderCell>
+                                        <TableHeaderCell TextAlignment="TextAlignment.Center">Away Team</TableHeaderCell>
+                                        <TableHeaderCell TextAlignment="TextAlignment.Center">Table #</TableHeaderCell>
                                     </TableRow>
                                 </TableHeader>
                                 @foreach (var d in schedules.Where(x => x.Playoffs == true))
@@ -34,10 +34,10 @@
                                         @if (teams != null)
                                         {
                                             <TableRow>
-                                                <TableRowCell><center>@teams.Where(x => x.Id == d.Home_Team).First().TeamName</center></TableRowCell>
-                                                <TableRowCell><center>vs</center></TableRowCell>
-                                                <TableRowCell><center>@teams.Where(x => x.Id == d.Away_Team).First().TeamName</center></TableRowCell>
-                                                <TableRowCell><center>@d.Table_Number</center></TableRowCell>
+                                                <TableRowCell TextAlignment="TextAlignment.Center">@teams.Where(x => x.Id == d.Home_Team).First().TeamName</TableRowCell>
+                                                <TableRowCell TextAlignment="TextAlignment.Center">vs</TableRowCell>
+                                                <TableRowCell TextAlignment="TextAlignment.Center">@teams.Where(x => x.Id == d.Away_Team).First().TeamName</TableRowCell>
+                                                <TableRowCell TextAlignment="TextAlignment.Center">@d.Table_Number</TableRowCell>
                                             </TableRow>
                                         }
                                     </TableBody>

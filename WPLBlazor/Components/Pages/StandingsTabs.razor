@@ -1,0 +1,34 @@
+﻿@page "/standings"
+@attribute [StreamRendering]
+
+<PageTitle>Standings</PageTitle>
+
+<Card Padding="Padding.Is2">
+    <CardBody>
+        <CardTitle Size="3">Standings</CardTitle>
+        <Divider />
+        <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged" RenderMode="TabsRenderMode.LazyLoad">
+            <Items>
+                <Tab Name="team_standings">Team Standings</Tab>
+                <Tab Name="player_standings">Player Standings</Tab>
+            </Items>
+            <Content>
+                <TabPanel Name="team_standings">
+                    <TeamStandings />
+                </TabPanel>
+                <TabPanel Name="player_standings">
+                    <PlayerStandings />
+                </TabPanel>
+            </Content>
+        </Tabs>
+    </CardBody>
+</Card>
+@code {
+    string selectedTab = "team_standings";
+    private Task OnSelectedTabChanged(string name)
+    {
+        selectedTab = name;
+
+        return Task.CompletedTask;
+    }
+}

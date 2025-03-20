@@ -11,14 +11,9 @@ namespace WPLBlazor.API.Controllers
 #endif
     [Route("/[controller]")]
     [ApiController]
-    public class WeeksController : ControllerBase
+    public class WeeksController(WPLStatsDbContext context) : ControllerBase
     {
-        private readonly WPLStatsDbContext _context;
-
-        public WeeksController(WPLStatsDbContext context)
-        {
-            _context = context;
-        }
+        private readonly WPLStatsDbContext _context = context;
 
         // GET: api/Weeks
         [HttpGet]

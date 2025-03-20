@@ -11,14 +11,9 @@ namespace WPLBlazor.API.Controllers
 #endif
     [Route("/[controller]")]
     [ApiController]
-    public class ScheduleController : ControllerBase
+    public class ScheduleController(WPLStatsDbContext context) : ControllerBase
     {
-        private readonly WPLStatsDbContext _context;
-
-        public ScheduleController(WPLStatsDbContext context)
-        {
-            _context = context;
-        }
+        private readonly WPLStatsDbContext _context = context;
 
         // GET: api_v2/Schedule
         [HttpGet]
@@ -58,12 +53,18 @@ namespace WPLBlazor.API.Controllers
 
         public async Task<ActionResult<Schedule>> SaveSchedule(Schedule schedule)
         {
-            if (_context.Players == null)
+            int? tmpId = 0;
+            if (_context.Schedule == null)
             {
                 return Problem("Schedule is null.");
             }
-            if (!ScheduleExists(schedule.Week_Id, schedule.Week_Id_Playoff, schedule.Home_Team, schedule.Away_Team))
-                {
+            if(schedule.Week_Id == 0)
+            {
+                tmpId = schedule.Week_Id_Playoff;
+            }
+            
+            if (!ScheduleExists(tmpId))
+            {
                 _context.Schedule.Add(schedule);
                 await _context.SaveChangesAsync();
             }
@@ -72,12 +73,12 @@ namespace WPLBlazor.API.Controllers
                 _context.Schedule.Update(schedule);
                 await _context.SaveChangesAsync();
             }
-            return CreatedAtAction("GetShedule", new { id = schedule.Week_Id }, schedule);
+            return CreatedAtAction("GetShedule", new { id = schedule.Id }, schedule);
         }
 
-        private bool ScheduleExists(int week_id, int? week_Id_Playoff, int home_team, int away_team)
+        private bool ScheduleExists(int? id)
         {
-            return (_context.Schedule?.Any(e => e.Week_Id == week_id && e.Week_Id_Playoff == week_Id_Playoff && e.Home_Team == home_team && e.Away_Team == away_team)).GetValueOrDefault();
+            return (_context.Schedule?.Any(e => e.Week_Id == id || e.Week_Id_Playoff == id)).GetValueOrDefault();
         }
     }
 
