@@ -42,7 +42,7 @@ builder.Services
 builder.Services
     .AddBlazorise(options =>
     {
-        options.ProductToken = "CjxRBXF9NAA9VAF3ezQ1BlEAc3g1Cz1bAXR7Nwo6bjoNJ2ZdYhBVCCo/CjlbA0xERldhE1EvN0xcNm46FD1gSkUHCkxESVFvBl4yK1FBfAYKAiFoVXkNWTU3CDJTPHQAGkR/Xip0HhFIeVQ8bxMBUmtTPApwfjUIPG46HhFEbVgscw4DVXRJN3UeEUh5VDxvEwFSa1M8CnB+NQg8bjoeEUZwTTFkEhFadU07bx4cSm9fPG97fzUIAWlvHgJMa1g1eQQZWmdBImgeEVd3WzBvHnQ0CDxTAExEWmdYMXUEGEx9WzxvDA9dZ1MxfxYdWmc2UgBxfggyTRp9dBt8aycTSiNlYktUMnYQC2sLOAVfIAZTDFg3Ry4KTnd+AWgOBURNYysCMn9nAHoiejgLZgBOIFcQK0hzPDp7Fnp0XHYGQAUidkI8VVJwGndiaDQDFgVRXmE5CQ0/TGFKFUAgBF1sdTR1MCRzd1oBW3I+fVp/U3oFO0lsSCZ3KHYzVF8yZRQEY2lqJQUsFjFrQTZRGTRvYXgEBm4ITFpOUHMVZVJwRyFxfA==";
+        options.ProductToken = builder.Configuration["ProductToken"];
         options.Immediate = true;
     })
     .AddBootstrap5Providers()
