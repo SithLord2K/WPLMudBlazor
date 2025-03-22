@@ -6,7 +6,7 @@ namespace WPLBlazor.Services
     {
         public List<WeekFullInfo> WeekHelperFullInfo { get; set; } = [];
 
-        readonly APIService aPIService = new();
+        readonly IAPIService aPIService = new APIService();
         public async Task<List<WeekFullInfo>> GetFullWeek()
         {
             

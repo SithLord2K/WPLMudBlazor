@@ -4,7 +4,7 @@ namespace WPLBlazor.Services
 {
     public class PlayerHelpers
     {
-        private readonly APIService aPIService = new();
+        private readonly IAPIService aPIService = new APIService();
         public async Task<List<Players>?> ConsolidatePlayer()
         {
             var pList = new List<Players>();
@@ -77,11 +77,9 @@ namespace WPLBlazor.Services
             List<Weeks> weekTotals = [];
             weekTotals = (List<Weeks>)await aPIService.GetAllWeeks();
             teamTotals = await aPIService.GetAllPlayerData();
-            TeamStats teamStats = new()
-            {
-                TotalGamesWon = teamTotals.Sum(x => x.GamesWon),
-                TotalGamesLost = teamTotals.Sum(y => y.GamesLost)
-            };
+            TeamStats teamStats = new();
+            teamStats.TotalGamesWon = teamTotals.Sum(x => x.GamesWon);
+            teamStats.TotalGamesLost = teamTotals.Sum(y => y.GamesLost);
             teamStats.TotalGamesPlayed = teamStats.TotalGamesWon + teamStats.TotalGamesLost;
             teamStats.TotalAverage = Decimal.Round(((decimal)teamStats.TotalGamesWon / (decimal)teamStats.TotalGamesPlayed), 2);
             teamStats.WeeksPlayed = weekTotals.Count;
@@ -95,7 +93,7 @@ namespace WPLBlazor.Services
             List<TeamDetails> teamDetails = [];
             teamDetails = await aPIService.GetTeamDetails();
 
-            return [.. teamDetails.Where(x => x.TeamName != "Bye")];
+            return teamDetails.Where(x => x.TeamName != "Bye").ToList();
         }
     }
 }
