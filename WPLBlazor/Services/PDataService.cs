@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Razor.TagHelpers;
-using WPLBlazor.Models;
+﻿using WPLBlazor.Models;
 
 namespace WPLBlazor.Services
 {

@@ -6,7 +6,7 @@ namespace WPLBlazor.Services
 
     public class RosterHelper
     {
-        private readonly IAPIService aPIService = new APIService();
+        private readonly APIService aPIService = new();
         public List<Player> players = [];
         public List<Roster> rosters = [];
         public List<Schedules> schedules = [];
@@ -39,8 +39,8 @@ namespace WPLBlazor.Services
 
         public async Task<List<Roster>> GetSingleTeamRoster(int teamId)
         {
-            players = new();
-            rosters = new();
+            players = [];
+            rosters = [];
             var team = await aPIService.GetSingleTeam(teamId);
             players = await aPIService.GetAllPlayers();
             var play = players.Where(x => x.TeamId == team.Id).ToList();
