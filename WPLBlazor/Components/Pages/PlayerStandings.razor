@@ -1,4 +1,5 @@
 ﻿@page "/player_standings"
+@using WPLBlazor.Data.Services
 @attribute [StreamRendering]
 
 <PageTitle>Player Standings</PageTitle>
@@ -46,18 +47,24 @@
     [CascadingParameter]
     LoadingIndicator loadingIndicator { get; set; } = new();
 
-    private APIService aPIService = new();
-    private TeamHelper teamHelper = new();
-    private PlayerHelpers playerHelper = new();
-    private PDataService pDataService = new();
+    private readonly TeamHelper teamHelper;
+    private readonly PlayerHelpers playerHelper;
+    private readonly PDataService pDataService;
 
     private List<TeamStats> teamStats = new();
-    private List<TeamDetails> teamDetails = [];
+    private List<TeamDetail> teamDetails = [];
     private List<Players>? playerData = [];
     private List<PDataModel> pData = [];
     private PDataModel pDataModel = new();
     private DataGrid<PDataModel> playerGrid = new();
     private DataGrid<TeamStats> teamGrid = new();
+
+    public PlayerStandings(TeamHelper teamHelper, PlayerHelpers playerHelpers, PDataService pDataService)
+    {
+        this.teamHelper = teamHelper;
+        this.playerHelper = playerHelpers;
+        this.pDataService = pDataService;
+    }
 
     protected override async Task OnInitializedAsync()
     {

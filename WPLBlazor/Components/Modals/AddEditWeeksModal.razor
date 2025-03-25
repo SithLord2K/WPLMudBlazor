@@ -1,0 +1,245 @@
+﻿@using WPLBlazor.Data.Services
+@using WPLBlazor.Data.Models
+@attribute [StreamRendering]
+
+<ModalHeader>
+    <ModalTitle>Add/Edit Week Stats</ModalTitle>
+    <CloseButton />
+</ModalHeader>
+<ModalBody>
+    Weeks can currenty ONLY be added and not modified. If data is not correct please contact the site admin to correct it.
+    <Divider />
+    <Form>
+        <Field ColumnSize="ColumnSize.IsFull">
+            <FieldLabel>Week #:</FieldLabel>
+            <FieldBody>
+                @if (week is not null)
+                {
+                    <NumericEdit @bind-Value="@week.WeekNumber" onchanged="@LoadWeek" Min="0" />
+                }
+            </FieldBody>
+        </Field>
+        <Fields>
+            <Field ColumnSize="ColumnSize.IsHalf">
+                <FieldLabel>Home Team:</FieldLabel>
+                <FieldBody>
+                    @if (week is not null)
+                    {
+                        <Select TValue="int" SelectedValue="@week.Home_Team" SelectedValueChanged="@UpdateHomeTeam">
+                            <SelectItem Value="0">Select a Home Team</SelectItem>
+                            @if (teams is not null)
+                            {
+                                @foreach (var t1 in teams)
+                                {
+                                    <SelectItem Value="t1.Id">@t1.TeamName</SelectItem>
+                                }
+                            }
+                        </Select>
+                    }
+                </FieldBody>
+            </Field>
+            <Field ColumnSize="ColumnSize.IsHalf">
+                <FieldLabel>Away Team:</FieldLabel>
+                <FieldBody>
+                    @if (week is not null)
+                    {
+                        <Select TValue="int" SelectedValue="@week.Away_Team" SelectedValueChanged="@UpdateAwayTeam">
+                            <SelectItem Value="0">Select an Away Team</SelectItem>
+                            @if (teams is not null)
+                            {
+                                @foreach (var t2 in teams)
+                                {
+                                    <SelectItem Value="t2.Id">@t2.TeamName</SelectItem>
+                                }
+                            }
+                        </Select>
+                    }
+                </FieldBody>
+            </Field>
+        </Fields>
+        <Field>
+            <FieldLabel>Winning Team:</FieldLabel>
+            <FieldBody>
+                @if (week is not null)
+                {
+                    <Select TValue="int?" SelectedValue="@week.WinningTeamId" SelectedValueChanged="@UpdateWinningTeam">
+                        <SelectItem Value="0">Select an Winning Team</SelectItem>
+                        @if (teams is not null)
+                        {
+                            @foreach (var t3 in teams)
+                            {
+                                <SelectItem Value="t3.Id">@t3.TeamName</SelectItem>
+                            }
+                        }
+                    </Select>
+                }
+            </FieldBody>
+        </Field>
+        <Field>
+            <FieldBody>&nbsp;</FieldBody>
+            @if (week is not null)
+            {
+                <Fields>
+                    <Field>
+                        <FieldBody>
+                            &nbsp;<Check TValue="bool" @bind-Checked="@week.Forfeit">Forfeit</Check>
+                        </FieldBody>
+                    </Field>
+                    <Field>
+                        <FieldBody>
+                            &nbsp;<Check TValue="bool" @bind-Checked="@week.Playoff">Playoff</Check>
+                        </FieldBody>
+                    </Field>
+                </Fields>
+            }
+            <FieldBody><br /></FieldBody>
+        </Field>
+        <Field>
+            <FieldBody>
+                <Button Color="Color.Success" Clicked="@AddWeekClicked">Save Week</Button>&nbsp;
+                <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
+            </FieldBody>
+        </Field>
+    </Form>
+</ModalBody>
+<!--Toaster-->
+<Toaster>
+    <Toast @bind-Visible="@toastVisible">
+        <ToastHeader>
+            <Strong Margin="Margin.IsAuto.FromEnd">@toastTitle</Strong>
+            <CloseButton />
+        </ToastHeader>
+        <ToastBody>
+            @toastMessage
+        </ToastBody>
+    </Toast>
+</Toaster>
+
+@code {
+    [Inject] private IToastService? ToastService { get; set; }
+
+    //Variables
+    private Week week { get; set; } = new();
+    private Schedule schedule { get; set; } = new();
+
+    //Lists
+    private List<TeamDetail> teams = [];
+    private List<Week>? weeks = [];
+
+    //Toast
+    private bool toastVisible = false;
+    private string? toastMessage;
+    private string? toastTitle;
+
+    //Services
+    private readonly DataFactory apiService;
+    private readonly PlayerHelpers playerHelper;
+    private readonly WeekHelper weekHelper;
+
+    public AddEditWeeksModal(PlayerHelpers playerHelper, WeekHelper weekHelper, DataFactory apiService)
+    {
+        this.playerHelper = playerHelper;
+        this.weekHelper = weekHelper;
+        this.apiService = apiService;
+    }
+
+    Task LoadWeek(int value)
+    {
+        if (week is not null)
+        {
+            week.WeekNumber = value;
+        }
+        return Task.CompletedTask;
+    }
+
+    //Toast Service
+    private void BuildToastInstanceOptions(ToastInstanceOptions toastInstanceOptions)
+    {
+        toastInstanceOptions.Animated = true;
+        toastInstanceOptions.AnimationDuration = 300;
+        toastInstanceOptions.Autohide = true;
+        toastInstanceOptions.AutohideDelay = 3000;
+    }
+
+    //Update Tasks
+    Task UpdateHomeTeam(int value)
+    {
+        if (week is not null)
+        {
+            week.Home_Team = value;
+        }
+        return Task.CompletedTask;
+    }
+
+    Task UpdateAwayTeam(int value)
+    {
+        if (week is not null)
+        {
+            week.Away_Team = value;
+        }
+        return Task.CompletedTask;
+    }
+
+    Task UpdateWinningTeam(int? value)
+    {
+        if (week is not null)
+        {
+            week.WinningTeamId = value;
+        }
+        return Task.CompletedTask;
+    }
+
+    Task UpdatePlayoffWeek(int value)
+    {
+        if (schedule is not null)
+        {
+            schedule.Week_Id_Playoff = value;
+        }
+        return Task.CompletedTask;
+    }
+
+    async Task AddWeekClicked()
+    {
+        if (week is not null || teams is not null)
+        {
+            weeks = await apiService.GetAllWeeks();
+            if (weeks.Where(x => x.WeekNumber == week.WeekNumber).Where(y => y.Home_Team == week.Home_Team).Where(z => z.Away_Team == week.Away_Team).FirstOrDefault()?.WeekNumber == week.WeekNumber
+            && weeks.Where(x => x.WeekNumber == week.WeekNumber).Where(y => y.Home_Team == week.Home_Team).Where(z => z.Away_Team == week.Away_Team).FirstOrDefault()?.Home_Team == week.Home_Team
+            && weeks.Where(x => x.WeekNumber == week.WeekNumber).Where(y => y.Home_Team == week.Home_Team).Where(z => z.Away_Team == week.Away_Team).FirstOrDefault()?.Away_Team == week.Away_Team)
+            {
+                var response = await apiService.UpdateWeeks(week);
+                if (response)
+                {
+                    if (teams is not null)
+                    {
+                        toastMessage = $"Week: {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName} Added/Edited.";
+                        toastTitle = "Add/Edit Player Games";
+                        toastVisible = true;
+                    }
+                }
+                else
+                {
+                    toastMessage = $"Failed to Add/Edit Week for {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName}.";
+                    toastTitle = "Add/Edit Week";
+                    toastVisible = true;
+                }
+            }
+            else
+            {
+                var response = await apiService.AddWeeks(week);
+                if (response)
+                {
+                    toastMessage = $"Week: {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName} Added/Edited.";
+                    toastTitle = "Add/Edit Player Games";
+                    toastVisible = true;
+                }
+                else
+                {
+                    toastMessage = $"Failed to Add/Edit Week for {week.WeekNumber} {teams.Where(w => w.Id == week.Home_Team).FirstOrDefault().TeamName} {teams.Where(w => w.Id == week.Away_Team).FirstOrDefault().TeamName}.";
+                    toastTitle = "Add/Edit Week";
+                    toastVisible = true;
+                }
+            }
+        }
+    }
+}

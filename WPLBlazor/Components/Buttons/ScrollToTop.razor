@@ -1,0 +1,22 @@
+﻿@attribute [StreamRendering]
+@inject NavigationManager navigationManager
+
+<Button Shadow="Blazorise.Shadow.Default"
+        Style="position:fixed; bottom: 30px; right: 0; margin-right: 16px; opacity: .8"
+        Color="Color.Dark"
+        TextColor="TextColor.Light"
+        Clicked="@ScrollToTopClick">
+    <Icon Name="IconName.ArrowUp" />
+</Button>
+
+@code {
+    private void ScrollToTopClick()
+    {
+        string uri = navigationManager.Uri.ToString();
+        if (!uri.Contains("#"))
+        {
+            uri = uri + "#";
+        }
+        navigationManager.NavigateTo($"{uri}top");
+    }
+}

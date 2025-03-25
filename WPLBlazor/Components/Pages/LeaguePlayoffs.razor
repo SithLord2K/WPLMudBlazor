@@ -1,6 +1,9 @@
 ﻿@page "/playoffs"
 @attribute [StreamRendering]
-@using Schedules = WPLBlazor.Models.Schedules
+@using Schedules = WPLBlazor.Data.Models.Schedule
+@using WPLBlazor.Data.Services
+@inject DataFactory aPIService
+@inject NavigationManager navigationManager
 
 <PageTitle>Playoffs Schedule</PageTitle>
 
@@ -50,20 +53,27 @@
         </CardText>
     </CardBody>
 </Card>
+<ScrollToTop />
 
 @code {
     [CascadingParameter]
     private LoadingIndicator loadingIndicator { get; set; } = new();
 
-    private APIService aPIService = new();
-    private RosterHelper RosterHelper = new();
-    private TeamHelper teamHelper = new();
-    private WeekHelper weekHelper = new();
-    private List<Schedules> schedules = [];
-    private List<TeamDetails> teams = [];
+    private readonly RosterHelper RosterHelper;
+    private readonly TeamHelper teamHelper;
+    private readonly WeekHelper weekHelper;
+    private List<Schedule> schedules = [];
+    private List<TeamDetail> teams = [];
     private List<TeamStats> teamStats = [];
     private List<WeekFullInfo> weeks = [];
     private WeekFullInfo? homeWeek = new();
+
+    public LeaguePlayoffs(RosterHelper rosterHelper, TeamHelper teamHelper, WeekHelper weekHelper)
+    {
+        RosterHelper = rosterHelper;
+        this.teamHelper = teamHelper;
+        this.weekHelper = weekHelper;
+    }
 
     protected override async Task OnInitializedAsync()
     {

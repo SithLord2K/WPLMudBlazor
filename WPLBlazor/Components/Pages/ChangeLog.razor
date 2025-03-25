@@ -2,7 +2,7 @@
 @attribute [StreamRendering]
 @inject NavigationManager navigationManager
 
-<anchor id="top" />
+<Anchor id="top" />
 <Card Padding="Padding.Is2">
     <CardBody>
         <CardTitle Size="3">Changelog</CardTitle>
@@ -178,19 +178,7 @@
         </CardText>
     </CardBody>
 </Card>
-<Button Shadow="Blazorise.Shadow.Default"
-        Style="position:fixed; bottom: 16px; right: 0; margin-right: 16px; opacity: 1"
-        Clicked="@ScrollToTop">
-    <Icon Name="IconName.ArrowUp" />
-</Button>
+<ScrollToTop />
 @code {
-    private void ScrollToTop()
-    {
-        string uri = navigationManager.Uri.ToString();
-        if (!uri.Contains("#"))
-        {
-            uri = uri + "#";
-        }
-        navigationManager.NavigateTo($"{uri}top");
-    }
+
 }

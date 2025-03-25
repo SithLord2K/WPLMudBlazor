@@ -7,13 +7,28 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using WPLBlazor.AuthenticationStateSyncer.PersistingRevalidatingAuthenticationStateProvider;
-using WPLBlazor.Services;
 using Blazorise.LoadingIndicator;
+using WPLBlazor.Data;
+using WPLBlazor.Data.Services;
+using Microsoft.EntityFrameworkCore;
 
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
-// Add API Services
+// Add Data Services
+builder.Services.AddTransient<DataFactory>();
+builder.Services.AddTransient<WeekHelper>();
+builder.Services.AddTransient<PDataService>();
+builder.Services.AddTransient<TeamHelper>();
+builder.Services.AddTransient<PlayerHelpers>();
+builder.Services.AddTransient<RosterHelper>();
+builder.Services.AddTransient<PlayerViewService>();
+builder.Services.AddDbContextFactory<WPLStatsDBContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("WPLStatsDB"));
+});
+
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

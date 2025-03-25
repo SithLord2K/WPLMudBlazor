@@ -1,10 +1,10 @@
 ﻿@page "/rosters"
 @attribute [StreamRendering]
-@using Roster = WPLBlazor.Models.Roster
+@using Roster = WPLBlazor.Data.Models.Roster
 
 <PageTitle>Team Rosters</PageTitle>
 
-
+<Anchor id="top" />
 @if (teams is not null)
 {
     <Card Padding="Padding.Is2">
@@ -29,7 +29,7 @@
                                 @foreach (var roster in rosters.Where(x => x.TeamId == team.Id))
                                 {
                                     <TableRow>
-                                        <TableRowCell><center><a href="/player_detail/@roster.Player_Id">@roster.Player_Name</a></center></TableRowCell>
+                                        <TableRowCell TextAlignment="TextAlignment.Center">@roster.Player_Name</TableRowCell>
                                         @if (players is not null)
                                         {
                                             <TableRowCell TextAlignment="TextAlignment.Center">@players.Where(x => x.Id == roster.Player_Id).First().GamesPlayed</TableRowCell>
@@ -51,20 +51,28 @@
             </CardText>
         </CardBody>
     </Card>
-    <br />
+    <ScrollToTop />
+
 }
 
 @code {
     [CascadingParameter]
     LoadingIndicator loadingIndicator { get; set; } = new();
 
-    private APIService aPIService = new();
-    private RosterHelper rosterHelper = new();
-    private PlayerHelpers playerHelpers = new();
-
     private List<Players>? players = [];
-    private List<TeamDetails> teams = [];
+    private List<TeamDetail> teams = [];
     private List<Roster> rosters = [];
+
+    //Inject Services
+    private readonly RosterHelper rosterHelper;
+    private readonly PlayerHelpers playerHelpers;
+    private readonly DataFactory aPIService;
+    public TeamRosters(DataFactory aPIService, RosterHelper rosterHelper, PlayerHelpers playerHelpers)
+    {
+        this.aPIService = aPIService;
+        this.rosterHelper = rosterHelper;
+        this.playerHelpers = playerHelpers;
+    }
 
     protected override async Task OnInitializedAsync()
     {

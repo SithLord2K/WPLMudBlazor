@@ -1,0 +1,259 @@
+﻿@using WPLBlazor.Data.Services
+@using WPLBlazor.Data.Models
+@attribute [StreamRendering]
+
+<ModalHeader>
+    <ModalTitle>Add/Edit Schedule</ModalTitle>
+    <CloseButton />
+</ModalHeader>
+<ModalBody>
+    <Form>
+        <Field>
+            <Field ColumnSize="ColumnSize.IsFull">
+                <FieldBody>
+                    <Select TValue="int" SelectedValueChanged="@LoadSchedule">
+                        <SelectItem>Select Schedule to Edit</SelectItem>
+                        @if (schedules is not null)
+                        {
+                            @foreach (var s in schedules)
+                            {
+                                @if (teams is not null)
+                                {
+                                    <SelectItem Value="@s.Id">Week @s.Week_Id, Date: @s.Date, Home Team: @teams.Where(x => x.Id == s.Home_Team).FirstOrDefault().TeamName, Away Team: @teams.Where(x => x.Id == s.Away_Team).FirstOrDefault().TeamName </SelectItem>
+                                }
+                            }
+                        }
+                    </Select>
+                </FieldBody>
+            </Field>
+            <Field ColumnSize="ColumnSize.IsFull">
+                <FieldLabel>Date</FieldLabel>
+                <FieldBody>
+                    @if (schedule is not null)
+                    {
+                        <Addons>
+                            <Addon AddonType="AddonType.Body">
+                                <DatePicker @ref="@datePicker"
+                                            TValue="DateOnly"
+                                            DisabledDays="@disabledDays"
+                                            @bind-Date="@schedule.Date"
+                                            DisplayFormat="MMMM dd, yyyy" />
+                            </Addon>
+                            <Addon AddonType="AddonType.End">
+                                <Button Color="Blazorise.Color.Light" Clicked="@(()=>datePicker.ToggleAsync())">
+                                    <Icon Name="IconName.Calendar" />
+                                </Button>
+                            </Addon>
+                        </Addons>
+                    }
+                </FieldBody>
+            </Field>
+            <Fields>
+                <Field>
+                    <FieldLabel>Home Team</FieldLabel>
+                    <FieldBody>
+                        @if (schedule is not null)
+                        {
+                            <Select TValue="int" @bind-SelectedValue="@schedule.Home_Team">
+
+                                <SelectItem> Select Home Team</SelectItem>
+                                @if (teams is not null)
+                                {
+                                    @foreach (var t3 in teams)
+                                    {
+                                        <SelectItem Value="@t3.Id">@t3.TeamName</SelectItem>
+                                    }
+                                }
+                            </Select>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Away Team</FieldLabel>
+                    <FieldBody>
+                        @if (schedule is not null)
+                        {
+                            <Select TValue="int" @bind-SelectedValue="@schedule.Away_Team">
+                                <SelectItem> Select Away Team</SelectItem>
+                                @if (teams is not null)
+                                {
+                                    @foreach (var t4 in teams)
+                                    {
+                                        <SelectItem Value="@t4.Id">@t4.TeamName</SelectItem>
+                                    }
+                                }
+                            </Select>
+                        }
+                    </FieldBody>
+                </Field>
+            </Fields>
+            <Field ColumnSize="ColumnSize.IsFull">
+                <FieldLabel>Table #:</FieldLabel>
+                <FieldBody>
+                    <NumericPicker TValue="int?" @bind-Value="@schedule.Table_Number" Min="0" Max="3" />
+                </FieldBody>
+            </Field>
+            <Fields>
+                <Field ColumnSize="ColumnSize.IsHalf">
+                    <FieldLabel>Playoffs:</FieldLabel>
+                    <FieldBody>
+                        <Check TValue="bool" @bind-Checked="@schedule.Playoffs" />
+                    </FieldBody>
+                </Field>
+                <Field ColumnSize="ColumnSize.IsHalf">
+                    <FieldLabel>Week #</FieldLabel>
+                    <FieldBody>
+                        <NumericPicker TValue="int?" @bind-Value="@playOffWeek" Min="0" />
+                    </FieldBody>
+                </Field>
+            </Fields>
+            <Field>
+                <Field>
+                    <FieldBody>
+                        <Button Color="Color.Success" Clicked="@AddScheduleClicked">Save Schedule</Button>&nbsp;
+                        <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
+                    </FieldBody>
+                </Field>
+            </Field>
+        </Field>
+    </Form>
+</ModalBody>
+<!--Toaster-->
+<Toaster>
+    <Toast @bind-Visible="@toastVisible">
+        <ToastHeader>
+            <Strong Margin="Margin.IsAuto.FromEnd">@toastTitle</Strong>
+            <CloseButton />
+        </ToastHeader>
+        <ToastBody>
+            @toastMessage
+        </ToastBody>
+    </Toast>
+</Toaster>
+
+@code {
+    //Inject
+    [Inject] private IToastService? ToastService { get; set; }
+
+    private DatePicker<DateOnly> datePicker { get; set; }
+    private Schedule schedule { get; set; } = new();
+    private int? playOffWeek { get; set; } = new();
+
+    //Toast
+    private bool toastVisible = false;
+    private string? toastMessage;
+    private string? toastTitle;
+
+    //Services
+    private readonly DataFactory apiService;
+    private readonly PlayerHelpers playerHelper;
+    private readonly WeekHelper weekHelper;
+
+    //Lists
+    private List<TeamDetail> teams = [];
+    private List<Schedule>? schedules = [];
+    private DayOfWeek[] disabledDays = [];
+
+    public AddEditScheduleModal(PlayerHelpers playerHelper, WeekHelper weekHelper, DataFactory apiService)
+    {
+        this.apiService = apiService;
+        this.playerHelper = playerHelper;
+        this.weekHelper = weekHelper;
+    }
+    async Task LoadSchedule(int value)
+    {
+        schedule = await apiService.GetSingleSchedule(value);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        disabledDays = new[]
+       {
+            DayOfWeek.Sunday,
+            DayOfWeek.Monday,
+            DayOfWeek.Wednesday,
+            DayOfWeek.Thursday,
+            DayOfWeek.Friday,
+            DayOfWeek.Saturday
+        };
+        schedules = await apiService.GetSchedule();
+        teams = await apiService.GetTeamDetails();
+    }
+
+    async Task AddScheduleClicked()
+    {
+        if (schedule is not null)
+        {
+            if (schedule.Home_Team == schedule.Away_Team)
+            {
+                toastMessage = $"Home Team and Away Team cannot be the same.";
+                toastTitle = "Add/Edit Schedule";
+                toastVisible = true;
+                return;
+            }
+            else
+            {
+                if (schedule.Home_Team != 1)
+                {
+                    schedule.Table_Number = null;
+                }
+                else if (schedule.Home_Team != 2)
+                {
+                    schedule.Table_Number = null;
+                }
+                else if (schedule.Home_Team != 3)
+                {
+                    schedule.Table_Number = null;
+                }
+                else if (schedule.Home_Team != 4)
+                {
+                    schedule.Table_Number = null;
+                }
+                else if (schedule.Home_Team != 11)
+                {
+                    schedule.Table_Number = null;
+                }
+                if (schedule.Playoffs)
+                {
+                    schedule.Week_Id_Playoff = playOffWeek;
+                }
+                else
+                {
+                    schedule.Week_Id = (int)playOffWeek;
+                }
+
+                var response = await apiService.AddSchedule(schedule);
+                if (response)
+                {
+                    toastMessage = $"Schedule {playOffWeek} {schedule.Home_Team} {schedule.Away_Team} has been added or edited.";
+                    toastTitle = "Add/Edit Schedule";
+                    toastVisible = true;
+                }
+                else
+                {
+                    toastMessage = $"Failed to Add Schedule {schedule.Week_Id} {schedule.Home_Team} {schedule.Away_Team}.";
+                    toastTitle = "Add/Edit Schedule";
+                    toastVisible = true;
+                }
+            }
+        }
+    }
+
+    Task ScheduleSelected(DateOnly value)
+    {
+        if (schedule is not null)
+        {
+            schedule.Date = value;
+        }
+        return Task.CompletedTask;
+    }
+
+    //Toast Service
+    private void BuildToastInstanceOptions(ToastInstanceOptions toastInstanceOptions)
+    {
+        toastInstanceOptions.Animated = true;
+        toastInstanceOptions.AnimationDuration = 300;
+        toastInstanceOptions.Autohide = true;
+        toastInstanceOptions.AutohideDelay = 3000;
+    }
+}

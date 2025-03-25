@@ -1,4 +1,6 @@
 ﻿@page "/team_standings"
+@using WPLBlazor.Data.Services
+@using WPLBlazor.Components.Layout
 @attribute [StreamRendering]
 
 <PageTitle>Team Standings</PageTitle>
@@ -11,16 +13,16 @@
             <Divider />
             <CardText>
                 <DataGrid TItem="TeamStats"
-                          @ref="teamGrid"
-                          Data="@teamStats"
-                          PageSize="5"
-                          SortMode="DataGridSortMode.Single"
-                          Striped="true"
-                          Sortable="true"
-                          Bordered="true"
-                          ShowPager="true"
-                          Responsive="true"
-                          ResponsiveMode="@TableResponsiveMode.Mobile">
+                @ref="teamGrid"
+                Data="@teamStats"
+                PageSize="5"
+                SortMode="DataGridSortMode.Single"
+                Striped="true"
+                Sortable="true"
+                Bordered="true"
+                ShowPager="true"
+                Responsive="true"
+                ResponsiveMode="@TableResponsiveMode.Mobile">
                     <ChildContent>
                         <DataGridCommandColumn TItem="TeamStats"></DataGridCommandColumn>
                         <DataGridColumn TItem="TeamStats" Field="TeamName" Caption="Team" Sortable="true" />
@@ -41,24 +43,31 @@
             </CardText>
         </CardBody>
     </Card>
+    <ScrollToTop />
 }
 
 @code {
     [CascadingParameter]
     LoadingIndicator loadingIndicator { get; set; } = new();
 
-    private APIService aPIService = new();
-    private TeamHelper teamHelper = new();
-    private PlayerHelpers playerHelper = new();
-    private PDataService pDataService = new();
+    private readonly TeamHelper teamHelper;
+    private  readonly PlayerHelpers playerHelper;
+    private readonly PDataService pDataService;
 
     private List<TeamStats> teamStats = new();
-    private List<TeamDetails> teamDetails = [];
+    private List<TeamDetail> teamDetails = [];
     private List<Players>? playerData = [];
     private List<PDataModel> pData = [];
     private PDataModel pDataModel = new();
     private DataGrid<PDataModel> playerGrid = new();
     private DataGrid<TeamStats> teamGrid = new();
+
+    public TeamStandings(PlayerHelpers playerHelpers, TeamHelper teamHelper, PDataService pDataService)
+    {
+        this.playerHelper = playerHelpers;
+        this.teamHelper = teamHelper;
+        this.pDataService = pDataService;
+    }
 
     protected override async Task OnInitializedAsync()
     {

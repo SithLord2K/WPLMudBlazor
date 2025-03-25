@@ -1,0 +1,151 @@
+﻿@using WPLBlazor.Data.Services
+@using WPLBlazor.Data.Models
+@attribute [StreamRendering]
+
+<ModalHeader>
+    <ModalTitle>Add/Edit Player(s)</ModalTitle>
+    <CloseButton />
+</ModalHeader>
+<ModalBody>
+    <Form>
+        <Field>
+            <Field ColumnSize="ColumnSize.IsFull">
+                <Select TValue="int" SelectedValueChanged="@LoadPlayer">
+                    <SelectItem>Select a Player to Edit</SelectItem>
+                    @if (players is not null)
+                    {
+                        @foreach (var p1 in players)
+                        {
+                            <SelectItem Value="@p1.Id">@p1.FirstName @p1.LastName</SelectItem>
+                        }
+                    }
+                </Select>
+            </Field>
+            <Field>
+                @if (player is not null)
+                {
+                    <Fields>
+                        <Field Horizontal ColumnSize="ColumnSize.IsHalf">
+                            <FieldLabel>First Name:</FieldLabel>
+                            <FieldBody><TextEdit @bind-Text="@player.FirstName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                        </Field>
+                        <Field Horizontal ColumnSize="ColumnSize.IsHalf">
+                            <FieldLabel>Last Name:</FieldLabel>
+                            <FieldBody><TextEdit @bind-Text="@player.LastName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                        </Field>
+                    </Fields>
+                    <Field>
+                        <FieldLabel>Team:</FieldLabel>
+                        <FieldBody>
+                            <Select TValue="int" SelectedValue="@player.TeamId" SelectedValueChanged="@PlayerTeamSelected">
+                                <SelectItem>Select A Team</SelectItem>
+                                @if (teams is not null)
+                                {
+                                    @foreach (var t in teams)
+                                    {
+                                        <SelectItem Value="@t.Id">@t.TeamName</SelectItem>
+                                    }
+                                }
+                            </Select>
+                        </FieldBody>
+                    </Field>
+                }
+                <Field>
+                    <FieldBody>
+                        <Button Color="Color.Success" Clicked="@AddPlayerClicked">Save Player</Button>&nbsp;
+                        <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
+                    </FieldBody>
+                </Field>
+            </Field>
+        </Field>
+    </Form>
+</ModalBody>
+
+<!--Toaster-->
+<Toaster>
+    <Toast @bind-Visible="@toastVisible">
+        <ToastHeader>
+            <Strong Margin="Margin.IsAuto.FromEnd">@toastTitle</Strong>
+            <CloseButton />
+        </ToastHeader>
+        <ToastBody>
+            @toastMessage
+        </ToastBody>
+    </Toast>
+</Toaster>
+
+@code {
+    private Player player { get; set; } = new();
+    [Inject] private IToastService? ToastService { get; set; }
+
+    private List<TeamDetail> teams = [];
+    private List<Player> players = [];
+
+    private bool toastVisible = false;
+    private string? toastMessage;
+    private string? toastTitle;
+
+    //Services
+    private readonly DataFactory apiService;
+    private readonly PlayerHelpers playerHelper;
+    private readonly WeekHelper weekHelper;
+
+    public AddEditPlayerModel(PlayerHelpers playerHelper, WeekHelper weekHelper, DataFactory apiService)
+    {
+        this.apiService = apiService;
+        this.playerHelper = playerHelper;
+        this.weekHelper = weekHelper;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        players = await apiService.GetPlayers();
+        teams = await apiService.GetTeamDetails();
+    }
+
+    async Task LoadPlayer(int value)
+    {
+        var players = await apiService.GetPlayers();
+        if (players is not null)
+        {
+            player = players.Where(e => e.Id == value).FirstOrDefault();
+        }
+    }
+
+    private async Task AddPlayerClicked()
+    {
+        if (player.LastName is null)
+        {
+            player.LastName = string.Empty;
+        }
+        var response = await apiService.AddPlayer(player);
+
+        if (response)
+        {
+            toastMessage = $"Player {player.FirstName} {player.LastName} has been added or edited.";
+            toastTitle = "Add/Edit Player";
+            toastVisible = true;
+        }
+        else
+        {
+            toastMessage = $"Failed to Add or Edit Player {player.FirstName} {player.LastName}.";
+            toastTitle = "Add/Edit Player";
+            toastVisible = true;
+        }
+    }
+
+    Task PlayerTeamSelected(int value)
+    {
+        player.TeamId = value;
+        return Task.CompletedTask;
+    }
+
+    //Toast Service
+    private void BuildToastInstanceOptions(ToastInstanceOptions toastInstanceOptions)
+    {
+        toastInstanceOptions.Animated = true;
+        toastInstanceOptions.AnimationDuration = 300;
+        toastInstanceOptions.Autohide = true;
+        toastInstanceOptions.AutohideDelay = 3000;
+    }
+}
