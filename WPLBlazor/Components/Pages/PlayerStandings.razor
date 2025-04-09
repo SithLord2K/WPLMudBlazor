@@ -6,44 +6,38 @@
 
 @if (pData != null)
 {
-    <Card Padding="Padding.Is2">
-        <CardBody>
-            <CardTitle Size="3">Player Standings</CardTitle>
-            <Divider />
-            <CardText>
-                <DataGrid TItem="PDataModel"
-                          @ref="playerGrid"
-                          Data="@pData"
-                          PageSize="10"
-                          SortMode="DataGridSortMode.Single"
-                          Striped="true"
-                          Sortable="true"
-                          Bordered="true"
-                          ShowPager="true"
-                          Responsive="true"
-                          ResponsiveMode="@TableResponsiveMode.Mobile">
-                    <ChildContent>
-                        <DataGridCommandColumn TItem="PDataModel"></DataGridCommandColumn>
-                        <DataGridColumn TItem="PDataModel" Field="TeamName" Caption="Team" Sortable="true" Filterable FilterMethod="DataGridColumnFilterMethod.Equals" FixedPosition="TableColumnFixedPosition.Start" />
-                        <DataGridColumn TItem="PDataModel" Field="FirstName" Caption="First Name" Sortable="true" />
-                        <DataGridColumn TItem="PDataModel" Field="LastName" Caption="Last Name" Sortable="true" />
-                        <DataGridColumn TItem="PDataModel" Field="GamesPlayed" Caption="Games Played" Sortable="true" Filterable FilterMethod="DataGridColumnFilterMethod.Equals" />
-                        <DataGridColumn TItem="PDataModel" Field="GamesWon" Caption="Games Won" Sortable="true" />
-                        <DataGridColumn TItem="PDataModel" Field="GamesLost" Caption="Games Lost" Sortable="true" />
-                        <DataGridColumn TItem="PDataModel" Field="Average" DisplayFormat="{0:P2}" Caption="Average" Sortable="true" />
-                    </ChildContent>
-                    <EmptyTemplate>
-                        <div class="box">
-                            No Player Stats Found!
-                        </div>
-                    </EmptyTemplate>
-                </DataGrid>
-            </CardText>
-        </CardBody>
-    </Card>
-   }         
 
-    @code {
+    <DataGrid TItem="PDataModel"
+              @ref="playerGrid"
+              Data="@pData"
+              PageSize="10"
+              SortMode="DataGridSortMode.Single"
+              Striped="true"
+              Sortable="true"
+              Bordered="true"
+              ShowPager="true"
+              Responsive="true"
+              ResponsiveMode="@TableResponsiveMode.Mobile">
+        <ChildContent>
+            <DataGridCommandColumn TItem="PDataModel"></DataGridCommandColumn>
+            <DataGridColumn TItem="PDataModel" Field="TeamName" Caption="Team" Sortable="true" Filterable FilterMethod="DataGridColumnFilterMethod.Equals" FixedPosition="TableColumnFixedPosition.Start" />
+            <DataGridColumn TItem="PDataModel" Field="FirstName" Caption="First Name" Sortable="true" />
+            <DataGridColumn TItem="PDataModel" Field="LastName" Caption="Last Name" Sortable="true" />
+            <DataGridColumn TItem="PDataModel" Field="GamesPlayed" Caption="Games Played" Sortable="true" Filterable FilterMethod="DataGridColumnFilterMethod.Equals" />
+            <DataGridColumn TItem="PDataModel" Field="GamesWon" Caption="Games Won" Sortable="true" />
+            <DataGridColumn TItem="PDataModel" Field="GamesLost" Caption="Games Lost" Sortable="true" />
+            <DataGridColumn TItem="PDataModel" Field="Average" DisplayFormat="{0:P2}" Caption="Average" Sortable="true" />
+        </ChildContent>
+        <EmptyTemplate>
+            <div class="box">
+                No Player Stats Found!
+            </div>
+        </EmptyTemplate>
+    </DataGrid>
+
+}
+
+@code {
     [CascadingParameter]
     LoadingIndicator loadingIndicator { get; set; } = new();
 

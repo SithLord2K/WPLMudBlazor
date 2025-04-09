@@ -4,26 +4,22 @@
 <PageTitle>Schedules</PageTitle>
 
 <Anchor id="top" />
-<Card Padding="Padding.Is2">
-    <CardBody>
-        <CardTitle Size="3">Schedule</CardTitle>
-        <Divider />
-        <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged" RenderMode="TabsRenderMode.LazyLoad">
-            <Items>
-                <Tab Name="season_schedule">Season Schedule</Tab>
-                <Tab Name="playoff_schedule">Playoff Schedule</Tab>
-            </Items>
-            <Content>
-                <TabPanel Name="season_schedule">
-                    <LeagueSchedule />
-                </TabPanel>
-                <TabPanel Name="playoff_schedule">
-                    <LeaguePlayoffs />
-                </TabPanel>
-            </Content>
-        </Tabs>
-    </CardBody>
-</Card>
+
+<Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged" RenderMode="TabsRenderMode.LazyLoad">
+    <Items>
+        <Tab Name="season_schedule">Season Schedule</Tab>
+        <Tab Name="playoff_schedule">Playoff Schedule</Tab>
+    </Items>
+    <Content>
+        <TabPanel Name="season_schedule">
+            <LeagueSchedule />
+        </TabPanel>
+        <TabPanel Name="playoff_schedule">
+            <LeaguePlayoffs />
+        </TabPanel>
+    </Content>
+</Tabs>
+
 
 @code {
     string selectedTab = "season_schedule";

@@ -7,56 +7,51 @@
 <PageTitle>League Administration</PageTitle>
 <Anchor id="top" />
 <!--Buttons With Authorizations-->
-<Card Padding="Padding.Is2">
-    <CardBody>
-        <CardTitle Size="3">Administration Functions</CardTitle>
-        <CardText>Name: @Username</CardText>
-        <CardText>Email: @Email</CardText>
-        <CardText>Role: @Roles</CardText>
-        <Divider />
-        <CardText>
-            <Table Responsive>
-                <TableRow>
-                    <TableRowCell>
-                        <AuthorizeView Roles="League_Admin, Super_User">
-                            <Tooltip Text="Use to add/edit players in the database.">
-                                <Button Color="Color.Success" Clicked="@ShowPlayerModal">Add/Edit Players</Button>
-                            </Tooltip>
-                        </AuthorizeView>
-                    </TableRowCell>
-                    <TableRowCell>
-                        <AuthorizeView Roles="League_Admin, Super_User, Captain">
-                            <Tooltip Text="Use to add games won and lost for players.">
-                                <Button Color="Color.Success" Clicked="@ShowPlayerDataModal">Add/Edit Player Games</Button>
-                            </Tooltip>
-                        </AuthorizeView>
-                    </TableRowCell>
-                    <TableRowCell>
-                        <AuthorizeView Roles="League_Admin, Super_User">
-                            <Tooltip Text="Use to add/edit teams in the database.">
-                                <Button Color="Color.Success" Clicked="@ShowTeamModal">Add/Edit Teams</Button>
-                            </Tooltip>
-                        </AuthorizeView>
-                    </TableRowCell>
-                    <TableRowCell>
-                        <AuthorizeView Roles="League_Admin, Super_User">
-                            <Tooltip Text="Use to Add/edit the schedule.">
-                                <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
-                            </Tooltip>
-                        </AuthorizeView>
-                    </TableRowCell>
-                    <TableRowCell>
-                        <AuthorizeView Roles="League_Admin, Super_User, Captain">
-                            <Tooltip Text="Use to add week stats, ie: Which team won, if there was a forfeit or if it is a playoff game.">
-                                <Button Color="Color.Success" Clicked="@ShowWeeksModal">Add/Edit Weeks</Button>
-                            </Tooltip>
-                        </AuthorizeView>
-                    </TableRowCell>
-                </TableRow>
-            </Table>
-        </CardText>
-    </CardBody>
-</Card>
+        Administration Functions
+        Name: @Username
+        Email: @Email
+        Role: @Roles
+
+<Table Responsive>
+    <TableRow>
+        <TableRowCell>
+            <AuthorizeView Roles="League_Admin, Super_User">
+                <Tooltip Text="Use to add/edit players in the database.">
+                    <Button Color="Color.Success" Clicked="@ShowPlayerModal">Add/Edit Players</Button>
+                </Tooltip>
+            </AuthorizeView>
+        </TableRowCell>
+        <TableRowCell>
+            <AuthorizeView Roles="League_Admin, Super_User, Captain">
+                <Tooltip Text="Use to add games won and lost for players.">
+                    <Button Color="Color.Success" Clicked="@ShowPlayerDataModal">Add/Edit Player Games</Button>
+                </Tooltip>
+            </AuthorizeView>
+        </TableRowCell>
+        <TableRowCell>
+            <AuthorizeView Roles="League_Admin, Super_User">
+                <Tooltip Text="Use to add/edit teams in the database.">
+                    <Button Color="Color.Success" Clicked="@ShowTeamModal">Add/Edit Teams</Button>
+                </Tooltip>
+            </AuthorizeView>
+        </TableRowCell>
+        <TableRowCell>
+            <AuthorizeView Roles="League_Admin, Super_User">
+                <Tooltip Text="Use to Add/edit the schedule.">
+                    <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
+                </Tooltip>
+            </AuthorizeView>
+        </TableRowCell>
+        <TableRowCell>
+            <AuthorizeView Roles="League_Admin, Super_User, Captain">
+                <Tooltip Text="Use to add week stats, ie: Which team won, if there was a forfeit or if it is a playoff game.">
+                    <Button Color="Color.Success" Clicked="@ShowWeeksModal">Add/Edit Weeks</Button>
+                </Tooltip>
+            </AuthorizeView>
+        </TableRowCell>
+    </TableRow>
+</Table>
+
 <ScrollToTop />
 
 
@@ -65,7 +60,7 @@
     LoadingIndicator loadingIndicator { get; set; } = new();
 
     [Inject] private IModalService ModalService { get; set; }
-   
+
     private List<Auth0Users> users = [];
     private AuthenticationState? state { get; set; }
 
@@ -101,7 +96,7 @@
             await loadingIndicator.Hide();
         }
     }
- 
+
     //Modal Tasks
     Task ShowPlayerModal()
     {
