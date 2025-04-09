@@ -154,6 +154,7 @@
         if (players is not null)
         {
             player = players.Where(e => e.Id == value).FirstOrDefault();
+            playerData.WeekNumber = pData.Where(x => x.PlayerId == player.Id).OrderBy(c => c.WeekNumber).Last().WeekNumber + 1;
         }
     }
 
