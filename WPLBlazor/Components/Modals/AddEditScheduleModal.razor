@@ -2,122 +2,117 @@
 @using WPLBlazor.Data.Models
 @attribute [StreamRendering]
 
-<ModalHeader>
-    <ModalTitle>Add/Edit Schedule</ModalTitle>
-    <CloseButton />
-</ModalHeader>
-<ModalBody>
-    <Form>
-        <Field>
-            <Field ColumnSize="ColumnSize.IsFull">
-                <FieldBody>
-                    <Select TValue="int" SelectedValueChanged="@LoadSchedule">
-                        <SelectItem>Select Schedule to Edit</SelectItem>
-                        @if (schedules is not null)
+<Form>
+    <Field>
+        <Field ColumnSize="ColumnSize.IsFull">
+            <FieldBody>
+                <Select TValue="int" SelectedValueChanged="@LoadSchedule">
+                    <SelectItem>Select Schedule to Edit</SelectItem>
+                    @if (schedules is not null)
+                    {
+                        @foreach (var s in schedules)
                         {
-                            @foreach (var s in schedules)
+                            @if (teams is not null)
                             {
-                                @if (teams is not null)
-                                {
-                                    <SelectItem Value="@s.Id">Week @s.Week_Id, Date: @s.Date, Home Team: @teams.Where(x => x.Id == s.Home_Team).FirstOrDefault().TeamName, Away Team: @teams.Where(x => x.Id == s.Away_Team).FirstOrDefault().TeamName </SelectItem>
-                                }
+                                <SelectItem Value="@s.Id">Week @s.Week_Id, Date: @s.Date, Home Team: @teams.Where(x => x.Id == s.Home_Team).FirstOrDefault().TeamName, Away Team: @teams.Where(x => x.Id == s.Away_Team).FirstOrDefault().TeamName </SelectItem>
                             }
                         }
-                    </Select>
-                </FieldBody>
-            </Field>
-            <Field ColumnSize="ColumnSize.IsFull">
-                <FieldLabel>Date</FieldLabel>
+                    }
+                </Select>
+            </FieldBody>
+        </Field>
+        <Field ColumnSize="ColumnSize.IsFull">
+            <FieldLabel>Date</FieldLabel>
+            <FieldBody>
+                @if (schedule is not null)
+                {
+                    <Addons>
+                        <Addon AddonType="AddonType.Body">
+                            <DatePicker @ref="@datePicker"
+                                        TValue="DateOnly"
+                                        DisabledDays="@disabledDays"
+                                        @bind-Date="@schedule.Date"
+                                        DisplayFormat="MMMM dd, yyyy" />
+                        </Addon>
+                        <Addon AddonType="AddonType.End">
+                            <Button Color="Blazorise.Color.Light" Clicked="@(()=>datePicker.ToggleAsync())">
+                                <Icon Name="IconName.Calendar" />
+                            </Button>
+                        </Addon>
+                    </Addons>
+                }
+            </FieldBody>
+        </Field>
+        <Fields>
+            <Field>
+                <FieldLabel>Home Team</FieldLabel>
                 <FieldBody>
                     @if (schedule is not null)
                     {
-                        <Addons>
-                            <Addon AddonType="AddonType.Body">
-                                <DatePicker @ref="@datePicker"
-                                            TValue="DateOnly"
-                                            DisabledDays="@disabledDays"
-                                            @bind-Date="@schedule.Date"
-                                            DisplayFormat="MMMM dd, yyyy" />
-                            </Addon>
-                            <Addon AddonType="AddonType.End">
-                                <Button Color="Blazorise.Color.Light" Clicked="@(()=>datePicker.ToggleAsync())">
-                                    <Icon Name="IconName.Calendar" />
-                                </Button>
-                            </Addon>
-                        </Addons>
+                        <Select TValue="int" @bind-SelectedValue="@schedule.Home_Team">
+
+                            <SelectItem> Select Home Team</SelectItem>
+                            @if (teams is not null)
+                            {
+                                @foreach (var t3 in teams)
+                                {
+                                    <SelectItem Value="@t3.Id">@t3.TeamName</SelectItem>
+                                }
+                            }
+                        </Select>
                     }
                 </FieldBody>
             </Field>
-            <Fields>
-                <Field>
-                    <FieldLabel>Home Team</FieldLabel>
-                    <FieldBody>
-                        @if (schedule is not null)
-                        {
-                            <Select TValue="int" @bind-SelectedValue="@schedule.Home_Team">
-
-                                <SelectItem> Select Home Team</SelectItem>
-                                @if (teams is not null)
-                                {
-                                    @foreach (var t3 in teams)
-                                    {
-                                        <SelectItem Value="@t3.Id">@t3.TeamName</SelectItem>
-                                    }
-                                }
-                            </Select>
-                        }
-                    </FieldBody>
-                </Field>
-                <Field>
-                    <FieldLabel>Away Team</FieldLabel>
-                    <FieldBody>
-                        @if (schedule is not null)
-                        {
-                            <Select TValue="int" @bind-SelectedValue="@schedule.Away_Team">
-                                <SelectItem> Select Away Team</SelectItem>
-                                @if (teams is not null)
-                                {
-                                    @foreach (var t4 in teams)
-                                    {
-                                        <SelectItem Value="@t4.Id">@t4.TeamName</SelectItem>
-                                    }
-                                }
-                            </Select>
-                        }
-                    </FieldBody>
-                </Field>
-            </Fields>
-            <Field ColumnSize="ColumnSize.IsFull">
-                <FieldLabel>Table #:</FieldLabel>
+            <Field>
+                <FieldLabel>Away Team</FieldLabel>
                 <FieldBody>
-                    <NumericPicker TValue="int?" @bind-Value="@schedule.Table_Number" Min="0" Max="3" />
+                    @if (schedule is not null)
+                    {
+                        <Select TValue="int" @bind-SelectedValue="@schedule.Away_Team">
+                            <SelectItem> Select Away Team</SelectItem>
+                            @if (teams is not null)
+                            {
+                                @foreach (var t4 in teams)
+                                {
+                                    <SelectItem Value="@t4.Id">@t4.TeamName</SelectItem>
+                                }
+                            }
+                        </Select>
+                    }
                 </FieldBody>
             </Field>
-            <Fields>
-                <Field ColumnSize="ColumnSize.IsHalf">
-                    <FieldLabel>Playoffs:</FieldLabel>
-                    <FieldBody>
-                        <Check TValue="bool" @bind-Checked="@schedule.Playoffs" />
-                    </FieldBody>
-                </Field>
-                <Field ColumnSize="ColumnSize.IsHalf">
-                    <FieldLabel>Week #</FieldLabel>
-                    <FieldBody>
-                        <NumericPicker TValue="int?" @bind-Value="@playOffWeek" Min="0" />
-                    </FieldBody>
-                </Field>
-            </Fields>
+        </Fields>
+        <Field ColumnSize="ColumnSize.IsFull">
+            <FieldLabel>Table #:</FieldLabel>
+            <FieldBody>
+                <NumericPicker TValue="int?" @bind-Value="@schedule.Table_Number" Min="0" Max="3" />
+            </FieldBody>
+        </Field>
+        <Fields>
+            <Field ColumnSize="ColumnSize.IsHalf">
+                <FieldLabel>Playoffs:</FieldLabel>
+                <FieldBody>
+                    <Check TValue="bool" @bind-Checked="@schedule.Playoffs" />
+                </FieldBody>
+            </Field>
+            <Field ColumnSize="ColumnSize.IsHalf">
+                <FieldLabel>Week #</FieldLabel>
+                <FieldBody>
+                    <NumericPicker TValue="int?" @bind-Value="@playOffWeek" Min="0" />
+                </FieldBody>
+            </Field>
+        </Fields>
+        <Field>
             <Field>
-                <Field>
-                    <FieldBody>
-                        <Button Color="Color.Success" Clicked="@AddScheduleClicked">Save Schedule</Button>&nbsp;
-                        <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
-                    </FieldBody>
-                </Field>
+                <FieldBody>
+                    <Button Color="Color.Success" Clicked="@AddScheduleClicked">Save Schedule</Button>&nbsp;
+                    <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
+                </FieldBody>
             </Field>
         </Field>
-    </Form>
-</ModalBody>
+    </Field>
+</Form>
+
 <!--Toaster-->
 <Toaster>
     <Toast @bind-Visible="@toastVisible">

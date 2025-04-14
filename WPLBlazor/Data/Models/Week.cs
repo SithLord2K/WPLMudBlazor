@@ -17,7 +17,6 @@ public partial class Week
 
     public int Home_Team { get; set; }
 
-    public bool Home_Won { get; set; }
 
     public bool Forfeit { get; set; }
 

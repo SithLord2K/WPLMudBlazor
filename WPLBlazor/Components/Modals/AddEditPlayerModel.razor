@@ -2,64 +2,59 @@
 @using WPLBlazor.Data.Models
 @attribute [StreamRendering]
 
-<ModalHeader>
-    <ModalTitle>Add/Edit Player(s)</ModalTitle>
-    <CloseButton />
-</ModalHeader>
-<ModalBody>
-    <Form>
-        <Field>
-            <Field ColumnSize="ColumnSize.IsFull">
-                <Select TValue="int" SelectedValueChanged="@LoadPlayer">
-                    <SelectItem>Select a Player to Edit</SelectItem>
-                    @if (players is not null)
-                    {
-                        @foreach (var p1 in players)
-                        {
-                            <SelectItem Value="@p1.Id">@p1.FirstName @p1.LastName</SelectItem>
-                        }
-                    }
-                </Select>
-            </Field>
-            <Field>
-                @if (player is not null)
+<Form>
+    <Field>
+        <Field ColumnSize="ColumnSize.IsFull">
+            <Select TValue="int" SelectedValue="@player.Id" SelectedValueChanged="@LoadPlayer">
+                <SelectItem>Select a Player to Edit</SelectItem>
+                @if (players is not null)
                 {
-                    <Fields>
-                        <Field Horizontal ColumnSize="ColumnSize.IsHalf">
-                            <FieldLabel>First Name:</FieldLabel>
-                            <FieldBody><TextEdit @bind-Text="@player.FirstName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
-                        </Field>
-                        <Field Horizontal ColumnSize="ColumnSize.IsHalf">
-                            <FieldLabel>Last Name:</FieldLabel>
-                            <FieldBody><TextEdit @bind-Text="@player.LastName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
-                        </Field>
-                    </Fields>
-                    <Field>
-                        <FieldLabel>Team:</FieldLabel>
-                        <FieldBody>
-                            <Select TValue="int" SelectedValue="@player.TeamId" SelectedValueChanged="@PlayerTeamSelected">
-                                <SelectItem>Select A Team</SelectItem>
-                                @if (teams is not null)
-                                {
-                                    @foreach (var t in teams)
-                                    {
-                                        <SelectItem Value="@t.Id">@t.TeamName</SelectItem>
-                                    }
-                                }
-                            </Select>
-                        </FieldBody>
-                    </Field>
+                    @foreach (var p1 in players)
+                    {
+                        <SelectItem Value="@p1.Id">@p1.FirstName @p1.LastName</SelectItem>
+                    }
                 }
+            </Select>
+        </Field>
+        <Field>
+            @if (player is not null)
+            {
+                <Fields>
+                    <Field Horizontal ColumnSize="ColumnSize.IsHalf">
+                        <FieldLabel>First Name:</FieldLabel>
+                        <FieldBody><TextEdit @bind-Text="@player.FirstName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                    </Field>
+                    <Field Horizontal ColumnSize="ColumnSize.IsHalf">
+                        <FieldLabel>Last Name:</FieldLabel>
+                        <FieldBody><TextEdit @bind-Text="@player.LastName" MaskType="MaskType.RegEx" EditMask="^[a-zA-Z ]*$" /></FieldBody>
+                    </Field>
+                </Fields>
                 <Field>
+                    <FieldLabel>Team:</FieldLabel>
                     <FieldBody>
-                        <Button Color="Color.Success" Clicked="@AddPlayerClicked">Save Player</Button>&nbsp;
-                        <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
+                        <Select TValue="int" SelectedValue="@player.TeamId" SelectedValueChanged="@PlayerTeamSelected">
+                            <SelectItem>Select A Team</SelectItem>
+                            @if (teams is not null)
+                            {
+                                @foreach (var t in teams)
+                                {
+                                    <SelectItem Value="@t.Id">@t.TeamName</SelectItem>
+                                }
+                            }
+                        </Select>
                     </FieldBody>
                 </Field>
+            }
+            <Field>
+                <FieldBody>
+                    <Button Color="Color.Success" Clicked="@AddPlayerClicked">Save Player</Button>&nbsp;
+                    <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
+                </FieldBody>
             </Field>
         </Field>
-    </Form>
-</ModalBody>
+    </Field>
+</Form>
+
 
 <!--Toaster-->
 <Toaster>

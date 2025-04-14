@@ -7,43 +7,44 @@
 <Anchor id="top" />
 @if (teams is not null)
 {
-
-    <Table Bordered Striped Responsive>
-        <TableHeader Border="Border.Is1" Width="Width.Auto">
-        </TableHeader>
-        @foreach (var team in teams)
-        {
-            @if (team.TeamName == "Bye")
+    <Card Border="Border.Is0">
+        <Table Bordered Striped Responsive>
+            <TableHeader Border="Border.Is1" Width="Width.Auto">
+            </TableHeader>
+            @foreach (var team in teams)
             {
-                continue;
+                @if (team.TeamName == "Bye")
+                {
+                    continue;
+                }
+                <TableBody Width="Width.Auto">
+                    <TableRowGroup Title="@team.TeamName">
+                        <TableHeaderCell TextAlignment="TextAlignment.Center">Name</TableHeaderCell>
+                        <TableHeaderCell TextAlignment="TextAlignment.Center">Games Played</TableHeaderCell>
+                        <TableHeaderCell TextAlignment="TextAlignment.Center">Captain?</TableHeaderCell>
+                        @foreach (var roster in rosters.Where(x => x.TeamId == team.Id))
+                        {
+                            <TableRow>
+                                <TableRowCell TextAlignment="TextAlignment.Center">@roster.Player_Name</TableRowCell>
+                                @if (players is not null)
+                                {
+                                    <TableRowCell TextAlignment="TextAlignment.Center">@players.Where(x => x.Id == roster.Player_Id).First().GamesPlayed</TableRowCell>
+                                }
+                                @if (roster.Player_Id == roster.Captain_Player_Id)
+                                {
+                                    <TableRowCell TextAlignment="TextAlignment.Center"><Icon Name="IconName.Check" /></TableRowCell>
+                                }
+                                else
+                                {
+                                    <TableRowCell></TableRowCell>
+                                }
+                            </TableRow>
+                        }
+                    </TableRowGroup>
+                </TableBody>
             }
-            <TableBody Width="Width.Auto">
-                <TableRowGroup Title="@team.TeamName">
-                    <TableHeaderCell TextAlignment="TextAlignment.Center">Name</TableHeaderCell>
-                    <TableHeaderCell TextAlignment="TextAlignment.Center">Games Played</TableHeaderCell>
-                    <TableHeaderCell TextAlignment="TextAlignment.Center">Captain?</TableHeaderCell>
-                    @foreach (var roster in rosters.Where(x => x.TeamId == team.Id))
-                    {
-                        <TableRow>
-                            <TableRowCell TextAlignment="TextAlignment.Center">@roster.Player_Name</TableRowCell>
-                            @if (players is not null)
-                            {
-                                <TableRowCell TextAlignment="TextAlignment.Center">@players.Where(x => x.Id == roster.Player_Id).First().GamesPlayed</TableRowCell>
-                            }
-                            @if (roster.Player_Id == roster.Captain_Player_Id)
-                            {
-                                <TableRowCell TextAlignment="TextAlignment.Center"><Icon Name="IconName.Check" /></TableRowCell>
-                            }
-                            else
-                            {
-                                <TableRowCell></TableRowCell>
-                            }
-                        </TableRow>
-                    }
-                </TableRowGroup>
-            </TableBody>
-        }
-    </Table>
+        </Table>
+    </Card>
 
     <ScrollToTop />
 

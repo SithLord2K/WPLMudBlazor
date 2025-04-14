@@ -2,62 +2,56 @@
 @using WPLBlazor.Data.Models
 @attribute [StreamRendering]
 
-<ModalHeader>
-    <ModalTitle>Add/Edit Team(s)</ModalTitle>
-    <CloseButton />
-</ModalHeader>
-<ModalBody>
-    <Form>
-        <Field>
-            <Field ColumnSize="ColumnSize.IsFull">
-                @if (addTeam is not null)
-                {
-                    <Select TValue="int" SelectedValue="@addTeam.Id" SelectedValueChanged="@LoadTeam">
+<Form>
+    <Field>
+        <Field ColumnSize="ColumnSize.IsFull">
+            @if (addTeam is not null)
+            {
+                <Select TValue="int" SelectedValue="@addTeam.Id" SelectedValueChanged="@LoadTeam">
 
-                        <SelectItem>Choose Team to Edit</SelectItem>
-                        @if (teams is not null)
+                    <SelectItem>Choose Team to Edit</SelectItem>
+                    @if (teams is not null)
+                    {
+                        @foreach (var team in teams)
                         {
-                            @foreach (var team in teams)
+                            <SelectItem Value="@team.Id">@team.TeamName</SelectItem>
+                        }
+                    }
+                </Select>
+            }
+        </Field>
+    </Field>
+    <Field>
+        @if (addTeam is not null)
+        {
+            <Field ColumnSize="ColumnSize.IsFull">
+                <FieldLabel>Team Name:</FieldLabel>
+                <FieldBody><TextEdit @bind-Text="@addTeam.TeamName" /></FieldBody>
+            </Field>
+            <Field ColumnSize="ColumnSize.IsFull">
+                <FieldLabel>Team Captain:</FieldLabel>
+                <FieldBody>
+                    <Select TValue="int" SelectedValue="@addTeam.Captain_Player_Id" SelectedValueChanged="@TeamCaptainSelected">
+                        <SelectItem>Select A Captain</SelectItem>
+                        @if (players is not null)
+                        {
+                            @foreach (var p in players)
                             {
-                                <SelectItem Value="@team.Id">@team.TeamName</SelectItem>
+                                <SelectItem Value="@p.Id">@p.FirstName @p.LastName</SelectItem>
                             }
                         }
                     </Select>
-                }
+                </FieldBody>
             </Field>
-        </Field>
-        <Field>
-            @if (addTeam is not null)
-            {
-                <Field ColumnSize="ColumnSize.IsFull">
-                    <FieldLabel>Team Name:</FieldLabel>
-                    <FieldBody><TextEdit @bind-Text="@addTeam.TeamName" /></FieldBody>
-                </Field>
-                <Field ColumnSize="ColumnSize.IsFull">
-                    <FieldLabel>Team Captain:</FieldLabel>
-                    <FieldBody>
-                        <Select TValue="int" SelectedValue="@addTeam.Captain_Player_Id" SelectedValueChanged="@TeamCaptainSelected">
-                            <SelectItem>Select A Captain</SelectItem>
-                            @if (players is not null)
-                            {
-                                @foreach (var p in players)
-                                {
-                                    <SelectItem Value="@p.Id">@p.FirstName @p.LastName</SelectItem>
-                                }
-                            }
-                        </Select>
-                    </FieldBody>
-                </Field>
-                <Field>
-                    <FieldBody>
-                        <Button Color="Color.Success" Clicked="@AddTeamClicked">Save Team</Button>&nbsp;
-                        <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
-                    </FieldBody>
-                </Field>
-            }
-        </Field>
-    </Form>
-</ModalBody>
+            <Field>
+                <FieldBody>
+                    <Button Color="Color.Success" Clicked="@AddTeamClicked">Save Team</Button>&nbsp;
+                    <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
+                </FieldBody>
+            </Field>
+        }
+    </Field>
+</Form>
 
 <!--Toaster-->
 <Toaster>
@@ -75,7 +69,7 @@
 @code {
     private Player player { get; set; } = new();
     [Inject] private IToastService? ToastService { get; set; }
-    
+
     //Variables
     private TeamDetail addTeam = new();
 

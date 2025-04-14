@@ -2,106 +2,101 @@
 @using WPLBlazor.Data.Models
 @attribute [StreamRendering]
 
-<ModalHeader>
-    <ModalTitle>Add/Edit Week Stats</ModalTitle>
-    <CloseButton />
-</ModalHeader>
-<ModalBody>
-    Weeks can currenty ONLY be added and not modified. If data is not correct please contact the site admin to correct it.
-    <Divider />
-    <Form>
-        <Field ColumnSize="ColumnSize.IsFull">
-            <FieldLabel>Week #:</FieldLabel>
+<Text TextColor="TextColor.Warning"> Weeks can currenty ONLY be added and not modified. If data is not correct please contact the site admin to correct it.</Text>
+<Divider />
+<Form>
+    <Field ColumnSize="ColumnSize.IsFull">
+        <FieldLabel>Week #:</FieldLabel>
+        <FieldBody>
+            @if (week is not null)
+            {
+                <NumericEdit @bind-Value="@week.WeekNumber" onchanged="@LoadWeek" Min="0" />
+            }
+        </FieldBody>
+    </Field>
+    <Fields>
+        <Field ColumnSize="ColumnSize.IsHalf">
+            <FieldLabel>Home Team:</FieldLabel>
             <FieldBody>
                 @if (week is not null)
                 {
-                    <NumericEdit @bind-Value="@week.WeekNumber" onchanged="@LoadWeek" Min="0" />
-                }
-            </FieldBody>
-        </Field>
-        <Fields>
-            <Field ColumnSize="ColumnSize.IsHalf">
-                <FieldLabel>Home Team:</FieldLabel>
-                <FieldBody>
-                    @if (week is not null)
-                    {
-                        <Select TValue="int" SelectedValue="@week.Home_Team" SelectedValueChanged="@UpdateHomeTeam">
-                            <SelectItem Value="0">Select a Home Team</SelectItem>
-                            @if (teams is not null)
-                            {
-                                @foreach (var t1 in teams)
-                                {
-                                    <SelectItem Value="t1.Id">@t1.TeamName</SelectItem>
-                                }
-                            }
-                        </Select>
-                    }
-                </FieldBody>
-            </Field>
-            <Field ColumnSize="ColumnSize.IsHalf">
-                <FieldLabel>Away Team:</FieldLabel>
-                <FieldBody>
-                    @if (week is not null)
-                    {
-                        <Select TValue="int" SelectedValue="@week.Away_Team" SelectedValueChanged="@UpdateAwayTeam">
-                            <SelectItem Value="0">Select an Away Team</SelectItem>
-                            @if (teams is not null)
-                            {
-                                @foreach (var t2 in teams)
-                                {
-                                    <SelectItem Value="t2.Id">@t2.TeamName</SelectItem>
-                                }
-                            }
-                        </Select>
-                    }
-                </FieldBody>
-            </Field>
-        </Fields>
-        <Field>
-            <FieldLabel>Winning Team:</FieldLabel>
-            <FieldBody>
-                @if (week is not null)
-                {
-                    <Select TValue="int?" SelectedValue="@week.WinningTeamId" SelectedValueChanged="@UpdateWinningTeam">
-                        <SelectItem Value="0">Select an Winning Team</SelectItem>
+                    <Select TValue="int" SelectedValue="@week.Home_Team" SelectedValueChanged="@UpdateHomeTeam">
+                        <SelectItem Value="0">Select a Home Team</SelectItem>
                         @if (teams is not null)
                         {
-                            @foreach (var t3 in teams)
+                            @foreach (var t1 in teams)
                             {
-                                <SelectItem Value="t3.Id">@t3.TeamName</SelectItem>
+                                <SelectItem Value="t1.Id">@t1.TeamName</SelectItem>
                             }
                         }
                     </Select>
                 }
             </FieldBody>
         </Field>
-        <Field>
-            <FieldBody>&nbsp;</FieldBody>
-            @if (week is not null)
-            {
-                <Fields>
-                    <Field>
-                        <FieldBody>
-                            &nbsp;<Check TValue="bool" @bind-Checked="@week.Forfeit">Forfeit</Check>
-                        </FieldBody>
-                    </Field>
-                    <Field>
-                        <FieldBody>
-                            &nbsp;<Check TValue="bool" @bind-Checked="@week.Playoff">Playoff</Check>
-                        </FieldBody>
-                    </Field>
-                </Fields>
-            }
-            <FieldBody><br /></FieldBody>
-        </Field>
-        <Field>
+        <Field ColumnSize="ColumnSize.IsHalf">
+            <FieldLabel>Away Team:</FieldLabel>
             <FieldBody>
-                <Button Color="Color.Success" Clicked="@AddWeekClicked">Save Week</Button>&nbsp;
-                <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
+                @if (week is not null)
+                {
+                    <Select TValue="int" SelectedValue="@week.Away_Team" SelectedValueChanged="@UpdateAwayTeam">
+                        <SelectItem Value="0">Select an Away Team</SelectItem>
+                        @if (teams is not null)
+                        {
+                            @foreach (var t2 in teams)
+                            {
+                                <SelectItem Value="t2.Id">@t2.TeamName</SelectItem>
+                            }
+                        }
+                    </Select>
+                }
             </FieldBody>
         </Field>
-    </Form>
-</ModalBody>
+    </Fields>
+    <Field>
+        <FieldLabel>Winning Team:</FieldLabel>
+        <FieldBody>
+            @if (week is not null)
+            {
+                <Select TValue="int?" SelectedValue="@week.WinningTeamId" SelectedValueChanged="@UpdateWinningTeam">
+                    <SelectItem Value="0">Select an Winning Team</SelectItem>
+                    @if (teams is not null)
+                    {
+                        @foreach (var t3 in teams)
+                        {
+                            <SelectItem Value="t3.Id">@t3.TeamName</SelectItem>
+                        }
+                    }
+                </Select>
+            }
+        </FieldBody>
+    </Field>
+    <Field>
+        <FieldBody>&nbsp;</FieldBody>
+        @if (week is not null)
+        {
+            <Fields>
+                <Field>
+                    <FieldBody>
+                        &nbsp;<Check TValue="bool" @bind-Checked="@week.Forfeit">Forfeit</Check>
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldBody>
+                        &nbsp;<Check TValue="bool" @bind-Checked="@week.Playoff">Playoff</Check>
+                    </FieldBody>
+                </Field>
+            </Fields>
+        }
+        <FieldBody><br /></FieldBody>
+    </Field>
+    <Field>
+        <FieldBody>
+            <Button Color="Color.Success" Clicked="@AddWeekClicked">Save Week</Button>&nbsp;
+            <Button Color="Color.Danger" Type="Blazorise.ButtonType.Reset">Reset</Button>
+        </FieldBody>
+    </Field>
+</Form>
+
 <!--Toaster-->
 <Toaster>
     <Toast @bind-Visible="@toastVisible">

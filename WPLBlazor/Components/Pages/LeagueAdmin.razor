@@ -7,51 +7,57 @@
 <PageTitle>League Administration</PageTitle>
 <Anchor id="top" />
 <!--Buttons With Authorizations-->
-        Administration Functions
-        Name: @Username
-        Email: @Email
-        Role: @Roles
+<Card Padding="Padding.Is2">
+    <CardBody>
+        <CardTitle Size="3">Administration Functions</CardTitle>
+        <CardText>Name: @Username</CardText>
+        <CardText>Email: @Email</CardText>
+        <CardText>Role: @Roles</CardText>
+        <Divider />
+        <CardText>
 
-<Table Responsive>
-    <TableRow>
-        <TableRowCell>
-            <AuthorizeView Roles="League_Admin, Super_User">
-                <Tooltip Text="Use to add/edit players in the database.">
-                    <Button Color="Color.Success" Clicked="@ShowPlayerModal">Add/Edit Players</Button>
-                </Tooltip>
-            </AuthorizeView>
-        </TableRowCell>
-        <TableRowCell>
-            <AuthorizeView Roles="League_Admin, Super_User, Captain">
-                <Tooltip Text="Use to add games won and lost for players.">
-                    <Button Color="Color.Success" Clicked="@ShowPlayerDataModal">Add/Edit Player Games</Button>
-                </Tooltip>
-            </AuthorizeView>
-        </TableRowCell>
-        <TableRowCell>
-            <AuthorizeView Roles="League_Admin, Super_User">
-                <Tooltip Text="Use to add/edit teams in the database.">
-                    <Button Color="Color.Success" Clicked="@ShowTeamModal">Add/Edit Teams</Button>
-                </Tooltip>
-            </AuthorizeView>
-        </TableRowCell>
-        <TableRowCell>
-            <AuthorizeView Roles="League_Admin, Super_User">
-                <Tooltip Text="Use to Add/edit the schedule.">
-                    <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
-                </Tooltip>
-            </AuthorizeView>
-        </TableRowCell>
-        <TableRowCell>
-            <AuthorizeView Roles="League_Admin, Super_User, Captain">
-                <Tooltip Text="Use to add week stats, ie: Which team won, if there was a forfeit or if it is a playoff game.">
-                    <Button Color="Color.Success" Clicked="@ShowWeeksModal">Add/Edit Weeks</Button>
-                </Tooltip>
-            </AuthorizeView>
-        </TableRowCell>
-    </TableRow>
-</Table>
-
+            <Table Responsive>
+                <TableRow>
+                    <TableRowCell>
+                        <AuthorizeView Roles="League_Admin, Super_User">
+                            <Tooltip Text="Use to add/edit players in the database.">
+                                <Button Color="Color.Success" Clicked="@ShowPlayerModal">Add/Edit Players</Button>
+                            </Tooltip>
+                        </AuthorizeView>
+                    </TableRowCell>
+                    <TableRowCell>
+                        <AuthorizeView Roles="League_Admin, Super_User, Captain">
+                            <Tooltip Text="Use to add games won and lost for players.">
+                                <Button Color="Color.Success" Clicked="@ShowPlayerDataModal">Add/Edit Player Games</Button>
+                            </Tooltip>
+                        </AuthorizeView>
+                    </TableRowCell>
+                    <TableRowCell>
+                        <AuthorizeView Roles="League_Admin, Super_User">
+                            <Tooltip Text="Use to add/edit teams in the database.">
+                                <Button Color="Color.Success" Clicked="@ShowTeamModal">Add/Edit Teams</Button>
+                            </Tooltip>
+                        </AuthorizeView>
+                    </TableRowCell>
+                    <TableRowCell>
+                        <AuthorizeView Roles="League_Admin, Super_User">
+                            <Tooltip Text="Use to Add/edit the schedule.">
+                                <Button Color="Color.Success" Clicked="@ShowScheduleModal">Add/Edit Schedules</Button>
+                            </Tooltip>
+                        </AuthorizeView>
+                    </TableRowCell>
+                    <TableRowCell>
+                        <AuthorizeView Roles="League_Admin, Super_User, Captain">
+                            <Tooltip Text="Use to add week stats, ie: Which team won, if there was a forfeit or if it is a playoff game.">
+                                <Button Color="Color.Success" Clicked="@ShowWeeksModal">Add/Edit Weeks</Button>
+                            </Tooltip>
+                        </AuthorizeView>
+                    </TableRowCell>
+                </TableRow>
+            </Table>
+        </CardText>
+    </CardBody>
+</Card>
 <ScrollToTop />
 
 
@@ -100,27 +106,27 @@
     //Modal Tasks
     Task ShowPlayerModal()
     {
-        return ModalService.Show<AddEditPlayerModel>("", new ModalInstanceOptions() { UseModalStructure = false });
+        return ModalService.Show<AddEditPlayerModel>("Add/Edit Player(s)", new ModalInstanceOptions() { });
     }
 
     Task ShowTeamModal()
     {
-        return ModalService.Show<AddEditTeamModal>("", new ModalInstanceOptions() { UseModalStructure = false });
+        return ModalService.Show<AddEditTeamModal>("Add/Edit Team(s)", new ModalInstanceOptions() { });
     }
 
     Task ShowScheduleModal()
     {
-        return ModalService.Show<AddEditScheduleModal>("", new ModalInstanceOptions() { UseModalStructure = false });
+        return ModalService.Show<AddEditScheduleModal>("Add/Edit Schedule(s)", new ModalInstanceOptions() { });
     }
 
     Task ShowPlayerDataModal()
     {
-        return ModalService.Show<AddEditPlayerDataModal>("", new ModalInstanceOptions() { UseModalStructure = false });
+        return ModalService.Show<AddEditPlayerDataModal>("Add/Edit Player Games", new ModalInstanceOptions() { });
     }
 
     Task ShowWeeksModal()
     {
-        return ModalService.Show<AddEditWeeksModal>("", new ModalInstanceOptions() { UseModalStructure = false });
+        return ModalService.Show<AddEditWeeksModal>("Add/Edit Week Stats", new ModalInstanceOptions() { });
     }
 
     //Authentication

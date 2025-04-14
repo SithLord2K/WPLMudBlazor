@@ -17,17 +17,10 @@
             </LayoutSider>
             <Layout>
                 <LayoutContent Padding="Padding.Is3">
-                    <LoadingIndicator IndicatorVerticalPlacement="LoadingIndicatorPlacement.Middle" FadeIn>
+                    <LoadingIndicator FadeIn>
                         <ChildContent>
                             @Body
                         </ChildContent>
-                        <IndicatorTemplate>
-                            <Animate Animation="Animations.FadeDownRight" Auto>
-                                <Div>
-                                    <SpinKit Type="SpinKitType.CircleFade" Size="50px" Centered />
-                                </Div>
-                            </Animate>
-                        </IndicatorTemplate>
                     </LoadingIndicator>
                 </LayoutContent>
                 <LayoutFooter Fixed Background="Background.Dark" TextColor="TextColor.Light">
