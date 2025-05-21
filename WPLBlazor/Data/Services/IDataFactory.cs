@@ -24,6 +24,11 @@ namespace WPLBlazor.Data.Services
         Task<bool> AddWeeks(Week weeks);
         Task<bool> UpdateWeeks(Week weeks);
         Task RemoveWeeks(int id);
+        Task AddPlayersToArchive(List<Player> players);
+        Task AddPlayersDataToArchive(List<PlayerDatum> playersData);
+        Task AddTeamsToArchive(List<TeamDetail> teams);
+        Task AddWeeksToArchive(List<Week> weeks);
+        Task AddScheduleToArchive(List<Schedule> schedule);
 
     }
 }

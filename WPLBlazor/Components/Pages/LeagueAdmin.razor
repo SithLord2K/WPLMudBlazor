@@ -53,6 +53,13 @@
                             </Tooltip>
                         </AuthorizeView>
                     </TableRowCell>
+                    <TableRowCell>
+                        <AuthorizeView Roles="Super_User">
+                            <Tooltip Text="Archive Season Data and Flush the Databases">
+                                <Button Color="Color.Warning" Clicked="@ArchiveSeason">Archive Season</Button>
+                            </Tooltip>
+                        </AuthorizeView>
+                    </TableRowCell>
                 </TableRow>
             </Table>
         </CardText>
@@ -69,6 +76,18 @@
 
     private List<Auth0Users> users = [];
     private AuthenticationState? state { get; set; }
+
+    private List<Player>? players = [];
+    private List<TeamDetail> teams = [];
+    private List<PlayerDatum>? playerData = [];
+    private List<Week>? weeks = [];
+    private List<Schedule>? schedules = [];
+
+    private readonly DataFactory aPIService;
+    public LeagueAdmin(DataFactory aPIService)
+    {
+        this.aPIService = aPIService;
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -127,6 +146,22 @@
     Task ShowWeeksModal()
     {
         return ModalService.Show<AddEditWeeksModal>("Add/Edit Week Stats", new ModalInstanceOptions() { });
+    }
+
+    async Task ArchiveSeason()
+    {
+        
+        playerData = await aPIService.GetPlayerData();
+        players = await aPIService.GetPlayers();
+        teams = await aPIService.GetTeamDetails();
+        weeks = await aPIService.GetAllWeeks();
+        schedules = await aPIService.GetSchedule();
+
+        await aPIService.AddPlayersToArchive(players);
+        await aPIService.AddPlayerDataToArchive(playerData);
+        await aPIService.AddTeamsToArchive(teams);
+        await aPIService.AddWeeksToArchive(weeks);
+
     }
 
     //Authentication

@@ -2,15 +2,11 @@
 
 namespace WPLBlazor.Data.Services
 {
-    public class TeamHelper
+    public class TeamHelper(DataFactory aPIService, PlayerHelpers playerHelpers)
     {
-        private readonly DataFactory aPIService;
-        private readonly PlayerHelpers playerHelpers;
-        public TeamHelper(DataFactory aPIService, PlayerHelpers playerHelpers)
-        {
-            this.aPIService = aPIService;
-            this.playerHelpers = playerHelpers;
-        }
+        private readonly DataFactory aPIService = aPIService;
+        private readonly PlayerHelpers playerHelpers = playerHelpers;
+
         public async Task<List<TeamStats>> GetAllTeamStats()
         {
             List<TeamDetail>? teams = [];
