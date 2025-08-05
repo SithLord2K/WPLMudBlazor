@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
 
-namespace WPLBlazor.Data.Services
+namespace WPLMudBlazor.Data.Services
 {
     public class AntiForgery
     {

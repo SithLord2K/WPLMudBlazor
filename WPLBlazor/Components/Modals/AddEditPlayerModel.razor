@@ -1,8 +1,8 @@
-﻿@using WPLBlazor.Data.Services
-@using WPLBlazor.Data.Models
+﻿@using WPLMudBlazor.Data.Models
+@using WPLMudBlazor.Data.Services
 @attribute [StreamRendering]
 
-<Form>
+<MudForm>
     <Field>
         <Field ColumnSize="ColumnSize.IsFull">
             <Select TValue="int" SelectedValue="@player.Id" SelectedValueChanged="@LoadPlayer">
@@ -53,7 +53,7 @@
             </Field>
         </Field>
     </Field>
-</Form>
+</MudForm>
 
 
 <!--Toaster-->

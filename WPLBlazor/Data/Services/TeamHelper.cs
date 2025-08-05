@@ -1,6 +1,6 @@
-﻿using WPLBlazor.Data.Models;
+﻿using WPLMudBlazor.Data.Models;
 
-namespace WPLBlazor.Data.Services
+namespace WPLMudBlazor.Data.Services
 {
     public class TeamHelper(DataFactory aPIService, PlayerHelpers playerHelpers)
     {

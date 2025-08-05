@@ -1,16 +1,12 @@
-using WPLBlazor.Components;
-using Blazorise;
-using Blazorise.Bootstrap5;
-using Blazorise.Icons.FontAwesome;
 using Auth0.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
-using WPLBlazor.AuthenticationStateSyncer.PersistingRevalidatingAuthenticationStateProvider;
-using Blazorise.LoadingIndicator;
-using WPLBlazor.Data;
-using WPLBlazor.Data.Services;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
+using WPLMudBlazor.AuthenticationStateSyncer;
+using WPLMudBlazor.Data;
+using WPLMudBlazor.Data.Services;
 
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
@@ -54,15 +50,7 @@ builder.Services
     .AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services
-    .AddBlazorise(options =>
-    {
-        options.ProductToken = builder.Configuration["ProductToken"];
-        options.Immediate = true;
-    })
-    .AddBootstrap5Providers()
-    .AddFontAwesomeIcons()
-    .AddLoadingIndicator();
+builder.Services.AddMudServices();
 
 var app = builder.Build();
 
@@ -93,7 +81,7 @@ app.MapGet("/Account/Login", async (HttpContext httpContext, string returnUrl = 
     await httpContext.ChallengeAsync(Auth0Constants.AuthenticationScheme, authenticationProperties);
 });
 
-app.MapGet("/Account/Logout", async (HttpContext httpContext) =>
+app.MapGet("/Account/Logout", async httpContext =>
 {
     var authenticationProperties = new LogoutAuthenticationPropertiesBuilder()
             .WithRedirectUri("/")

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
-using WPLBlazor.Data.Models;
+using WPLMudBlazor.Data.Models;
 
 
-namespace WPLBlazor.Data.Services
+namespace WPLMudBlazor.Data.Services
 {
     public class PlayerHelpers(DataFactory aPIService)
     {

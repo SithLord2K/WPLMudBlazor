@@ -6,9 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Diagnostics;
 using System.Security.Claims;
-using WPLBlazor.AuthenticationStateSyncer;
 
-namespace WPLBlazor.AuthenticationStateSyncer.PersistingRevalidatingAuthenticationStateProvider
+namespace WPLMudBlazor.AuthenticationStateSyncer
 {
     public class PersistingRevalidatingAuthenticationStateProvider : RevalidatingServerAuthenticationStateProvider
     {

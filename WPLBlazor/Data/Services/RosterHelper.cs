@@ -1,7 +1,7 @@
-﻿using WPLBlazor.Data.Models;
-using Roster = WPLBlazor.Data.Models.Roster;
+﻿using WPLMudBlazor.Data.Models;
+using Roster = WPLMudBlazor.Data.Models.Roster;
 
-namespace WPLBlazor.Data.Services
+namespace WPLMudBlazor.Data.Services
 {
 
     public class RosterHelper

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WPLBlazor.Data.Models;
+using WPLMudBlazor.Data.Models;
 
-namespace WPLBlazor.Data.Services
+namespace WPLMudBlazor.Data.Services
 {
     public class DataFactory(IDbContextFactory<WPLStatsDBContext> contextFactory)
     {

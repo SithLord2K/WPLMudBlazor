@@ -1,4 +1,4 @@
-﻿namespace WPLBlazor.Data.Models
+﻿namespace WPLMudBlazor.Data.Models
 {
     public class TeamStats
     {

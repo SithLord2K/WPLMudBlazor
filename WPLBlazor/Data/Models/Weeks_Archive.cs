@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace WPLBlazor.Data.Models;
+namespace WPLMudBlazor.Data.Models;
 
 [Table("Weeks_Archive")]
 public partial class Weeks_Archive

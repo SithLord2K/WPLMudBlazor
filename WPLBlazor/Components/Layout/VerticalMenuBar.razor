@@ -1,67 +1,34 @@
 ﻿@attribute [StreamRendering]
-<Bar Mode="BarMode.VerticalInline"
-     CollapseMode="BarCollapseMode.Small"
-     Breakpoint="Breakpoint.Desktop"
-     NavigationBreakpoint="Breakpoint.ExtraSmall"
-     Background="Background.Dark"
-     ThemeContrast="ThemeContrast.Dark"
-     MenuToggleBehavior="BarMenuToggleBehavior.AllowSingleMenu"
-     Shadow="Shadow.Default">
-    @* <BarToggler /> *@
-    <BarMenu>
-        <BarStart>
-            <BarItem />
-            <BarItem>
-                <BarLink To="" Title="Home">
-                    <BarIcon IconName="IconName.Home" />
-                    Home
-                </BarLink>
-            </BarItem>
-            <BarItem>
-                <BarLink To="rosters" Title="Rosters">
-                    <BarIcon IconName="IconName.Users" />
-                    Rosters
-                </BarLink>
-            </BarItem>
-            <BarItem>
-                <BarLink To="standings">
-                    <BarIcon IconName="IconName.ListUl" />
-                    Standings
-                </BarLink>
-            </BarItem>
-            <BarItem>
-                <BarLink To="schedules">
-                    <BarIcon IconName="IconName.Calendar" />
-                    Schedules
-                </BarLink>
-            </BarItem>
-            <AuthorizeView Roles="League_Admin, Super_User">
-                <Divider />
-                <BarItem>
-                    <BarLink To="league_admin" Title="Admin">
-                        <BarIcon IconName="IconName.UserTie" />
-                        Admin
-                    </BarLink>
-                </BarItem>
-            </AuthorizeView>
-        </BarStart>
-        <BarEnd>
-            <Divider />
-            <BarItem>
-                <BarLink To="Downloads/Poolscoresheet.xls" Title="Download Scoresheet">
-                    <BarIcon IconName="IconName.FileDownload" />
-                    Download Scoresheet
-                </BarLink>
-            </BarItem>
-            <BarItem>
-                <BarLink To="changelog" Title="Changelog">
-                    <BarIcon IconName="IconName.ExclamationCircle" />
-                    Changelog
-                </BarLink>
-            </BarItem>
-        </BarEnd>
-    </BarMenu>
-</Bar>
+
+<MudNavMenu>
+    <MudNavLink Href="" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Home">
+        Home
+    </MudNavLink>
+    <MudNavLink Href="rosters" Icon="@Icons.Material.Filled.Group">
+        Rosters
+    </MudNavLink>
+    <MudNavLink Href="standings" Icon="@Icons.Material.Filled.List">
+        Standings
+    </MudNavLink>
+    <MudNavLink Href="schedules" Icon="@Icons.Material.Filled.CalendarToday">
+        Schedules
+    </MudNavLink>
+    <AuthorizeView Roles="League_Admin, Super_User">
+        <MudDivider />
+        <MudNavLink Href="league_admin" Icon="@Icons.Material.Filled.AdminPanelSettings">
+            Admin
+        </MudNavLink>
+    </AuthorizeView>
+    <MudDivider />
+    <MudNavLink Href="Downloads/Poolscoresheet.xls" Target="_blank" Icon="@Icons.Material.Filled.Download">
+        Download Scoresheet
+    </MudNavLink>
+    <MudNavLink Href="changelog" Icon="@Icons.Material.Filled.Info">
+        Changelog
+    </MudNavLink>
+</MudNavMenu>
+
+
 
 @code {
 

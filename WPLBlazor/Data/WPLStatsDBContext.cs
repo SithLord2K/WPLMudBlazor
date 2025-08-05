@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using WPLBlazor.Data.Models;
+using WPLMudBlazor.Data.Models;
 
-namespace WPLBlazor.Data;
+namespace WPLMudBlazor.Data;
 
 public partial class WPLStatsDBContext : DbContext
 {

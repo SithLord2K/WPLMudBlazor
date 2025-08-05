@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Components.Server;
 
-namespace WPLBlazor.AuthenticationStateSyncer
+namespace WPLMudBlazor.AuthenticationStateSyncer
 {
     public class PersistentAuthenticationStateProvider(PersistentComponentState persistentState) : AuthenticationStateProvider
     {

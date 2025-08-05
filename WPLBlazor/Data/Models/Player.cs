@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace WPLBlazor.Data.Models;
+namespace WPLMudBlazor.Data.Models;
 
 [Keyless]
 public class Player

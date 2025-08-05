@@ -2,7 +2,7 @@
 using Newtonsoft.Json.Converters;
 using System.Globalization;
 
-namespace WPLBlazor.AuthenticationStateSyncer
+namespace WPLMudBlazor.AuthenticationStateSyncer
 {
     public partial class Auth0UserProfile
     {

@@ -1,4 +1,4 @@
-﻿namespace WPLBlazor.AuthenticationStateSyncer
+﻿namespace WPLMudBlazor.AuthenticationStateSyncer
 {
     public class UserInfo
     {

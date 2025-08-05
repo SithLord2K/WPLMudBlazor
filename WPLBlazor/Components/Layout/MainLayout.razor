@@ -1,14 +1,44 @@
 ﻿@attribute [StreamRendering]
 @inherits LayoutComponentBase
+@using WPLMudBlazor.Components.Layout
 
 
-<link href="_content/Blazorise.LoadingIndicator/blazorise.loadingindicator.css" rel="stylesheet" />
+@* Required *@
+<MudThemeProvider />
+<MudPopoverProvider />
 
-<Layout Sider>
-    <Layout Display="Display.Flex">
-        <LayoutHeader Fixed>
+@* Needed for dialogs *@
+<MudDialogProvider />
+
+@* Needed for snackbars *@
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h5" Class="mt-1">Application</MudText>
+        </MudDrawerHeader>
+        <VerticalMenuBar />
+    </MudDrawer>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+    <MudAppBar Fixed Background="Background.Dark" TextColor="TextColor.Light">
+        <center>Site created and maintained by Chris Wiley on Golden Brothers 1</center>
+    </MudAppBar>
+</MudLayout>
+
+
+@* <MudLayout Sider>
+    <MudLayout Display="Display.Flex">
+        <MudLayoutHeader Fixed>
             <Header />
-        </LayoutHeader>
+        </MudLayoutHeader>
         <Layout Sider>
             <LayoutSider>
                 <LayoutSiderContent>
@@ -28,8 +58,8 @@
                 </LayoutFooter>
             </Layout>
         </Layout>
-    </Layout>
-</Layout>
+    </MudLayout>
+</MudLayout> *@
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.
@@ -39,5 +69,11 @@
 
 
 @code {
-    
+    bool _drawerOpen = true;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}
 }
