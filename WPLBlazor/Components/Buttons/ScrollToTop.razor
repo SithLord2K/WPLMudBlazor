@@ -1,13 +1,13 @@
 ﻿@attribute [StreamRendering]
 @inject NavigationManager navigationManager
 
-<Button Shadow="Blazorise.Shadow.Default"
+<MudButton Shadow="Blazorise.Shadow.Default"
         Style="position:fixed; bottom: 30px; right: 0; margin-right: 16px; opacity: .8"
         Color="Color.Dark"
         TextColor="TextColor.Light"
         Clicked="@ScrollToTopClick">
-    <Icon Name="IconName.ArrowUp" />
-</Button>
+    <MudIcon Name="IconName.ArrowUp" />
+</MudButton>
 
 @code {
     private void ScrollToTopClick()
